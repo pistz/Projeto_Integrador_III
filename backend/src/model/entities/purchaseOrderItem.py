@@ -10,6 +10,9 @@ class PurchaseOrderItem(Base):
     product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
     quantity = Column(Integer, nullable=False)
     unit_price = Column(Numeric(10, 2), nullable=False)
+    brand_id = Column(Integer, ForeignKey('brand.id'), nullable=True)
+
 
     purchase_order = relationship('PurchaseOrder', backref='items')
     product = relationship('Product', backref='purchase_order_items')
+    brand = relationship('Brand', back_populates='purchase_order_items')

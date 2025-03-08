@@ -9,6 +9,10 @@ class DonationItem(Base):
     donation_id = Column(Integer, ForeignKey('donations.id'), nullable=False)
     product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
     quantity = Column(Integer, nullable=False)
+    brand_id = Column(Integer, ForeignKey('brand.id'), nullable=True)
+
 
     donation = relationship('Donation', backref='items')
     product = relationship('Product', backref='donation_items')
+    brand = relationship('Brand', back_populates='donation_items')
+

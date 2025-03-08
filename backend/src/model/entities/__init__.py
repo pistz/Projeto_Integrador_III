@@ -1,3 +1,4 @@
+from .brand import Brand
 from .donation import Donation
 from .donationItem import DonationItem
 from .donor import Donor
