@@ -9,11 +9,12 @@ class Product(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(150), nullable=False)
     description = Column(Text)
-    price = Column(Numeric(10, 2), nullable=False)
-    quantity = Column(Integer, nullable=False, default=0)
-    created_at = Column(DateTime, default=func.utcnow())
     brand_id = Column(Integer, ForeignKey('brand.id'), nullable=True)
+    category_id = Column(Integer, ForeignKey('category.id'), nullable=True)
+    created_at = Column(DateTime, default=func.utcnow())
+    updated_at = Column(DateTime, default=func.utcnow(), onupdate=func.utcnow())
 
     # Relacionamentos
     brand = relationship('Brand', back_populates='products')
+    category = relationship('Category', back_populates='products')
 

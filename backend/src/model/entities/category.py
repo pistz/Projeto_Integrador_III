@@ -1,11 +1,12 @@
 from src.model.configs.base import Base
 from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy.orm import relationship
 
-class Donor(Base):
-    __tablename__ = 'donors'
+class Category(Base):
+    __tablename__ = 'categories'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False)
-    contact = Column(String(100))
-    email = Column(String(100), unique=True)
+    name = Column(String(100), nullable=False, unique=True)
     created_at = Column(DateTime, default=func.utcnow())
+
+    products = relationship('Product', back_populates='categories')

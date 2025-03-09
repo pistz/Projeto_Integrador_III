@@ -17,7 +17,6 @@ class StockMovement(Base):
     product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
     movement_type = Column(Enum(MovementType), nullable=False)
     movement_source = Column(Enum(MovementSource), nullable=False)
-    source_id = Column(Integer)  # ID da compra ou doação
     quantity = Column(Integer, nullable=False)
     movement_date = Column(DateTime, default=func.utcnow())
 
