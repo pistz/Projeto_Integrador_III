@@ -29,7 +29,7 @@ CREATE TABLE products (
     brand_id INT,
     category_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (brand_id) REFERENCES brands(id) ON DELETE SET NULL,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );
@@ -49,6 +49,6 @@ CREATE TABLE stock_movements (
 CREATE TABLE current_stock (
     product_id INT PRIMARY KEY,
     total_quantity INT NOT NULL DEFAULT 0,
-    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
 );
