@@ -12,7 +12,7 @@ class Product(Base):
     brand_id = Column(Integer, ForeignKey('brand.id'), nullable=True)
     category_id = Column(Integer, ForeignKey('category.id'), nullable=True)
     created_at = Column(DateTime, default=func.utcnow())
-    updated_at = Column(DateTime, default=func.utcnow(), onupdate=func.utcnow())
+    updated_at = Column(DateTime, default=func.utcnow())
 
     # Relacionamentos
     brand = relationship('Brand', back_populates='products')

@@ -7,7 +7,7 @@ class CurrentStock(Base):
 
     product_id = Column(Integer, primary_key=True)
     total_quantity = Column(Integer, nullable=False, default=0)
-    last_updated = Column(DateTime, default=func.utcnow(), onupdate=func.utcnow())
+    last_updated = Column(DateTime, default=func.utcnow())
 
     # Relacionamentos
     product = relationship('Product', backref='current_stock')
