@@ -1,10 +1,11 @@
-from backend.src.dtos.user.user_dtos import CreateUserDTO
+from application.dtos.user.user_dtos import CreateUserDTO
+from application.exceptions.user_not_created import UserNotCreated
 from backend.src.model.configs.connection import DbConnectionHandler
 from backend.src.model.entities.user import User
-from backend.src.model.repositories.User.user_repository_interface import UserRepositoryInterface
+from backend.src.model.repositories.User.user_repository_interface import IUserRepository
 
 
-class UserRepository(UserRepositoryInterface):
+class UserRepository(IUserRepository):
 
     def create_user(self, user:CreateUserDTO) -> User:
         with DbConnectionHandler() as db:
@@ -16,6 +17,5 @@ class UserRepository(UserRepositoryInterface):
 
                 return new_user
             except Exception as e:
-                
                 db.session.rollback()
-                raise Exception(f'Error creating user: {e}')
+                raise UserNotCreated(f'Error creating user: {e}')
