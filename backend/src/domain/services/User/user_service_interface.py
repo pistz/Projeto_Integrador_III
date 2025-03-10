@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from application.dtos.user.user_dtos import CreateUserDTO
-from model.entities.user import User
+from src.application.dtos.user.user_dtos import CreateUserDTO
+from src.model.entities.user import User
 
 class IUserService(ABC):
 

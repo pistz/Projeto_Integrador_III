@@ -7,6 +7,6 @@ class Category(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False, unique=True)
-    created_at = Column(DateTime, default=func.utcnow())
+    created_at = Column(DateTime, default=func.current_timestamp())
 
-    products = relationship('Product', back_populates='categories')
+    products = relationship('Product', back_populates='category')
