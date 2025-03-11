@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-@dataclass(frozen=True)
+@dataclass()
 class CreateUserDTO:
     name: str
     email: str
@@ -10,7 +10,20 @@ class CreateUserDTO:
         if not self.name or not self.email or not self.password:
             raise ValueError("Todos os campos são obrigatórios.")
 
-@dataclass(frozen=True)
+@dataclass()
 class UpdateUserDTO:
     name: str
     password: str
+
+@dataclass
+class UserDTO:
+    id: int
+    name: str
+    email: str
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email
+        }

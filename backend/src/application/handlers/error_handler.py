@@ -1,6 +1,9 @@
 
 from flask import jsonify
 
+from src.application.exceptions.email_not_valid import EmailNotValid
+from src.application.exceptions.invalid_user import InvalidUser
+from src.application.exceptions.password_not_valid import PasswordNotValid
 from src.application.exceptions.user_not_created import UserNotCreated
 
 def register_error_handlers(app):
@@ -11,6 +14,21 @@ def register_error_handlers(app):
         
         if isinstance(e, ValueError):
             return jsonify({"error": str(e)}), 400
+        
+        if isinstance(e, EmailNotValid):
+            return jsonify({"error": e.message}), 400
+        
+        if isinstance(e, PasswordNotValid):
+            return jsonify({"error": e.message}), 400
+        
+        if isinstance(e, InvalidUser):
+            return jsonify({"error": e.message}), 400
+        
 
         # Erros inesperados (500)
-        return jsonify({"error": "Erro interno no servidor"}), 500
+        error = {
+            "error": "Internal Server Error",
+            "message": "An unexpected error has occurred. Please try again later.",
+            "type": str(e)
+        }
+        return jsonify(error), 500

@@ -17,4 +17,4 @@ app.config['SQL_ALCHEMY_DATABASE_URI'] = os.getenv("DATABASE_URL")
 app.register_blueprint(user_route_bp)
 
 #Handlers de erro
-# register_error_handlers(app)
+register_error_handlers(app)

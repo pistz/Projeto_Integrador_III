@@ -1,21 +1,33 @@
 from flask import request, jsonify
 
-from src.infra.containers.containers import ServiceContainer
+from src.infra.containers.service_container import ServiceContainer
 from src.application.dtos.http_types.http_request import HttpRequest
 from src.application.dtos.http_types.http_response import HttpResponse
-from src.application.dtos.user.user_dtos import CreateUserDTO
+from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO
+
 
 class UserController:
-    @staticmethod
-    def create_user():
-        # Obter os dados da requisição
+    def __init__(self):
+        self.__user_service = ServiceContainer().user_service()
+
+    def create_user(self):
         http_request = HttpRequest(request.json)
         create_user_dto = CreateUserDTO(**http_request.body)
-        
-        # Criar um serviço e chamar o método de criação do usuário
-        user_service = ServiceContainer().user_service()
-        response:HttpResponse = user_service.create_user(create_user_dto)
-        
-        # Retornar a resposta
+        response: HttpResponse = self.__user_service.create_user(create_user_dto)
         return jsonify(response.body), response.status_code
 
+    def get_user_by_email(self):
+        http_request = HttpRequest(request.json)
+        email = http_request.body['email']
+        response: HttpResponse = self.__user_service.get_user_by_email(email)
+        return jsonify(response.body), response.status_code
+    
+    def get_user_by_id(self, user_id):
+        response: HttpResponse = self.__user_service.get_user_by_id(user_id)
+        return jsonify(response.body), response.status_code
+    
+    def update_user(self, user_id):
+        http_request = HttpRequest(request.json)
+        update_user_dto = UpdateUserDTO(**http_request.body)
+        response: HttpResponse = self.__user_service.update_user(user_id, update_user_dto)
+        return jsonify(response.body), response.status_code
