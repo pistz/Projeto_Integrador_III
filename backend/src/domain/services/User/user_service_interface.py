@@ -15,3 +15,6 @@ class IUserService(ABC):
 
     @abstractmethod
     def update_user(self, user_id:int, user: UpdateUserDTO) -> None:pass
+
+    @abstractmethod
+    def delete_user(self, user_id:int) -> None:pass

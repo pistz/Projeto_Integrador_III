@@ -4,7 +4,6 @@ from src.controllers.users_controller import UserController
 
 
 user_route_bp = Blueprint('user_route', __name__)
-
 user_controller = UserController()
 
 @user_route_bp.route('/users', methods=['POST'])
@@ -22,3 +21,7 @@ def get_user_by_id_route(id):
 @user_route_bp.route('/users/<int:id>', methods=['PUT'])
 def update_user_route(id):
 	return user_controller.update_user(id)
+
+@user_route_bp.route('/users/<int:id>', methods=['DELETE'])
+def delete_user_route(id):
+	return user_controller.delete_user(id)

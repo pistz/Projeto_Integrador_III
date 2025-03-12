@@ -31,3 +31,7 @@ class UserController:
         update_user_dto = UpdateUserDTO(**http_request.body)
         response: HttpResponse = self.__user_service.update_user(user_id, update_user_dto)
         return jsonify(response.body), response.status_code
+    
+    def delete_user(self, user_id):
+        response: HttpResponse = self.__user_service.delete_user(user_id)
+        return jsonify(response.body), response.status_code
