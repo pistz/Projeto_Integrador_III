@@ -36,7 +36,7 @@ def test_create_user_invalid_email():
 
 def test_create_user_short_password():
     repo = get_mock_user_repository()
-    repo.get_user_by_email.return_value = None  # Simula que o usuário ainda não existe
+    repo.get_user_by_email.return_value = None
     service = UserService(repo)
 
     dto = CreateUserDTO(name="Jane Doe", email="jane@example.com", password="123")

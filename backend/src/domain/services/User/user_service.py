@@ -1,6 +1,7 @@
 import re
 from src.application.exceptions.email_not_valid import EmailNotValid
 from src.application.exceptions.invalid_user import InvalidUser
+from src.application.exceptions.not_found import NotFound
 from src.application.exceptions.password_not_valid import PasswordNotValid
 from src.infra.repositories.User.user_repository_interface import IUserRepository
 from src.domain.services.User.user_service_interface import IUserService
@@ -27,18 +28,22 @@ class UserService(IUserService):
     def get_user_by_email(self, email: str) -> HttpResponse:
         self.__is_valid_email(email)
         user = self.user_repository.get_user_by_email(email)
+        if not user:
+            raise NotFound('User not found')
         user_response = UserDTO(id=user.id, name=user.name, email=user.email)
         return HttpResponse(status_code=200, body=user_response)
     
     def get_user_by_id(self, user_id: int) -> HttpResponse:
         user = self.user_repository.get_user_by_id(user_id)
+        if not user:
+            raise NotFound('User not found')
         user_response = UserDTO(id=user.id, name=user.name, email=user.email)
         return HttpResponse(status_code=200, body=user_response)
     
     def update_user(self, user_id:int, user: UpdateUserDTO) -> HttpResponse:
         user_exists = self.user_repository.get_user_by_id(user_id=user_id)
         if not user_exists:
-            raise InvalidUser('User not found')
+            raise InvalidUser('User not valid')
         if user.password:
             self.__is_valid_password_len(user.password)
             hashed_password = self.__hash_password(user.password)
@@ -51,7 +56,7 @@ class UserService(IUserService):
     def delete_user(self, user_id:int) -> HttpResponse:
         user = self.user_repository.get_user_by_id(user_id)
         if not user:
-            raise InvalidUser('User not found')
+            raise InvalidUser('User not valid')
         self.user_repository.delete_user(user_id)
         return HttpResponse(status_code=200, body={'message': 'User deleted successfully'})
     

@@ -27,3 +27,8 @@ class UserDTO:
             "name": self.name,
             "email": self.email
         }
+    
+@dataclass
+class UserLoginDTO:
+    email: str
+    password: str
