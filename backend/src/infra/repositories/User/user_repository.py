@@ -33,6 +33,11 @@ class UserRepository(IUserRepository):
         with DbConnectionHandler() as db:
             user = db.session.query(User).filter(User.id == user_id).one_or_none()
             return user
+        
+    def get_all_users(self) -> list[User]:
+        with DbConnectionHandler() as db:
+            users = db.session.query(User).all()
+            return users
 
     def update_user(self, user_id:int, user:UpdateUserDTO) -> None:
         with DbConnectionHandler() as db:

@@ -18,6 +18,10 @@ def get_user_by_email_route():
 def get_user_by_id_route(id):
 	return user_controller.get_user_by_id(id)
 
+@user_route_bp.route('/users/all', methods=['GET'])
+def get_all_users_route():
+	return user_controller.get_all_users()
+
 @user_route_bp.route('/users/<int:id>', methods=['PUT'])
 def update_user_route(id):
 	return user_controller.update_user(id)

@@ -40,6 +40,11 @@ class UserService(IUserService):
         user_response = UserDTO(id=user.id, name=user.name, email=user.email)
         return HttpResponse(status_code=200, body=user_response)
     
+    def get_all_users(self) -> list[UserDTO]:
+        users = self.user_repository.get_all_users()
+        users_response = [UserDTO(id=user.id, name=user.name, email=user.email) for user in users]
+        return HttpResponse(status_code=200, body=users_response)
+    
     def update_user(self, user_id:int, user: UpdateUserDTO) -> HttpResponse:
         user_exists = self.user_repository.get_user_by_id(user_id=user_id)
         if not user_exists:

@@ -14,6 +14,9 @@ class IUserService(ABC):
     def get_user_by_id(self, id: int) -> UserDTO:pass
 
     @abstractmethod
+    def get_all_users(self) -> list[UserDTO]:pass
+
+    @abstractmethod
     def update_user(self, user_id:int, user: UpdateUserDTO) -> None:pass
 
     @abstractmethod

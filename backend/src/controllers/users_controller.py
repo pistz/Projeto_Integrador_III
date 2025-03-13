@@ -26,6 +26,10 @@ class UserController:
         response: HttpResponse = self.__user_service.get_user_by_id(user_id)
         return jsonify(response.body), response.status_code
     
+    def get_all_users(self):
+        response: HttpResponse = self.__user_service.get_all_users()
+        return jsonify(response.body), response.status_code
+    
     def update_user(self, user_id):
         http_request = HttpRequest(request.json)
         update_user_dto = UpdateUserDTO(**http_request.body)
