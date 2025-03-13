@@ -13,13 +13,14 @@ JWT_SECRET_KEY=load_secret_key()
 class LoginService:
     def __init__(self, user_repository: IUserRepository):
         self.user_repository = user_repository
+        self.now = datetime.datetime.now(tz=datetime.timezone.utc)
     
     def login(self, email: str, password: str) -> HttpResponse:
         user = self.user_repository.get_user_by_email(email)
         if not user:
-            raise NotFound("User not found")
+            raise NotFound("Incorrect email or password")
         if not self.__dehash_password(password, user.password):
-            raise PasswordNotValid("Password not valid")
+            raise NotFound("Incorrect email or password")
         token = self.__generate_token(email)
         return HttpResponse(body=JWTTokenDTO(token), status_code=200)
 
@@ -27,13 +28,15 @@ class LoginService:
         decoded = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
         if not decoded:
             raise jwt.InvalidTokenError
-        if decoded['exp'] < datetime.datetime.now():
+        if decoded['exp'] < self.now.timestamp():
             raise jwt.ExpiredSignatureError
         return True
     
     def __generate_token(self, email:str) -> str:
         token = jwt.encode(
-            {"user": email, "exp": datetime.datetime.now() + datetime.timedelta(minutes=30)},
+            {
+                "user": email, "exp":(self.now + datetime.timedelta(minutes=30)).timestamp()
+            },
             JWT_SECRET_KEY,
             algorithm="HS256")
         return token
