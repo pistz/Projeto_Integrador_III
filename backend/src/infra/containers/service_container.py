@@ -1,4 +1,4 @@
-from src.domain.services.User.login_service import LoginService
+from src.domain.services.Login.login_service import LoginService
 from src.domain.services.User.user_service import UserService
 from src.infra.repositories.User.user_repository import UserRepository
 

@@ -4,7 +4,6 @@ import jwt
 from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.dtos.jwt.jwt_token_dto import JWTTokenDTO
 from src.application.exceptions.not_found import NotFound
-from src.application.exceptions.password_not_valid import PasswordNotValid
 from src.infra.repositories.User.user_repository_interface import IUserRepository
 from src.model.configs.env import load_secret_key
 

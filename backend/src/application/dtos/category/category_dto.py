@@ -11,3 +11,4 @@ class CategoryDTO:
             "id": self.id,
             "name": self.name
         }
+    

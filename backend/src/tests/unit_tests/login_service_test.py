@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 
 from src.application.exceptions.not_found import NotFound
-from src.domain.services.User.login_service import LoginService
+from src.domain.services.Login.login_service import LoginService
 from src.model.configs.env import load_secret_key
 from src.tests.mocks.mock_user_repository import get_mock_user_repository
 
