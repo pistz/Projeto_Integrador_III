@@ -31,6 +31,14 @@ class LoginService:
             raise jwt.ExpiredSignatureError
         return True
     
+    def decode_token_user(self, token: str, email:str) -> bool:
+        decoded = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
+        if not decoded:
+            raise jwt.InvalidTokenError
+        if decoded['user'] != email:
+            raise jwt.InvalidTokenError
+        return True
+    
     def __generate_token(self, email:str) -> str:
         token = jwt.encode(
             {

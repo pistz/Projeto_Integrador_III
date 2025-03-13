@@ -25,6 +25,16 @@ def login_service():
 
     return LoginService(user_repo)
 
+@pytest.mark.skip("Not a test, just a helper function")
+def generate_token(email:str) -> str:
+        token = jwt.encode(
+            {
+                "user": email, "exp":(datetime.datetime.now() + datetime.timedelta(minutes=30)).timestamp()
+            },
+            JWT_SECRET_KEY,
+            algorithm="HS256")
+        return token
+
 def test_login_success(login_service):
     response = login_service.login("john@example.com", "password")
 
@@ -67,3 +77,24 @@ def test_decode_token_expired():
 
     with pytest.raises(jwt.ExpiredSignatureError):
         service.decode_token_validity(token)
+
+def test_decode_token_user_success():
+    service = LoginService(get_mock_user_repository())
+    email = "john@example.com"
+    token = generate_token(email=email)
+
+    assert service.decode_token_user(token, email) is True
+
+def test_decode_token_user_wrong_email():
+    service = LoginService(get_mock_user_repository())
+    token = generate_token(email="john@example.com")
+
+    with pytest.raises(jwt.InvalidTokenError):
+        service.decode_token_user(token, "wrong@example.com")
+
+def test_decode_token_user_invalid_token():
+    service = LoginService(get_mock_user_repository())
+    invalid_token = "invalid.token.value"
+
+    with pytest.raises(jwt.InvalidTokenError):
+        service.decode_token_user(invalid_token, "john@example.com")

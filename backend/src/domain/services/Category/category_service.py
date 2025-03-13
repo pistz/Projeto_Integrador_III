@@ -38,9 +38,17 @@ class CategoryService:
         return HttpResponse(status_code=200, body=categories)
     
     def update_category(self, category_id:int, name:str) -> HttpResponse:
-        # TODO: Implement update_category method
-        pass
+        found_category = self.category_repository.get_category_by_id(category_id)
+        if not found_category:
+            raise InvalidData('Category not found')
+        found_category.name = name if name else found_category.name
+        self.category_repository.update_category(category_id=found_category.id, name=found_category.name)
+        return HttpResponse(status_code=200, body={'message': 'Category updated successfully'})
+        
     
     def delete_category(self, category_id:int) -> HttpResponse:
-        #TODO: Implement delete_category method
-        pass
+        found_category = self.category_repository.get_category_by_id(category_id)
+        if not found_category:
+                    raise InvalidData('Category not found')
+        self.category_repository.delete_category(category_id)
+        return HttpResponse(status_code=200, body={'message': 'Category deleted successfully'})
