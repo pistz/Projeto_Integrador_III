@@ -1,3 +1,4 @@
+from typing import Optional
 from src.application.exceptions.database_exception import DatabaseException
 from src.application.exceptions.invalid_user import InvalidUser
 from src.model.configs.connection import DbConnectionHandler
@@ -25,13 +26,13 @@ class UserRepository(IUserRepository):
     
     def get_user_by_email(self, email: str) -> User:
         with DbConnectionHandler() as db:
-            user = db.session.query(User).filter(User.email == email).one_or_none()
+            user = self.__find_user(email=email)
             return user
             
 
     def get_user_by_id(self, user_id: int) -> User:
         with DbConnectionHandler() as db:
-            user = db.session.query(User).filter(User.id == user_id).one_or_none()
+            user = self.__find_user(user_id=user_id)
             return user
         
     def get_all_users(self) -> list[User]:
@@ -42,7 +43,7 @@ class UserRepository(IUserRepository):
     def update_user(self, user_id:int, user:UpdateUserDTO) -> None:
         with DbConnectionHandler() as db:
             try:
-                found_user = db.session.query(User).filter(User.id == user_id).one_or_none()
+                found_user = self.__find_user(user_id=user_id)
                 found_user.name = user.name
                 found_user.password = user.password
 
@@ -57,10 +58,20 @@ class UserRepository(IUserRepository):
     def delete_user(self, user_id:int) -> None:
         with DbConnectionHandler() as db:
             try:
-                user = db.session.query(User).filter(User.id == user_id).one_or_none()
+                user = self.__find_user(user_id=user_id)
                 db.session.delete(user)
                 db.session.commit()
                 return
             except Exception as e:
                 db.session.rollback()
                 raise DatabaseException(f'Error deleting user: {e}')
+            
+    def __find_user(self, user_id:int=None, email:str=None) -> Optional[User]:
+        if user_id is not None:
+            with DbConnectionHandler() as db:
+                user = db.session.query(User).filter(User.id == user_id).one_or_none()
+                return user
+        if email is not None:
+            with DbConnectionHandler() as db:
+                user = db.session.query(User).filter(User.email == email).one_or_none()
+                return user

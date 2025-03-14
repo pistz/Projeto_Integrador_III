@@ -21,12 +21,12 @@ class CategoryRepository(ICategoryRepository):
 
     def get_category_by_name(self, name: str) -> Category:
         with DbConnectionHandler() as db:
-            category = db.session.query(Category).filter_by(name=name).one_or_none()
+            category = self.__find_category(name=name)
             return category
 
     def get_category_by_id(self, category_id: int) -> Category:
         with DbConnectionHandler() as db:
-            category = db.session.query(Category).filter_by(id=category_id).one_or_none()
+            category = self.__find_category(category_id=category_id)
             return category
 
     def get_all_categories(self) -> list[Category]:
@@ -37,7 +37,7 @@ class CategoryRepository(ICategoryRepository):
     def update_category(self, category_id:int, name:str) -> None:
         with DbConnectionHandler() as db:
             try:
-                found_category = db.session.query(Category).filter_by(id=category_id).one_or_none()
+                found_category = self.__find_category(category_id=category_id)
                 found_category.name = name
 
                 db.session.add(found_category)
@@ -50,10 +50,20 @@ class CategoryRepository(ICategoryRepository):
     def delete_category(self, category_id:int) -> None:
         with DbConnectionHandler() as db:
             try:
-                category = db.session.query(Category).filter_by(id=category_id).one_or_none()
+                category = self.__find_category(category_id=category_id)
                 db.session.delete(category)
                 db.session.commit()
                 return
             except Exception as e:
                 db.session.rollback()
                 raise DatabaseException(f'Error deleting category: {e}')
+            
+    def __find_category(self, category_id:int = None, name:str = None) -> Category:
+        if category_id is not None:
+            with DbConnectionHandler() as db:
+                category = db.session.query(Category).filter_by(id=category_id).one_or_none()
+                return category
+        if name is not None:
+            with DbConnectionHandler() as db:
+                category = db.session.query(Category).filter_by(name=name).one_or_none()
+                return category
