@@ -1,10 +1,11 @@
 from src.application.dtos.category.category_dto import CategoryDTO
 from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.exceptions.invalid_data import InvalidData
+from src.domain.services.Category.category_service_interface import ICategoryService
 from src.infra.repositories.Category.category_repository_interface import ICategoryRepository
 
 
-class CategoryService:
+class CategoryService(ICategoryService):
     
     def __init__(self, category_repository:ICategoryRepository):
         self.category_repository = category_repository

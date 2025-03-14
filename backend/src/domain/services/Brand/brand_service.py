@@ -1,0 +1,55 @@
+from src.application.dtos.brand.brand_dto import BrandDTO
+from src.application.dtos.http_types.http_response import HttpResponse
+from src.application.exceptions.invalid_data import InvalidData
+from src.domain.services.Brand.brand_service_interface import IBrandService
+from src.infra.repositories.Brand.brand_repository_interface import IBrandRepository
+
+
+class BrandService(IBrandService):
+    
+    def __init__(self, brand_repository:IBrandRepository):
+        self.brand_repository = brand_repository
+
+    def create_brand(self, name: str) -> HttpResponse:
+        brand_exists = self.brand_repository.get_brand_by_name(name)
+        if brand_exists:
+            raise InvalidData('Brand already exists')
+        self.brand_repository.create_brand(name)
+        return HttpResponse(status_code=201, body={'message': 'Brand created successfully'})
+    
+    def get_brand_by_name(self, name: str) -> HttpResponse:
+        found_brand = self.brand_repository.get_brand_by_name(name)
+        if not found_brand:
+            raise InvalidData('Brand not found')
+        brand = BrandDTO(id=found_brand.id, name=found_brand.name)
+        return HttpResponse(status_code=200, body=brand)
+    
+    def get_brand_by_id(self, brand_id: int) -> HttpResponse:
+        found_brand = self.brand_repository.get_brand_by_id(brand_id)
+        if not found_brand:
+            raise InvalidData('Brand not found')
+        brand = BrandDTO(id=found_brand.id, name=found_brand.name)
+        return HttpResponse(status_code=200, body=brand)
+    
+    def get_all_brands(self) -> HttpResponse:
+        all_brands = self.brand_repository.get_all_brands()
+        if not all_brands:
+            return HttpResponse(status_code=200, body=[])
+        brands = [BrandDTO(id=brand.id, name=brand.name) for brand in all_brands]
+        return HttpResponse(status_code=200, body=brands)
+    
+    def update_brand(self, brand_id:int, name:str) -> HttpResponse:
+        found_brand = self.brand_repository.get_brand_by_id(brand_id)
+        if not found_brand:
+            raise InvalidData('Brand not found')
+        found_brand.name = name if name else found_brand.name
+        self.brand_repository.update_brand(brand_id=found_brand.id, name=found_brand.name)
+        return HttpResponse(status_code=200, body={'message': 'Brand updated successfully'})
+        
+    
+    def delete_brand(self, brand_id:int) -> HttpResponse:
+        found_brand = self.brand_repository.get_brand_by_id(brand_id)
+        if not found_brand:
+                    raise InvalidData('Brand not found')
+        self.brand_repository.delete_brand(brand_id)
+        return HttpResponse(status_code=200, body={'message': 'Brand deleted successfully'})

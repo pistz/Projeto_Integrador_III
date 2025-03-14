@@ -30,7 +30,7 @@ class BrandRepository(IBrandRepository):
             brand = self.__find_brand(id=id)
             return brand
 
-    def get_all_categories(self) -> list[Brand]:
+    def get_all_brands(self) -> list[Brand]:
         with DbConnectionHandler() as db:
             brands = db.session.query(Brand).all()
             return brands
