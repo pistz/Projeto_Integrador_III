@@ -13,13 +13,13 @@ def get_all_categories():
 def get_category_by_name():
     return category_controller.get_category_by_name()
 
-@category_route_bp.route('/categories/<int:id>', methods=['GET'])
-def get_category_by_id(id):
-    return category_controller.get_category_by_id(id)
-
 @category_route_bp.route('/categories', methods=['POST'])
 def create_category():
     return category_controller.create_category()
+
+@category_route_bp.route('/categories/<int:id>', methods=['GET'])
+def get_category_by_id(id):
+    return category_controller.get_category_by_id(id)
 
 @category_route_bp.route('/categories/<int:id>', methods=['PUT'])
 def update_category(id):

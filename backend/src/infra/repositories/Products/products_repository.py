@@ -17,17 +17,17 @@ class ProductsRepository(IProductsRepository):
             product = self.__find_product_by_name_or_id(product_id=product_id)
             return product
 
-    def get_product_by_name(self, product_name: str) -> Product:
+    def get_product_by_name(self, product_name: str) -> list[Product]:
         with DbConnectionHandler() as db:
             product = self.__find_product_by_name_or_id(product_name=product_name)
             return product
 
-    def get_products_by_category_id(self, category_id: int) -> list[Product]:
+    def get_all_products_by_category_id(self, category_id: int) -> list[Product]:
         with DbConnectionHandler() as db:
             products = self.__find_products_by_brand_or_category_id(category_id=category_id)
             return products
 
-    def get_products_by_brand_id(self, brand_id: int) -> list[Product]:
+    def get_all_products_by_brand_id(self, brand_id: int) -> list[Product]:
         with DbConnectionHandler() as db:
             products = self.__find_products_by_brand_or_category_id(brand_id=brand_id)
             return products
@@ -84,7 +84,7 @@ class ProductsRepository(IProductsRepository):
             
         if product_name is not None:
             with DbConnectionHandler() as db:
-                product = db.session.query(Product).filter(Product.name == product_name).one_or_none()
+                product = db.session.query(Product).filter(Product.name == product_name).all()
                 return product
         
     def __find_products_by_brand_or_category_id(self, brand_id:int=None, category_id:int=None) -> list[Product]:    

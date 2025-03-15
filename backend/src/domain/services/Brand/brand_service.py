@@ -21,9 +21,9 @@ class BrandService(IBrandService):
     
     def get_brand_by_name(self, name: str) -> HttpResponse:
         found_brand = self.brand_repository.get_brand_by_name(name)
-        if not found_brand:
+        if not found_brand or len(found_brand) == 0:
             raise NotFound('Brand not found')
-        brand = BrandDTO(id=found_brand.id, name=found_brand.name)
+        brand = [BrandDTO(id=brand.id, name=brand.name) for brand in found_brand]
         return HttpResponse(status_code=StatusCode.OK.value, body=brand)
     
     def get_brand_by_id(self, brand_id: int) -> HttpResponse:

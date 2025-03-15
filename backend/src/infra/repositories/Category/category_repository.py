@@ -19,7 +19,7 @@ class CategoryRepository(ICategoryRepository):
                 db.session.rollback()
                 raise DatabaseException(f'Error creating category: {e}')
 
-    def get_category_by_name(self, name: str) -> Category:
+    def get_category_by_name(self, name: str) -> list[Category]:
         with DbConnectionHandler() as db:
             category = self.__find_category(name=name)
             return category
@@ -65,5 +65,5 @@ class CategoryRepository(ICategoryRepository):
                 return category
         if name is not None:
             with DbConnectionHandler() as db:
-                category = db.session.query(Category).filter_by(name=name).one_or_none()
+                category = db.session.query(Category).filter_by(name=name).all()
                 return category

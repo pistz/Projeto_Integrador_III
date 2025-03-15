@@ -9,7 +9,7 @@ class IBrandRepository(ABC):
     def create_brand(self, name: str) -> None:pass
 
     @abstractmethod
-    def get_brand_by_name(self, name: str) -> Brand:pass
+    def get_brand_by_name(self, name: str) -> list[Brand]:pass
 
     @abstractmethod
     def get_brand_by_id(self, id: int) -> Brand:pass

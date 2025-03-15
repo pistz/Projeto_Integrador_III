@@ -1,4 +1,6 @@
 import pytest
+from src.application.enums.status_codes import StatusCode
+from src.application.exceptions.not_found import NotFound
 from src.domain.services.Category.category_service import CategoryService
 from src.application.dtos.category.category_dto import CategoryDTO
 from src.application.exceptions.invalid_data import InvalidData
@@ -6,8 +8,8 @@ from src.tests.mocks.mock_category_repository import get_mock_category_repositor
 
 @pytest.fixture
 def category_service():
-    repo = get_mock_category_repository()
-    return CategoryService(repo)
+    mock_repo = get_mock_category_repository()
+    return CategoryService(category_repository=mock_repo)
 
 def test_create_category_success(category_service):
     response = category_service.create_category("Books")
@@ -25,15 +27,14 @@ def test_create_category_already_exists():
 def test_get_category_by_name_success(category_service):
     response = category_service.get_category_by_name("Food")
     assert response.status_code == StatusCode.OK.value
-    assert isinstance(response.body, CategoryDTO)
-    assert response.body.name == "Food"
+    assert response.body == [CategoryDTO(id=1, name='Food')]
 
 def test_get_category_by_name_not_found():
     repo = get_mock_category_repository()
     repo.get_category_by_name.return_value = None
     service = CategoryService(repo)
 
-    with pytest.raises(InvalidData, match="Category not found"):
+    with pytest.raises(NotFound, match="Category not found"):
         service.get_category_by_name("Unknown")
 
 def test_get_category_by_id_success(category_service):
@@ -47,7 +48,7 @@ def test_get_category_by_id_not_found():
     repo.get_category_by_id.return_value = None
     service = CategoryService(repo)
 
-    with pytest.raises(InvalidData, match="Category not found"):
+    with pytest.raises(NotFound, match="Category not found"):
         service.get_category_by_id(999)
 
 def test_get_all_categories_success(category_service):
@@ -76,7 +77,7 @@ def test_update_category_not_found():
     repo.get_category_by_id.return_value = None
     service = CategoryService(repo)
 
-    with pytest.raises(InvalidData, match="Category not found"):
+    with pytest.raises(NotFound, match="Category not found"):
         service.update_category(999, "Whatever")
 
 def test_delete_category_success(category_service):
@@ -89,5 +90,5 @@ def test_delete_category_not_found():
     repo.get_category_by_id.return_value = None
     service = CategoryService(repo)
 
-    with pytest.raises(InvalidData, match="Category not found"):
+    with pytest.raises(NotFound, match="Category not found"):
         service.delete_category(999)

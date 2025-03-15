@@ -9,7 +9,7 @@ class ICategoryRepository(ABC):
     def create_category(self, name: str) -> None:pass
 
     @abstractmethod
-    def get_category_by_name(self, name: str) -> Category:pass
+    def get_category_by_name(self, name: str) -> list[Category]:pass
 
     @abstractmethod
     def get_category_by_id(self, category_id: int) -> Category:pass

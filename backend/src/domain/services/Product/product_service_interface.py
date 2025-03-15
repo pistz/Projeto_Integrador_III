@@ -10,7 +10,7 @@ class IProductService(ABC):
     def get_product_by_id(self, product_id:int) -> HttpResponse:pass
 
     @abstractmethod
-    def get_product_by_name(self, name:str) -> HttpResponse:pass
+    def get_product_by_name(self, product_name:str) -> HttpResponse:pass
 
     @abstractmethod
     def get_all_products(self) -> HttpResponse:pass

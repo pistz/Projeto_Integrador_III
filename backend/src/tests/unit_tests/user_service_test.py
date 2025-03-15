@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock
 import pytest
 from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO, UserDTO
+from src.application.enums.status_codes import StatusCode
 from src.application.exceptions.email_not_valid import EmailNotValid
 from src.application.exceptions.invalid_user import InvalidUser
 from src.application.exceptions.password_not_valid import PasswordNotValid

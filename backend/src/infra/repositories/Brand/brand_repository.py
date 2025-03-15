@@ -20,7 +20,7 @@ class BrandRepository(IBrandRepository):
                 db.session.rollback()
                 raise DatabaseException(f'Error creating Brand: {e}')
 
-    def get_brand_by_name(self, name: str) -> Brand:
+    def get_brand_by_name(self, name: str) -> list[Brand]:
         with DbConnectionHandler() as db:
             brand = self.__find_brand(name=name)
             return brand
@@ -67,5 +67,5 @@ class BrandRepository(IBrandRepository):
             
         if name is not None:
             with DbConnectionHandler() as db:
-                brand = db.session.query(Brand).filter_by(name=name).one_or_none()
+                brand = db.session.query(Brand).filter_by(name=name).all()
                 return brand

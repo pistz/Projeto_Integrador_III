@@ -21,9 +21,9 @@ class CategoryService(ICategoryService):
     
     def get_category_by_name(self, name: str) -> HttpResponse:
         found_category = self.category_repository.get_category_by_name(name)
-        if not found_category:
+        if not found_category or len(found_category) == 0:
             raise NotFound('Category not found')
-        category = CategoryDTO(id=found_category.id, name=found_category.name)
+        category = [CategoryDTO(id=category.id, name=category.name)for category in found_category]
         return HttpResponse(status_code=StatusCode.OK.value, body=category)
     
     def get_category_by_id(self, category_id: int) -> HttpResponse:

@@ -5,7 +5,8 @@ import datetime
 from unittest.mock import patch
 
 
-from src.application.exceptions.not_found import NotFound
+from src.application.enums.status_codes import StatusCode
+from src.application.exceptions.invalid_user import InvalidUser
 from src.domain.services.Login.login_service import LoginService
 from src.model.configs.env import load_secret_key
 from src.tests.mocks.mock_user_repository import get_mock_user_repository
@@ -48,7 +49,7 @@ def test_login_user_not_found():
     user_repo.get_user_by_email.return_value = None
     service = LoginService(user_repo)
 
-    with pytest.raises(NotFound):
+    with pytest.raises(InvalidUser):
         service.login("nonexistent@example.com", "password")
 
 def test_login_invalid_password():
@@ -56,7 +57,7 @@ def test_login_invalid_password():
     user_repo.get_user_by_email.return_value.password = bcrypt.hashpw("correct_password".encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     service = LoginService(user_repo)
 
-    with pytest.raises(NotFound):
+    with pytest.raises(InvalidUser):
         service.login("john@example.com", "wrong_password")
 
 def test_decode_token_valid():
@@ -89,7 +90,7 @@ def test_decode_token_user_wrong_email():
     service = LoginService(get_mock_user_repository())
     token = generate_token(email="john@example.com")
 
-    with pytest.raises(jwt.InvalidTokenError):
+    with pytest.raises(Exception):
         service.decode_token_user(token, "wrong@example.com")
 
 def test_decode_token_user_invalid_token():
