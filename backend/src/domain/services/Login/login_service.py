@@ -4,6 +4,7 @@ import jwt
 from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.dtos.jwt.jwt_token_dto import JWTTokenDTO
 from src.application.exceptions.not_found import NotFound
+from src.application.exceptions.token_error import TokenError
 from src.infra.repositories.User.user_repository_interface import IUserRepository
 from src.model.configs.env import load_secret_key
 
@@ -26,17 +27,17 @@ class LoginService:
     def decode_token_validity(self, token: str) -> bool:
         decoded = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
         if not decoded:
-            raise jwt.InvalidTokenError
+            raise TokenError(jwt.InvalidTokenError)
         if decoded['exp'] < self.now.timestamp():
-            raise jwt.ExpiredSignatureError
+            raise TokenError(jwt.ExpiredSignatureError)
         return True
     
     def decode_token_user(self, token: str, email:str) -> bool:
         decoded = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
         if not decoded:
-            raise jwt.InvalidTokenError
+            raise TokenError(jwt.InvalidTokenError)
         if decoded['user'] != email:
-            raise jwt.InvalidTokenError
+            raise TokenError(jwt.InvalidTokenError)
         return True
     
     def __generate_token(self, email:str) -> str:

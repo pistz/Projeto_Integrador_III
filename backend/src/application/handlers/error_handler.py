@@ -1,41 +1,67 @@
 
 from flask import jsonify
-from jwt import PyJWTError
-
+from src.application.enums.status_codes import StatusCode
+from src.application.exceptions.token_error import TokenError
+from src.application.exceptions.database_exception import DatabaseException
 from src.application.exceptions.email_not_valid import EmailNotValid
 from src.application.exceptions.invalid_data import InvalidData
 from src.application.exceptions.invalid_user import InvalidUser
 from src.application.exceptions.not_found import NotFound
 from src.application.exceptions.password_not_valid import PasswordNotValid
-from src.application.exceptions.user_not_created import UserNotCreated
+
 
 def register_error_handlers(app):
     @app.errorhandler(Exception)
     def handle_all_exceptions(e):
-
-        if isinstance(e, UserNotCreated):
-            return jsonify({"error": e.message}), e.status_code
-        
-        if isinstance(e, ValueError):
-            return jsonify({"error": str(e)}), 400
         
         if isinstance(e, EmailNotValid):
-            return jsonify({"error": e.message}), 400
+            error = jsonify({
+            "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
+            "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            })
+            return error, e.status_code.value
         
         if isinstance(e, PasswordNotValid):
-            return jsonify({"error": e.message}), 400
+            error = jsonify({
+            "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
+            "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            })
+            return error, e.status_code.value
         
         if isinstance(e, InvalidUser):
-            return jsonify({"error": e.message}), 400
+            error = jsonify({
+            "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
+            "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            })
+            return error, e.status_code.value
         
         if isinstance(e, InvalidData):
-            return jsonify({"error": e.message}), 400
+            error = jsonify({
+            "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
+            "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            })
+            return error, e.status_code.value
         
         if isinstance(e, NotFound):
-            return jsonify({"error": e.message}), 404
+            error = jsonify({
+            "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
+            "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            })
+            return error, e.status_code.value
         
-        if isinstance(e, PyJWTError):
-            return jsonify({"error": str(e)}), 498
+        if isinstance(e, TokenError):
+            error = jsonify({
+            "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
+            "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            })
+            return error, e.status_code.value
+        
+        if isinstance(e, DatabaseException):
+            error = jsonify({
+            "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
+            "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            })
+            return error, e.status_code.value
         
 
         # Erros inesperados (500)
@@ -44,4 +70,4 @@ def register_error_handlers(app):
             "message": "An unexpected error has occurred. Please try again later.",
             "type": str(e)
         }
-        return jsonify(error), 500
+        return jsonify(error), StatusCode.INTERNAL_SERVER_ERROR

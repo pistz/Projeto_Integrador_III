@@ -5,7 +5,6 @@ from src.model.configs.connection import DbConnectionHandler
 from src.model.entities.user import User
 from src.infra.repositories.User.user_repository_interface import IUserRepository
 from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO
-from src.application.exceptions.user_not_created import UserNotCreated
 
 
 

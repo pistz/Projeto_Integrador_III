@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from src.application.exceptions.invalid_data import InvalidData
+
 @dataclass()
 class CreateUserDTO:
     name: str
@@ -8,7 +10,7 @@ class CreateUserDTO:
     
     def __post_init__(self):
         if not self.name or not self.email or not self.password:
-            raise ValueError("Todos os campos são obrigatórios.")
+            raise InvalidData("Todos os campos são obrigatórios.")
 
 @dataclass()
 class UpdateUserDTO:

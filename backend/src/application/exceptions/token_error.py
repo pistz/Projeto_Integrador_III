@@ -1,10 +1,12 @@
+from jwt import PyJWT
+
 from src.application.enums.error_types import ErrorTypes
 from src.application.enums.status_codes import StatusCode
 
 
-class DatabaseException(Exception):
+class TokenError(PyJWT):
     def __init__(self, message: str):
-        self.type = ErrorTypes.DATABASE_ERROR
+        self.type = ErrorTypes.TOKEN_ERROR
         self.message = message
-        self.status_code = StatusCode.INTERNAL_SERVER_ERROR
-        super().__init__(self.message)
+        self.status_code = StatusCode.TOKEN_ERROR
+        super().__init__(message)
