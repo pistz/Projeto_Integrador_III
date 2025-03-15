@@ -3,6 +3,8 @@ import bcrypt
 import jwt
 from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.dtos.jwt.jwt_token_dto import JWTTokenDTO
+from src.application.enums.status_codes import StatusCode
+from src.application.exceptions.invalid_user import InvalidUser
 from src.application.exceptions.not_found import NotFound
 from src.application.exceptions.token_error import TokenError
 from src.infra.repositories.User.user_repository_interface import IUserRepository
@@ -18,11 +20,11 @@ class LoginService:
     def login(self, email: str, password: str) -> HttpResponse:
         user = self.user_repository.get_user_by_email(email)
         if not user:
-            raise NotFound("Incorrect email or password")
+            raise InvalidUser("Incorrect email or password")
         if not self.__dehash_password(password, user.password):
-            raise NotFound("Incorrect email or password")
+            raise InvalidUser("Incorrect email or password")
         token = self.__generate_token(email)
-        return HttpResponse(body=JWTTokenDTO(token), status_code=200)
+        return HttpResponse(body=JWTTokenDTO(token), status_code=StatusCode.OK.value)
 
     def decode_token_validity(self, token: str) -> bool:
         decoded = jwt.decode(token, JWT_SECRET_KEY, algorithms=["HS256"])

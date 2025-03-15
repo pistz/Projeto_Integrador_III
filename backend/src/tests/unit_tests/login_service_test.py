@@ -38,7 +38,7 @@ def generate_token(email:str) -> str:
 def test_login_success(login_service):
     response = login_service.login("john@example.com", "password")
 
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert response.body.token is not None
     decoded = jwt.decode(response.body.token, JWT_SECRET_KEY, algorithms=["HS256"], options={"verify_exp": False})
     assert decoded["user"] == "john@example.com"

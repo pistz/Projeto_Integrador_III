@@ -11,7 +11,7 @@ def category_service():
 
 def test_create_category_success(category_service):
     response = category_service.create_category("Books")
-    assert response.status_code == 201
+    assert response.status_code == StatusCode.CREATED.value
     assert response.body["message"] == "Category created successfully"
 
 def test_create_category_already_exists():
@@ -24,7 +24,7 @@ def test_create_category_already_exists():
 
 def test_get_category_by_name_success(category_service):
     response = category_service.get_category_by_name("Food")
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert isinstance(response.body, CategoryDTO)
     assert response.body.name == "Food"
 
@@ -38,7 +38,7 @@ def test_get_category_by_name_not_found():
 
 def test_get_category_by_id_success(category_service):
     response = category_service.get_category_by_id(1)
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert isinstance(response.body, CategoryDTO)
     assert response.body.id == 1
 
@@ -52,7 +52,7 @@ def test_get_category_by_id_not_found():
 
 def test_get_all_categories_success(category_service):
     response = category_service.get_all_categories()
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert isinstance(response.body, list)
     assert len(response.body) == 1
     assert isinstance(response.body[0], CategoryDTO)
@@ -63,12 +63,12 @@ def test_get_all_categories_empty():
     service = CategoryService(repo)
 
     response = service.get_all_categories()
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert response.body == []
 
 def test_update_category_success(category_service):
     response = category_service.update_category(1, "New Name")
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert response.body["message"] == "Category updated successfully"
 
 def test_update_category_not_found():
@@ -81,7 +81,7 @@ def test_update_category_not_found():
 
 def test_delete_category_success(category_service):
     response = category_service.delete_category(1)
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert response.body["message"] == "Category deleted successfully"
 
 def test_delete_category_not_found():

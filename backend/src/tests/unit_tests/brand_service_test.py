@@ -11,7 +11,7 @@ def brand_service():
 
 def test_create_brand_success(brand_service):
     response = brand_service.create_brand("BrandNew")
-    assert response.status_code == 201
+    assert response.status_code == StatusCode.CREATED.value
     assert response.body["message"] == "Brand created successfully"
 
 def test_create_brand_already_exists():
@@ -24,7 +24,7 @@ def test_create_brand_already_exists():
 
 def test_get_brand_by_name_success(brand_service):
     response = brand_service.get_brand_by_name("NewBrand")
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert isinstance(response.body, BrandDTO)
     assert response.body.name == "NewBrand"
 
@@ -38,7 +38,7 @@ def test_get_brand_by_name_not_found():
 
 def test_get_brand_by_id_success(brand_service):
     response = brand_service.get_brand_by_id(1)
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert isinstance(response.body, BrandDTO)
     assert response.body.id == 1
 
@@ -52,7 +52,7 @@ def test_get_brand_by_id_not_found():
 
 def test_get_all_brands_success(brand_service):
     response = brand_service.get_all_brands()
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert isinstance(response.body, list)
     assert len(response.body) == 1
     assert isinstance(response.body[0], BrandDTO)
@@ -63,12 +63,12 @@ def test_get_all_brands_empty():
     service = BrandService(repo)
 
     response = service.get_all_brands()
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert response.body == []
 
 def test_update_brand_success(brand_service):
     response = brand_service.update_brand(1, "New Name")
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert response.body["message"] == "Brand updated successfully"
 
 def test_update_brand_not_found():
@@ -81,7 +81,7 @@ def test_update_brand_not_found():
 
 def test_delete_brand_success(brand_service):
     response = brand_service.delete_brand(1)
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert response.body["message"] == "Brand deleted successfully"
 
 def test_delete_brand_not_found():

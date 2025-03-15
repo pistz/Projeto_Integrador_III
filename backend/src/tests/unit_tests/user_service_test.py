@@ -18,7 +18,7 @@ def test_create_user_success():
     dto = CreateUserDTO(name="Jane Doe", email="jane@example.com", password="123456")
     response = service.create_user(dto)
 
-    assert response.status_code == 201
+    assert response.status_code == StatusCode.CREATED.value
     assert response.body['message'] == 'User created successfully'
     repo.get_user_by_email.assert_called_once_with("jane@example.com")
     repo.create_user.assert_called_once()
@@ -51,7 +51,7 @@ def test_get_user_by_email_success():
 
     response = service.get_user_by_email("john@example.com")
 
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert isinstance(response.body, UserDTO)
     assert response.body.email == "john@example.com"
     assert response.body.name == "John Doe"
@@ -66,7 +66,7 @@ def test_update_user_success():
     dto = UpdateUserDTO(name="New Name", password="654321")
     response = service.update_user(1, dto)
 
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert response.body['message'] == 'User updated successfully'
     repo.update_user.assert_called_once()
 
@@ -88,7 +88,7 @@ def test_delete_user_success():
 
     response = service.delete_user(1)
 
-    assert response.status_code == 200
+    assert response.status_code == StatusCode.OK.value
     assert response.body['message'] == 'User deleted successfully'
     repo.delete_user.assert_called_once_with(1)
 
