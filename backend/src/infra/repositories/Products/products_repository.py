@@ -14,22 +14,22 @@ class ProductsRepository(IProductsRepository):
 
     def get_product_by_id(self, product_id: int) -> Product:
         with DbConnectionHandler() as db:
-            product = self.__find_product(product_id=product_id)
+            product = self.__find_product_by_name_or_id(product_id=product_id)
             return product
 
     def get_product_by_name(self, product_name: str) -> Product:
         with DbConnectionHandler() as db:
-            product = self.__find_product(product_name=product_name)
+            product = self.__find_product_by_name_or_id(product_name=product_name)
             return product
 
     def get_products_by_category_id(self, category_id: int) -> list[Product]:
         with DbConnectionHandler() as db:
-            products = db.session.query(Product).filter(Product.category_id == category_id).all()
+            products = self.__find_products_by_brand_or_category_id(category_id=category_id)
             return products
 
     def get_products_by_brand_id(self, brand_id: int) -> list[Product]:
         with DbConnectionHandler() as db:
-            products = db.session.query(Product).filter(Product.brand_id == brand_id).all()
+            products = self.__find_products_by_brand_or_category_id(brand_id=brand_id)
             return products
 
     def create_product(self, product: CreateProductDTO) -> None:
@@ -52,7 +52,7 @@ class ProductsRepository(IProductsRepository):
     def update_product(self, product_id: int, product: UpdateProductDTO) -> None:
         with DbConnectionHandler() as db:
             try:
-                found_product = self.__find_product(product_id=product_id)
+                found_product = self.__find_product_by_name_or_id(product_id=product_id)
                 found_product.name = product.name
                 found_product.category_id = product.category_id
                 found_product.brand_id = product.brand_id
@@ -68,7 +68,7 @@ class ProductsRepository(IProductsRepository):
     def delete_product(self, product_id: int) -> None:
         with DbConnectionHandler() as db:
             try:
-                product = self.__find_product(product_id=product_id)
+                product = self.__find_product_by_name_or_id(product_id=product_id)
                 db.session.delete(product)
                 db.session.commit()
                 return
@@ -76,7 +76,7 @@ class ProductsRepository(IProductsRepository):
                 db.session.rollback()
                 raise DatabaseException(f'Error deleting product: {e}')
     
-    def __find_product(self, product_id:int=None, product_name:str=None, brand_id:int=None, category_id:int=None) -> Product:
+    def __find_product_by_name_or_id(self, product_id:int=None, product_name:str=None, brand_id:int=None, category_id:int=None) -> Product:
         if product_id is not None:
             with DbConnectionHandler() as db:
                 product = db.session.query(Product).filter(Product.id == product_id).one_or_none()
@@ -87,6 +87,7 @@ class ProductsRepository(IProductsRepository):
                 product = db.session.query(Product).filter(Product.name == product_name).one_or_none()
                 return product
         
+    def __find_products_by_brand_or_category_id(self, brand_id:int=None, category_id:int=None) -> list[Product]:    
         if brand_id is not None:
             with DbConnectionHandler() as db:
                 products = db.session.query(Product).filter(Product.brand_id == brand_id).all()

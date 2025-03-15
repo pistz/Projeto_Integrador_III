@@ -8,9 +8,9 @@ class Product(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(150), nullable=False)
-    description = Column(Text)
-    brand_id = Column(Integer, ForeignKey('brands.id'), nullable=True)
-    category_id = Column(Integer, ForeignKey('categories.id'), nullable=True)
+    description = Column(Text, nullable=True)
+    brand_id = Column(Integer, ForeignKey('brands.id'), nullable=False)
+    category_id = Column(Integer, ForeignKey('categories.id'), nullable=False)
     created_at = Column(DateTime, default=func.current_timestamp())
     updated_at = Column(DateTime, default=func.current_timestamp())
 
