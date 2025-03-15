@@ -4,7 +4,7 @@ from src.domain.services.Product.product_service import ProductService
 from src.application.dtos.product.product_dtos import CreateProductDTO, UpdateProductDTO
 from src.application.exceptions.not_found import NotFound
 from src.application.exceptions.invalid_data import InvalidData
-from tests.mocks.mock_product_repository import get_mock_product_repository
+from src.tests.mocks.mock_product_repository import get_mock_product_repository
 
 
 @pytest.fixture
