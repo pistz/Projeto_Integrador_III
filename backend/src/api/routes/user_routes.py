@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from src.controllers.users_controller import UserController
+from src.api.controllers.users_controller import UserController
 
 
 user_route_bp = Blueprint('user_route', __name__)

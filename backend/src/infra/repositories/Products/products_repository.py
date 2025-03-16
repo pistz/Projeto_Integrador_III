@@ -13,24 +13,20 @@ class ProductsRepository(IProductsRepository):
             return products
 
     def get_product_by_id(self, product_id: int) -> Product:
-        with DbConnectionHandler() as db:
-            product = self.__find_product_by_name_or_id(product_id=product_id)
-            return product
+        product = self.__find_product_by_name_or_id(product_id=product_id)
+        return product
 
     def get_product_by_name(self, product_name: str) -> list[Product]:
-        with DbConnectionHandler() as db:
-            product = self.__find_product_by_name_or_id(product_name=product_name)
-            return product
+        product = self.__find_product_by_name_or_id(product_name=product_name)
+        return product
 
     def get_all_products_by_category_id(self, category_id: int) -> list[Product]:
-        with DbConnectionHandler() as db:
-            products = self.__find_products_by_brand_or_category_id(category_id=category_id)
-            return products
+        products = self.__find_products_by_brand_or_category_id(category_id=category_id)
+        return products
 
     def get_all_products_by_brand_id(self, brand_id: int) -> list[Product]:
-        with DbConnectionHandler() as db:
-            products = self.__find_products_by_brand_or_category_id(brand_id=brand_id)
-            return products
+        products = self.__find_products_by_brand_or_category_id(brand_id=brand_id)
+        return products
 
     def create_product(self, product: CreateProductDTO) -> None:
         with DbConnectionHandler() as db:

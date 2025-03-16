@@ -1,10 +1,11 @@
 from flask import Flask
 from src.application.handlers.error_handler import register_error_handlers
-from src.application.routes.user_routes import user_route_bp
-from src.application.routes.login_routes import login_route_bp
-from src.application.routes.category_routes import category_route_bp
-from src.application.routes.brand_routes import brand_route_bp
-from src.application.routes.product_routes import product_route_bp
+
+from src.api.routes.user_routes import user_route_bp
+from src.api.routes.login_routes import login_route_bp
+from src.api.routes.category_routes import category_route_bp
+from src.api.routes.brand_routes import brand_route_bp
+from src.api.routes.product_routes import product_route_bp
 
 from src.model.configs.env import load_db_env
 

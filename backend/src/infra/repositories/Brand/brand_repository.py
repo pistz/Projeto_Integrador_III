@@ -21,14 +21,12 @@ class BrandRepository(IBrandRepository):
                 raise DatabaseException(f'Error creating Brand: {e}')
 
     def get_brand_by_name(self, name: str) -> list[Brand]:
-        with DbConnectionHandler() as db:
-            brand = self.__find_brand(name=name)
-            return brand
+        brand = self.__find_brand(name=name)
+        return brand
 
     def get_brand_by_id(self, id: int) -> Brand:
-        with DbConnectionHandler() as db:
-            brand = self.__find_brand(id=id)
-            return brand
+        brand = self.__find_brand(id=id)
+        return brand
 
     def get_all_brands(self) -> list[Brand]:
         with DbConnectionHandler() as db:

@@ -20,14 +20,12 @@ class CategoryRepository(ICategoryRepository):
                 raise DatabaseException(f'Error creating category: {e}')
 
     def get_category_by_name(self, name: str) -> list[Category]:
-        with DbConnectionHandler() as db:
-            category = self.__find_category(name=name)
-            return category
+        category = self.__find_category(name=name)
+        return category
 
     def get_category_by_id(self, category_id: int) -> Category:
-        with DbConnectionHandler() as db:
-            category = self.__find_category(category_id=category_id)
-            return category
+        category = self.__find_category(category_id=category_id)
+        return category
 
     def get_all_categories(self) -> list[Category]:
         with DbConnectionHandler() as db:

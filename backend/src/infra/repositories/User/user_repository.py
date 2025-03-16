@@ -1,6 +1,5 @@
 from typing import Optional
 from src.application.exceptions.database_exception import DatabaseException
-from src.application.exceptions.invalid_user import InvalidUser
 from src.model.configs.connection import DbConnectionHandler
 from src.model.entities.user import User
 from src.infra.repositories.User.user_repository_interface import IUserRepository
@@ -24,15 +23,13 @@ class UserRepository(IUserRepository):
                 raise DatabaseException(f'Error creating user: {e}')
     
     def get_user_by_email(self, email: str) -> User:
-        with DbConnectionHandler() as db:
-            user = self.__find_user(email=email)
-            return user
+        user = self.__find_user(email=email)
+        return user
             
 
     def get_user_by_id(self, user_id: int) -> User:
-        with DbConnectionHandler() as db:
-            user = self.__find_user(user_id=user_id)
-            return user
+        user = self.__find_user(user_id=user_id)
+        return user
         
     def get_all_users(self) -> list[User]:
         with DbConnectionHandler() as db:

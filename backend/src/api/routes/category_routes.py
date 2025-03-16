@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from src.controllers.category_controller import CategoryController
+from src.api.controllers.category_controller import CategoryController
 
 category_route_bp = Blueprint('category_route', __name__)
 category_controller = CategoryController()

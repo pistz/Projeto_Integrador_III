@@ -1,5 +1,5 @@
 from flask import Blueprint
-from src.controllers.login_controller import LoginController
+from src.api.controllers.login_controller import LoginController
 
 login_route_bp = Blueprint('login', __name__)
 

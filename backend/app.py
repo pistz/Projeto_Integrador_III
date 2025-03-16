@@ -1,6 +1,6 @@
 import sys
 import os
-from src.application.server.server import app
+from src.api.server.server import app
 
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 

@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from src.controllers.product_controller import ProdutController
+from src.api.controllers.product_controller import ProdutController
 
 product_route_bp = Blueprint('product_route', __name__)
 product_controller = ProdutController()
