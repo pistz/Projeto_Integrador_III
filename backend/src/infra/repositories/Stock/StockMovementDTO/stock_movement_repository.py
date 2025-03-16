@@ -49,10 +49,10 @@ class StockMovementRepository(IStockMovementRepository):
 
     def get_stock_movement_by_date_range(self, start_date:datetime, end_date:datetime) -> list[StockMovement]:
         with DbConnectionHandler() as db:
-                movements = (
-                    db.session.query(StockMovement)
-                    .filter(StockMovement.movement_date >= start_date)
-                    .filter(StockMovement.movement_date <= end_date)
-                    .all()
-                )
-                return movements
+            movements = (
+                db.session.query(StockMovement)
+                .filter(StockMovement.movement_date >= start_date)
+                .filter(StockMovement.movement_date <= end_date)
+                .all()
+            )
+            return movements
