@@ -1,7 +1,7 @@
 import datetime
 from src.application.dtos.stock.stock_dtos import MoveStockDTO
 from src.application.exceptions.database_exception import DatabaseException
-from src.infra.repositories.Stock.StockMovementDTO.stock_movement_repository_interface import IStockMovementRepository
+from src.infra.repositories.Stock.StockMovement.stock_movement_repository_interface import IStockMovementRepository
 from src.model.configs.connection import DbConnectionHandler
 from src.model.entities.stock_movement import StockMovement
 
