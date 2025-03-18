@@ -13,13 +13,13 @@ def get_all_brands():
 def get_brand_by_name():
     return brand_controller.get_brand_by_name()
 
-@brand_route_bp.route('/brands/<int:id>', methods=['GET'])
-def get_brand_by_id(id):
-    return brand_controller.get_brand_by_id(id)
-
 @brand_route_bp.route('/brands', methods=['POST'])
 def create_brand():
     return brand_controller.create_brand()
+
+@brand_route_bp.route('/brands/<int:id>', methods=['GET'])
+def get_brand_by_id(id):
+    return brand_controller.get_brand_by_id(id)
 
 @brand_route_bp.route('/brands/<int:id>', methods=['PUT'])
 def update_brand(id):

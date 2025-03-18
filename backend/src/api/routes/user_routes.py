@@ -6,6 +6,10 @@ from src.api.controllers.users_controller import UserController
 user_route_bp = Blueprint('user_route', __name__)
 user_controller = UserController()
 
+@user_route_bp.route('/users/all', methods=['GET'])
+def get_all_users_route():
+	return user_controller.get_all_users()
+
 @user_route_bp.route('/users', methods=['POST'])
 def create_user_route():
 	return user_controller.create_user()
@@ -17,10 +21,6 @@ def get_user_by_email_route():
 @user_route_bp.route('/users/<int:id>', methods=['GET'])
 def get_user_by_id_route(id):
 	return user_controller.get_user_by_id(id)
-
-@user_route_bp.route('/users/all', methods=['GET'])
-def get_all_users_route():
-	return user_controller.get_all_users()
 
 @user_route_bp.route('/users/<int:id>', methods=['PUT'])
 def update_user_route(id):

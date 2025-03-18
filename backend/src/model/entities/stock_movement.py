@@ -10,7 +10,7 @@ class StockMovement(Base):
     movement_type = Column(String, nullable=False)
     movement_source = Column(String, nullable=False)
     quantity = Column(Integer, nullable=False)
-    movement_date = Column(DateTime, default=func.current_timestamp())
     created_by = Column(String, nullable=False)
+    movement_date = Column(DateTime, default=func.current_timestamp())
 
     product = relationship('Product', backref='stock_movements')

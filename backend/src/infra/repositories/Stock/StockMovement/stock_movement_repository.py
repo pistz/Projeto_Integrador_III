@@ -3,6 +3,7 @@ from src.application.dtos.stock.stock_dtos import MoveStockDTO
 from src.application.exceptions.database_exception import DatabaseException
 from src.infra.repositories.Stock.StockMovement.stock_movement_repository_interface import IStockMovementRepository
 from src.model.configs.connection import DbConnectionHandler
+from src.model.entities.product import Product
 from src.model.entities.stock_movement import StockMovement
 
 
@@ -13,8 +14,8 @@ class StockMovementRepository(IStockMovementRepository):
             try:
                 new_movement = StockMovement(
                     product_id=movement.product_id,
-                    movement_type=movement.movement_type,
-                    movement_source=movement.movement_source,
+                    movement_type=movement.movement_type.value,
+                    movement_source=movement.movement_source.value,
                     quantity=movement.quantity,
                     created_by=movement.created_by
                 )
