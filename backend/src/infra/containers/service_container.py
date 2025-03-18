@@ -6,6 +6,8 @@ from src.domain.services.Login.login_service import LoginService
 from src.domain.services.Login.login_service_interface import ILoginService
 from src.domain.services.Product.product_service import ProductService
 from src.domain.services.Product.product_service_interface import IProductService
+from src.domain.services.Stock.CurrentStock.current_stock_service import CurrentStockService
+from src.domain.services.Stock.CurrentStock.current_stock_service_interface import ICurrentStockService
 from src.domain.services.Stock.StockMovement.stock_movement_service import StockMovementService
 from src.domain.services.Stock.StockMovement.stock_movement_service_interface import IStockMovementService
 from src.domain.services.User.user_service import UserService
@@ -16,6 +18,8 @@ from src.infra.repositories.Category.category_repository import CategoryReposito
 from src.infra.repositories.Category.category_repository_interface import ICategoryRepository
 from src.infra.repositories.Products.products_repository import ProductsRepository
 from src.infra.repositories.Products.products_repository_interface import IProductsRepository
+from src.infra.repositories.Stock.CurrentStock.current_stock_repository import CurrentStockRepository
+from src.infra.repositories.Stock.CurrentStock.current_stock_repository_interface import ICurrentStockRepository
 from src.infra.repositories.Stock.StockMovement.stock_movement_repository import StockMovementRepository
 from src.infra.repositories.Stock.StockMovement.stock_movement_repository_interface import IStockMovementRepository
 from src.infra.repositories.User.user_repository import UserRepository
@@ -56,4 +60,9 @@ class ServiceContainer:
             stock_movement_repository=stock_movement_repository, 
             products_repository=product_repository
             )
+    
+    @staticmethod
+    def current_stock_service() -> ICurrentStockService:
+        current_stock_repository:ICurrentStockRepository = CurrentStockRepository()
+        return CurrentStockService(current_stock_repository=current_stock_repository)
     

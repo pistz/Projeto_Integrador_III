@@ -40,7 +40,7 @@ class ProductsRepository(IProductsRepository):
 
                 db.session.add(new_product)
                 db.session.commit()
-                return
+                return new_product
             except Exception as e:
                 db.session.rollback()
                 raise DatabaseException(f'Error creating product: {e}')

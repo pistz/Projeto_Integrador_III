@@ -1,9 +1,11 @@
 from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.dtos.product.product_dtos import CreateProductDTO, ProductDTO, UpdateProductDTO
+from src.application.dtos.stock.stock_dtos import CurrentStockDTO, ProductStockDTO
 from src.application.enums.status_codes import StatusCode
 from src.application.exceptions.invalid_data import InvalidData
 from src.application.exceptions.not_found import NotFound
 from src.domain.services.Product.product_service_interface import IProductService
+from src.infra.containers.service_container import ServiceContainer
 from src.infra.repositories.Products.products_repository_interface import IProductsRepository
 from src.model.entities.product import Product
 
@@ -11,6 +13,7 @@ from src.model.entities.product import Product
 class ProductService(IProductService):
     def __init__(self, product_repository:IProductsRepository):
         self.__product_repository = product_repository
+        self.__current_stock_service = ServiceContainer.current_stock_service()
 
     def get_product_by_id(self, product_id:int) -> HttpResponse:
         found_product = self.__product_repository.get_product_by_id(product_id)
@@ -43,7 +46,9 @@ class ProductService(IProductService):
     
     def create_product(self, product:CreateProductDTO) -> HttpResponse:
         self.__is_valid_product(product)
-        self.__product_repository.create_product(product)
+        create_product:Product = self.__product_repository.create_product(product)
+        current_stock = ProductStockDTO(product_id=create_product.id, total_quantity=0)
+        self.__current_stock_service.set_current_stock(current_stock)
         return HttpResponse(status_code=StatusCode.CREATED.value, body={"message":"Product created successfully"})
 
     def update_product(self, product_id, product:UpdateProductDTO) -> HttpResponse:

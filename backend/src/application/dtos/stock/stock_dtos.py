@@ -21,3 +21,14 @@ class StockMovementDTO:
     quantity:int
     movement_date:datetime
     created_by:str
+
+@dataclass
+class CurrentStockDTO:
+    product_id:int
+    total_quantity:int
+    last_updated:datetime
+
+@dataclass
+class ProductStockDTO:
+    product_id:int
+    total_quantity:int

@@ -2,24 +2,40 @@ from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.enums.status_codes import StatusCode
 from src.application.enums.stock_movement import MovementSource, MovementType
 from src.application.exceptions.invalid_data import InvalidData
-from src.application.dtos.stock.stock_dtos import MoveStockDTO, StockMovementDTO
+from src.application.dtos.stock.stock_dtos import CurrentStockDTO, MoveStockDTO, StockMovementDTO
 from src.application.exceptions.not_found import NotFound
 from src.application.utils.date_parser import parse_datetime
 from src.domain.services.Stock.StockMovement.stock_movement_service_interface import IStockMovementService
+from src.infra.containers.service_container import ServiceContainer
 from src.infra.repositories.Products.products_repository_interface import IProductsRepository
 from src.infra.repositories.Stock.StockMovement.stock_movement_repository_interface import IStockMovementRepository
 from src.model.entities.stock_movement import StockMovement
 
 class StockMovementService(IStockMovementService):
 
-    def __init__(self, stock_movement_repository:IStockMovementRepository, products_repository:IProductsRepository):
+    def __init__(self, 
+                stock_movement_repository:IStockMovementRepository, 
+                products_repository:IProductsRepository,
+                ):
         self.__stock_movement_repository = stock_movement_repository
         self.__products_repository = products_repository
+        self.__current_stock_service = ServiceContainer.current_stock_service()
 
     def move_stock(self, movement:MoveStockDTO) -> HttpResponse:
         self.__validate_movements(movement=movement)
-        self.__stock_movement_repository.move_stock(movement=movement)
+        current_stock = self.__validate_current_stock_exists(product_id=movement.product_id)
+        is_positive_stock = self.__validate_current_stock_is_positive(current_stock=current_stock)
 
+        if movement.movement_type == MovementType.OUT.value:
+            if not is_positive_stock:
+                raise InvalidData("Cannot move product, no stock available")
+            movement.quantity = -(movement.quantity)            
+        
+        new_quantity = current_stock.total_quantity + movement.quantity
+        current_stock.total_quantity = new_quantity
+
+        self.__stock_movement_repository.move_stock(movement=movement)
+        self.__current_stock_service.set_current_stock(current_stock=current_stock)
         return HttpResponse(
             body={"message":f"Registered movement {movement.movement_source} from {movement.movement_type}, product: {movement.product_id}"}, 
             status_code=StatusCode.CREATED.value)
@@ -125,3 +141,14 @@ class StockMovementService(IStockMovementService):
             raise InvalidData(
                 f"Movement type must be 'IN' or 'OUT', not {movement.movement_type}"
             )
+        
+    def __validate_current_stock_exists(self, product_id:int) -> CurrentStockDTO:
+        current_stock = self.__current_stock_service.get_current_stock_by_product_id(product_id=product_id)
+        if not current_stock:
+            raise InvalidData("Current stock is not set for this product!")
+        return current_stock.body       
+
+    def __validate_current_stock_is_positive(self, current_stock:CurrentStockDTO) -> bool:
+        if current_stock.total_quantity > 0:
+            return True
+        return False
