@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from src.application.dtos.stock.stock_dtos import MoveStockDTO
 from src.application.exceptions.database_exception import DatabaseException
 from src.infra.repositories.Stock.StockMovement.stock_movement_repository_interface import IStockMovementRepository
@@ -50,10 +50,12 @@ class StockMovementRepository(IStockMovementRepository):
 
     def get_stock_movement_by_date_range(self, start_date:datetime, end_date:datetime) -> list[StockMovement]:
         with DbConnectionHandler() as db:
+            start = datetime.combine(start_date.date(), datetime.min.time())
+            end = datetime.combine(end_date.date(), datetime.max.time())
             movements = (
                 db.session.query(StockMovement)
-                .filter(StockMovement.movement_date >= start_date)
-                .filter(StockMovement.movement_date <= end_date)
+                .filter(StockMovement.movement_date >= start)
+                .filter(StockMovement.movement_date <= end)
                 .all()
             )
             return movements

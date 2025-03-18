@@ -25,17 +25,18 @@ class StockMovementService(IStockMovementService):
             status_code=StatusCode.CREATED.value)
 
     def get_all_stock_movements(self) -> HttpResponse:
-        movements:list[StockMovement] = self.__stock_movement_repository.get_all_stock_movements()
+        movements_list:list[StockMovement] = self.__stock_movement_repository.get_all_stock_movements()
 
-        response_list = [StockMovementDTO(
+        movements = [StockMovementDTO(
             id=movement.id, 
             product_id=movement.product_id, 
             movement_source=movement.movement_source, 
             movement_type=movement.movement_type, 
             movement_date=movement.movement_date, 
-            created_by=movement.created_by
-            ) for movement in movements]
-        return HttpResponse(body=response_list, status_code=StatusCode.OK.value)
+            created_by=movement.created_by,
+            quantity=movement.quantity
+            ) for movement in movements_list]
+        return HttpResponse(body=movements, status_code=StatusCode.OK.value)
 
     def get_single_stock_movement(self, stock_movement_id:int) -> HttpResponse:
         movement = (
@@ -46,7 +47,17 @@ class StockMovementService(IStockMovementService):
         if not movement:
             raise NotFound("Movement not found!")
         
-        return HttpResponse(body=movement, status_code=StatusCode.OK.value)
+        movement_dto = StockMovementDTO(
+            id=movement.id,
+            product_id=movement.product_id,
+            created_by=movement.created_by,
+            movement_date=movement.movement_date,
+            movement_source=movement.movement_source,
+            movement_type=movement.movement_type,
+            quantity=movement.quantity
+        )
+        
+        return HttpResponse(body=movement_dto, status_code=StatusCode.OK.value)
 
     def get_stock_movement_by_date(self, date: str) -> HttpResponse:
         if not date:
@@ -60,10 +71,11 @@ class StockMovementService(IStockMovementService):
         response_list = [StockMovementDTO(
             id=movement.id, 
             product_id=movement.product_id, 
-            movement_source=movement.movement_source, 
-            movement_type=movement.movement_type, 
+            movement_source=(movement.movement_source), 
+            movement_type=(movement.movement_type), 
             movement_date=movement.movement_date, 
-            created_by=movement.created_by
+            created_by=movement.created_by,
+            quantity=movement.quantity
             ) for movement in movements]
         
         return HttpResponse(body=response_list, status_code=StatusCode.OK.value)
@@ -86,7 +98,8 @@ class StockMovementService(IStockMovementService):
             movement_source=movement.movement_source, 
             movement_type=movement.movement_type, 
             movement_date=movement.movement_date, 
-            created_by=movement.created_by
+            created_by=movement.created_by,
+            quantity=movement.quantity
             ) for movement in movements]
         
         return HttpResponse(body=response_list, status_code=StatusCode.OK.value)
