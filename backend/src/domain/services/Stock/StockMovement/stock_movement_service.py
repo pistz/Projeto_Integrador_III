@@ -42,7 +42,7 @@ class StockMovementService(IStockMovementService):
         self.__set_current_stock_service(stock_product=product_stock)
 
         return HttpResponse(
-            body={"message":f"Registered movement {movement.movement_source} from {movement.movement_type}, product: {movement.product_id}"}, 
+            body={"message":f"Registered movement {movement.movement_source} from {movement.movement_type}, product: {movement.product_id}, quantity: {movement.quantity}"}, 
             status_code=StatusCode.CREATED.value)
 
     def get_all_stock_movements(self) -> HttpResponse:
