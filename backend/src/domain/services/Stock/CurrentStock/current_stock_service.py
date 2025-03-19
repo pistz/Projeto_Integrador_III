@@ -15,10 +15,10 @@ class CurrentStockService(ICurrentStockService):
                 current_stock_repository:ICurrentStockRepository):
         self.__current_stock_repository = current_stock_repository
 
-    def set_current_stock(self, product_stock:ProductStockDTO) -> HttpResponse:
+    def set_current_stock(self, product_stock:ProductStockDTO) -> None:
         self.__validate_product(product_stock=product_stock)
         self.__current_stock_repository.set_current_stock(product_stock=product_stock)
-        return HttpResponse(body={"message: product entry created"}, status_code=StatusCode.CREATED.value)
+        return
     
     def get_current_stock_by_product_id(self, product_id:int) -> HttpResponse:
         current_stock = self.__validate_product_existence(id=product_id)
@@ -33,7 +33,6 @@ class CurrentStockService(ICurrentStockService):
     def __validate_product(self, product_stock:ProductStockDTO) -> None:
         if not product_stock:
             raise InvalidData("Invalid data")
-        self.__validate_product_existence(id=product_stock.product_id)
     
     def __validate_product_existence(self, id:int) -> CurrentStockDTO:
         found_product = self.__current_stock_repository.get_current_stock_by_product_id(product_id=id)
