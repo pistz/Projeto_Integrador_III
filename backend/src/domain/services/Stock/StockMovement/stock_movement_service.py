@@ -24,11 +24,11 @@ class StockMovementService(IStockMovementService):
         current_stock = self.__validate_current_stock_exists(product_id=movement.product_id)
         is_positive_stock = self.__validate_current_stock_is_positive(current_stock=current_stock)
 
-        if movement.movement_type == MovementType.OUT.value:
+        if movement.movement_type == MovementType.OUT:
             if not is_positive_stock:
                 raise InvalidData("Cannot move product, no stock available")
             
-            movement.quantity = -(movement.quantity) if current_stock.total_quantity >= movement.quantity else 0
+            movement.quantity = (movement.quantity)*(-1) if current_stock.total_quantity >= movement.quantity else 0
 
         if movement.quantity == 0:
             raise InvalidData('Cannot move product, no stock available')
@@ -132,20 +132,28 @@ class StockMovementService(IStockMovementService):
         product = self.__products_repository.get_product_by_id(product_id=movement.product_id)
         if not product:
             raise InvalidData("Product not registered!")
-                
+        
         try:
             movement.movement_source = MovementSource(movement.movement_source)
         except ValueError:
             raise InvalidData(
-                f"Movement source must be 'BUY' or 'DONATION', not {movement.movement_source}"
+                f"Movement source must be 'BUY', 'DONATION', 'USE' or 'EXPIRED', not '{movement.movement_source}'"
             )
 
         try:
             movement.movement_type = MovementType(movement.movement_type)
         except ValueError:
             raise InvalidData(
-                f"Movement type must be 'IN' or 'OUT', not {movement.movement_type}"
+                f"Movement type must be 'IN' or 'OUT', not '{movement.movement_type}'"
             )
+
+        # Validação cruzada: tipo vs. origem
+        if movement.movement_type == MovementType.IN and movement.movement_source not in [MovementSource.BUY, MovementSource.DONATION]:
+            raise InvalidData("Movement type 'IN' only accepts source 'BUY' or 'DONATION'.")
+
+        if movement.movement_type == MovementType.OUT and movement.movement_source not in [MovementSource.USE, MovementSource.EXPIRED]:
+            raise InvalidData("Movement type 'OUT' only accepts source 'USE' or 'EXPIRED'.")
+
         
     def __validate_current_stock_exists(self, product_id:int) -> CurrentStockDTO:
         current_stock = self.__get_current_stock_by_product_id(product_id=product_id)

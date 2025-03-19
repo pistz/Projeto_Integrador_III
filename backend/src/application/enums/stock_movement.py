@@ -8,3 +8,5 @@ class MovementType(Enum):
 class MovementSource(Enum):
     BUY = "BUY"
     DONATION = "DONATION"
+    USE = "USE"
+    EXPIRED = "EXPIRED"

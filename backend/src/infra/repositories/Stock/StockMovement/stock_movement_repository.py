@@ -16,7 +16,7 @@ class StockMovementRepository(IStockMovementRepository):
                     product_id=movement.product_id,
                     movement_type=movement.movement_type.value,
                     movement_source=movement.movement_source.value,
-                    quantity=movement.quantity,
+                    quantity=abs(movement.quantity),
                     created_by=movement.created_by
                 )
                 db.session.add(new_movement)
