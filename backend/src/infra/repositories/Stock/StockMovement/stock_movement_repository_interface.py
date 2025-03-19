@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import datetime
+from datetime import datetime
 
 from src.application.dtos.stock.stock_dtos import MoveStockDTO
 from src.model.entities.stock_movement import StockMovement

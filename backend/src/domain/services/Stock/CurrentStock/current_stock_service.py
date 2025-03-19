@@ -15,9 +15,9 @@ class CurrentStockService(ICurrentStockService):
                 current_stock_repository:ICurrentStockRepository):
         self.__current_stock_repository = current_stock_repository
 
-    def set_current_stock(self, product_stock:ProductStockDTO) -> None:
-        self.__validate_product(product_stock=product_stock)
-        self.__current_stock_repository.set_current_stock(product_stock=product_stock)
+    def set_current_stock(self, stock_product:ProductStockDTO) -> None:
+        self.__validate_product(product_stock=stock_product)
+        self.__current_stock_repository.set_current_stock(product_stock=stock_product)
         return
     
     def get_current_stock_by_product_id(self, product_id:int) -> HttpResponse:

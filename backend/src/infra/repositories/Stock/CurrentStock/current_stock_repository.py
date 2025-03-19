@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from src.application.dtos.stock.stock_dtos import ProductStockDTO
 from src.application.exceptions.database_exception import DatabaseException
 from src.infra.repositories.Stock.CurrentStock.current_stock_repository_interface import ICurrentStockRepository
@@ -14,7 +14,7 @@ class CurrentStockRepository(ICurrentStockRepository):
                 found_product = self.__find(product_id=product_stock.product_id)
                 if found_product:
                     found_product.total_quantity = product_stock.total_quantity
-                    found_product.last_updated = datetime.datetime.now()
+                    found_product.last_updated = datetime.now()
                     db.session.add(found_product)
                     db.session.commit()
                     return

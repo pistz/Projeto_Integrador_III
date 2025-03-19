@@ -7,6 +7,7 @@ from src.api.routes.category_routes import category_route_bp
 from src.api.routes.brand_routes import brand_route_bp
 from src.api.routes.product_routes import product_route_bp
 from src.api.routes.stock_movement_routes import stock_movement_route_bp
+from src.api.routes.current_stock_routes import current_stock_route_bp
 
 from src.model.configs.env import load_db_env
 
@@ -22,6 +23,7 @@ app.register_blueprint(category_route_bp)
 app.register_blueprint(brand_route_bp)
 app.register_blueprint(product_route_bp)
 app.register_blueprint(stock_movement_route_bp)
+app.register_blueprint(current_stock_route_bp)
 
 #Handlers de erro
 register_error_handlers(app)

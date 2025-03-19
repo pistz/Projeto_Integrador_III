@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-import datetime
+from datetime import datetime
+
 
 from src.application.enums.stock_movement import MovementType, MovementSource
 
