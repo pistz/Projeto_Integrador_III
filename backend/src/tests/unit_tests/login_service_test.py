@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 from src.application.enums.status_codes import StatusCode
 from src.application.exceptions.invalid_user import InvalidUser
+from src.application.exceptions.token_error import TokenError
 from src.domain.services.Login.login_service import LoginService
 from src.model.configs.env import load_secret_key
 from src.tests.mocks.mock_user_repository import get_mock_user_repository
@@ -73,10 +74,10 @@ def test_decode_token_expired():
     service = LoginService(get_mock_user_repository())
     token = jwt.encode({
         "user": "john@example.com",
-        "exp": datetime.datetime.now() - datetime.timedelta(minutes=1)
+        "exp": (datetime.datetime.now() - datetime.timedelta(minutes=1)).timestamp()
     }, JWT_SECRET_KEY, algorithm="HS256")
 
-    with pytest.raises(jwt.ExpiredSignatureError):
+    with pytest.raises(TokenError):
         service.decode_token_validity(token)
 
 def test_decode_token_user_success():
@@ -97,5 +98,5 @@ def test_decode_token_user_invalid_token():
     service = LoginService(get_mock_user_repository())
     invalid_token = "invalid.token.value"
 
-    with pytest.raises(jwt.InvalidTokenError):
+    with pytest.raises(TokenError):
         service.decode_token_user(invalid_token, "john@example.com")
