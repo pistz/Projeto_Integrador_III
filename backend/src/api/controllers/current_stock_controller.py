@@ -1,6 +1,6 @@
 from flask import jsonify
 from src.application.dtos.http_types.http_response import HttpResponse
-from src.infra.containers.service_container import ServiceContainer
+from src.domain.containers.service_container import ServiceContainer
 
 
 class CurrentStockController:

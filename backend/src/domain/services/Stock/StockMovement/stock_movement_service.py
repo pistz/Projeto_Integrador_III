@@ -171,13 +171,13 @@ class StockMovementService(IStockMovementService):
         return False
     
     def __set_current_stock(self, stock_product:ProductStockDTO):
-        from src.infra.containers.service_container import ServiceContainer
+        from src.domain.containers.service_container import ServiceContainer
 
         ServiceContainer.current_stock_service().set_current_stock(stock_product=stock_product)
         return
 
     def __get_current_stock_by_product_id(self, product_id:int):
-        from src.infra.containers.service_container import ServiceContainer
+        from src.domain.containers.service_container import ServiceContainer
 
         product = ServiceContainer.current_stock_service().get_current_stock_by_product_id(product_id=product_id)
         return product

@@ -2,7 +2,7 @@ from flask import jsonify, request
 from src.application.dtos.http_types.http_request import HttpRequest
 from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.dtos.product.product_dtos import CreateProductDTO, UpdateProductDTO
-from src.infra.containers.service_container import ServiceContainer
+from src.domain.containers.service_container import ServiceContainer
 
 
 class ProdutController:

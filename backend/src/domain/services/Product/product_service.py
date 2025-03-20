@@ -14,7 +14,7 @@ class ProductService(IProductService):
         self.__product_repository = product_repository
     
     def __set_current_stock(self, current_stock:ProductStockDTO):
-        from src.infra.containers.service_container import ServiceContainer
+        from src.domain.containers.service_container import ServiceContainer
 
         ServiceContainer.current_stock_service().set_current_stock(current_stock)
 

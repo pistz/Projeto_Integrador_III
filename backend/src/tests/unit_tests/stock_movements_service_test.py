@@ -15,7 +15,7 @@ from src.tests.mocks.mock_stock_movement_repository import get_mock_stock_moveme
 
 
 
-@patch("src.infra.containers.service_container.ServiceContainer")
+@patch("src.domain.containers.service_container.ServiceContainer")
 def test_move_stock_success(mock_service_container):
     repo = get_mock_stock_movement_repository()
     prod_repo = get_mock_product_repository()

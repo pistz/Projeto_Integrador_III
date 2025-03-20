@@ -1,6 +1,6 @@
 from flask import request, jsonify
 
-from src.infra.containers.service_container import ServiceContainer
+from src.domain.containers.service_container import ServiceContainer
 from src.application.dtos.http_types.http_request import HttpRequest
 from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO
