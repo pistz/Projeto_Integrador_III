@@ -28,7 +28,7 @@ class ProductsRepository(IProductsRepository):
         products = self.__find_products_by_brand_or_category_id(brand_id=brand_id)
         return products
 
-    def create_product(self, product: CreateProductDTO) -> None:
+    def create_product(self, product: CreateProductDTO) -> Product:
         with DbConnectionHandler() as db:
             try:
                 new_product = Product(
@@ -74,7 +74,7 @@ class ProductsRepository(IProductsRepository):
                 db.session.rollback()
                 raise DatabaseException(f'Error deleting product: {e}')
     
-    def __find_product_by_name_or_id(self, product_id:int=None, product_name:str=None, brand_id:int=None, category_id:int=None) -> Product:
+    def __find_product_by_name_or_id(self, product_id:int=None, product_name:str=None) -> Product:
         if product_id is not None:
             with DbConnectionHandler() as db:
                 product = db.session.query(Product).filter(Product.id == product_id).one_or_none()

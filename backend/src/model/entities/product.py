@@ -1,18 +1,18 @@
 from src.model.configs.base import Base
-from sqlalchemy import Column, ForeignKey, Integer, String, Text, Numeric, DateTime, func
-from sqlalchemy.orm import relationship
-
+from sqlalchemy import ForeignKey, Integer, String, Text, DateTime, func
+from sqlalchemy.orm import relationship, Mapped, mapped_column
+from datetime import datetime
 
 class Product(Base):
     __tablename__ = 'products'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(150), nullable=False)
-    description = Column(Text, nullable=True)
-    brand_id = Column(Integer, ForeignKey('brands.id'), nullable=False)
-    category_id = Column(Integer, ForeignKey('categories.id'), nullable=False)
-    created_at = Column(DateTime, default=func.current_timestamp())
-    updated_at = Column(DateTime, default=func.current_timestamp())
+    id:Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name:Mapped[str] = mapped_column(String(150), nullable=False)
+    description:Mapped[str] = mapped_column(Text, nullable=True)
+    brand_id:Mapped[int] = mapped_column(Integer, ForeignKey('brands.id'), nullable=False)
+    category_id:Mapped[int] = mapped_column(Integer, ForeignKey('categories.id'), nullable=False)
+    created_at:Mapped[datetime] = mapped_column(DateTime, default=func.current_timestamp())
+    updated_at:Mapped[datetime] = mapped_column(DateTime, default=func.current_timestamp())
 
     # Relacionamentos
     brand = relationship('Brand', back_populates='products')

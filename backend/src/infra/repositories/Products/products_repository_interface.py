@@ -22,7 +22,7 @@ class IProductsRepository(ABC):
     def get_all_products_by_brand_id(self, brand_id: int) -> list[Product]:pass
         
     @abstractmethod
-    def create_product(self, product: CreateProductDTO) -> None:pass
+    def create_product(self, product: CreateProductDTO) -> Product:pass
         
     @abstractmethod
     def update_product(self, product_id: int, product: UpdateProductDTO) -> None:pass

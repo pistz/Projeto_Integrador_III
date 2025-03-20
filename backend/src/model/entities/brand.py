@@ -1,13 +1,13 @@
+from sqlalchemy import Integer, String, DateTime, func
+from sqlalchemy.orm import mapped_column, relationship, Mapped
 from src.model.configs.base import Base
-from sqlalchemy import Column, Integer, String, DateTime, func
-from sqlalchemy.orm import relationship
-
+from datetime import datetime
 class Brand(Base):
     __tablename__ = 'brands'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(100), nullable=False, unique=True)
-    created_at = Column(DateTime, default=func.current_timestamp())
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=func.current_timestamp())
 
     # Relacionamentos
     products = relationship('Product', back_populates='brand')
