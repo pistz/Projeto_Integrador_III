@@ -1,2 +1,2 @@
-# Frontend do projeto
-# stack: React
+# Frontend do projeto: Gestão de Estoque
+- stack: React + vite
