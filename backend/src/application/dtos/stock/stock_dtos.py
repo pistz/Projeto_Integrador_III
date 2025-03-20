@@ -12,6 +12,7 @@ class MoveStockDTO:
     movement_source:MovementSource
     quantity:int
     created_by:str
+    observations:str
 
 @dataclass
 class StockMovementDTO:
@@ -21,6 +22,7 @@ class StockMovementDTO:
     movement_source:MovementSource
     quantity:int
     movement_date:datetime
+    observations:str
     created_by:str
 
 @dataclass

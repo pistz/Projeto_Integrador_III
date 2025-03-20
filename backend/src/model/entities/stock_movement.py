@@ -12,6 +12,7 @@ class StockMovement(Base):
     movement_source:Mapped[str] = mapped_column(String, nullable=False)
     quantity:Mapped[int] = mapped_column(Integer, nullable=False)
     created_by:Mapped[str] = mapped_column(String, nullable=False)
+    observations:Mapped[str] = mapped_column(String, nullable=True)
     movement_date:Mapped[datetime] = mapped_column(DateTime, default=func.current_timestamp())
 
     product = relationship('Product', backref='stock_movements')
