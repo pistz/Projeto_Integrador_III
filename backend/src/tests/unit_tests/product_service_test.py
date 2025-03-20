@@ -1,3 +1,4 @@
+from unittest.mock import MagicMock
 import pytest
 from src.application.enums.status_codes import StatusCode
 from src.domain.services.Product.product_service import ProductService
@@ -55,8 +56,20 @@ def test_get_all_products_by_category_id(product_service):
 
 
 def test_create_product_success(product_service):
+    # Criando o mock do DTO
     product = CreateProductDTO(name="Mouse", description="Wireless mouse", brand_id=1, category_id=2)
+
+    # Mockando o repositório e a função de configuração de estoque
+    mock_product_repository = get_mock_product_repository()
+    product_service._ProductService__product_repository = mock_product_repository  # Mockando o repositório no service
+
+    # Mockando o método __set_current_stock
+    product_service._ProductService__set_current_stock = MagicMock()
+
+    # Chamando a função que queremos testar
     response = product_service.create_product(product)
+
+    # Verificando se a resposta foi a esperada
     assert response.status_code == StatusCode.CREATED.value
     assert response.body["message"] == "Product created successfully"
 

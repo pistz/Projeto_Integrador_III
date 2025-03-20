@@ -1,8 +1,10 @@
 from unittest.mock import MagicMock
 
+
 def get_mock_product_repository():
     mock = MagicMock()
 
+    # Criando um produto mockado
     mock_product = MagicMock()
     mock_product.id = 1
     mock_product.name = "Laptop"
@@ -10,6 +12,8 @@ def get_mock_product_repository():
     mock_product.brand_id = 10
     mock_product.category_id = 20
 
+    # Mockando métodos do repositório
+    mock.create_product.return_value = mock_product  # Aqui estamos mockando o retorno de create_product
     mock.get_product_by_id.side_effect = lambda pid: mock_product if pid == 1 else None
     mock.get_product_by_name.side_effect = lambda name: [mock_product] if name == "Laptop" else []
     mock.get_all_products.return_value = [mock_product]

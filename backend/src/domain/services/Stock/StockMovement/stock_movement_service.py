@@ -39,7 +39,7 @@ class StockMovementService(IStockMovementService):
         self.__stock_movement_repository.move_stock(movement=movement)
         product_stock: ProductStockDTO = ProductStockDTO(product_id=current_stock.product_id, total_quantity=current_stock.total_quantity)
         
-        self.__set_current_stock_service(stock_product=product_stock)
+        self.__set_current_stock(stock_product=product_stock)
 
         return HttpResponse(
             body={"message":f"Registered movement {movement.movement_source} from {movement.movement_type}, product: {movement.product_id}, quantity: {movement.quantity}"}, 
@@ -166,7 +166,7 @@ class StockMovementService(IStockMovementService):
             return True
         return False
     
-    def __set_current_stock_service(self, stock_product:ProductStockDTO):
+    def __set_current_stock(self, stock_product:ProductStockDTO):
         from src.infra.containers.service_container import ServiceContainer
 
         ServiceContainer.current_stock_service().set_current_stock(stock_product=stock_product)
