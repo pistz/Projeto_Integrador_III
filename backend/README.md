@@ -1,4 +1,6 @@
 # Backend do Projeto
-## stack: python + flask
 
-## Projeto Integrador III
+## Projeto Integrador III - Univesp
+
+- Gestão de Estoque para o Asilo de Sertãozinho
+- stack: python + flask
