@@ -10,10 +10,12 @@ from src.api.routes.product_routes import product_route_bp
 from src.api.routes.stock_movement_routes import stock_movement_route_bp
 from src.api.routes.current_stock_routes import current_stock_route_bp
 
-from src.model.configs.env import load_db_env
+from src.model.configs.env import load_db_env, load_frontend_origin
 
 app = Flask(__name__)
-CORS(app=app, origins='')
+
+front_end = load_frontend_origin()
+CORS(app=app, origins=[front_end])
 
 #Database
 app.config['SQL_ALCHEMY_DATABASE_URI'] = load_db_env()
