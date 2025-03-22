@@ -6,6 +6,8 @@ export interface IChildren {
 
 export interface AppContextType {
     signed:boolean;
+    token:string, 
     
+    setToken: Dispatch<SetStateAction<string>>
     setSigned: Dispatch<SetStateAction<boolean>>;
 }

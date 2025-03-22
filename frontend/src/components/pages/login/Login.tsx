@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Form, FormProps, Input } from 'antd'
 import { Footer } from 'antd/es/layout/layout'
 import { Container } from './style'
@@ -8,6 +8,7 @@ import { Login } from '../../../api/Login/Login'
 import { notifyError } from '../../shared/notify/notify'
 import { useAuth } from '../../../context/useAuthContext'
 import { NavigateFunction, useNavigate } from 'react-router-dom'
+import { getTokenId } from '../../../config/token'
 
 
 type LoginType = {
@@ -19,23 +20,28 @@ export const LoginScreen:React.FC = () => {
 
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);
-    const [token, setToken] = useState<string>('');
-    const navigate:NavigateFunction = useNavigate()
 
+    const navigate:NavigateFunction = useNavigate();
+    
+    const handleNavigateHome = useCallback(() =>{
+        navigate('/app/home');
+    },[navigate]);
 
-    const {setSigned} = useAuth();
+    const tokenId = getTokenId();
 
+    const {setSigned, setToken} = useAuth();
 
     const clearForm =()=>{
-        form.resetFields()
+        form.resetFields();
     }
 
     const onFinish:FormProps['onFinish']  = async(data:LoginType) =>{
         setLoading(true)
         try {
             const {token} = await Login.login(data)
-            sessionStorage.setItem('tkn',token);
+            sessionStorage.setItem(tokenId,token);
             setToken(token);
+            handleNavigateHome();
             clearForm();
         } catch (error) {
             notifyError(error);
@@ -45,12 +51,12 @@ export const LoginScreen:React.FC = () => {
     }
 
     useEffect(() =>{
-        const logged = sessionStorage.getItem('tkn')?.toString();
+        const logged = sessionStorage.getItem(tokenId)?.toString();
         if(logged){
             setSigned(true)
-            navigate('/app/home')
+            handleNavigateHome();
         }
-    },[token, setSigned, navigate])
+    },[setSigned,tokenId,handleNavigateHome])
 
 
     return (
