@@ -1,12 +1,14 @@
 import { Button, Form, FormProps, Input } from 'antd'
 import { Footer } from 'antd/es/layout/layout'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container } from './style'
 import image from '../../../assets/logo.png'
-import { login } from '../../../config/loadApi'
+
+import { Login } from '../../../api/Login/Login'
+import { notifyError } from '../../shared/Notify/notify'
 
 
-type Login = {
+type LoginType = {
     email:string,
     password:string
 }
@@ -17,21 +19,32 @@ export const Home:React.FC = () => {
 
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);
+    const [token, setToken] = useState<string>('');
 
 
     const clearForm =()=>{
         form.resetFields()
     }
 
-//TODO - fazer lógica de login
-    const onFinish:FormProps['onFinish']  = async(data:Login) =>{
+    const onFinish:FormProps['onFinish']  = async(data:LoginType) =>{
         setLoading(true)
-        console.log(data);
-        const token = await login(data)
-        console.log('Token recebido: ', token)
-        clearForm()
-        setLoading(false)
+        try {
+            const {token} = await Login.login(data)
+            sessionStorage.setItem('tkn',token);
+            setToken(token);
+            clearForm();
+        } catch (error) {
+            notifyError(error);
+        } finally {
+            setLoading(false);
+        }
     }
+
+    useEffect(() =>{
+        if(token){
+            alert('token recebido');
+        }
+    },[token])
 
 
     return (
