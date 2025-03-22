@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from src.application.handlers.error_handler import register_error_handlers
 
 from src.api.routes.user_routes import user_route_bp
@@ -12,6 +13,7 @@ from src.api.routes.current_stock_routes import current_stock_route_bp
 from src.model.configs.env import load_db_env
 
 app = Flask(__name__)
+CORS(app=app, origins='')
 
 #Database
 app.config['SQL_ALCHEMY_DATABASE_URI'] = load_db_env()

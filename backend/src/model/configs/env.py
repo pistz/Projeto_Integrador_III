@@ -9,3 +9,6 @@ def load_db_env():
 
 def load_secret_key():
     return os.getenv("JWT_SECRET_KEY")
+
+def load_frontend_origin():
+    return os.getenv("FRONTEND_URL")

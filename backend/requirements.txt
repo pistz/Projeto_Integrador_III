@@ -16,3 +16,4 @@ python-dotenv==1.0.1
 psycopg2-binary==2.9.10
 bcrypt==4.3.0
 pyjwt==2.10.1
+flaks-cors==5.0.1

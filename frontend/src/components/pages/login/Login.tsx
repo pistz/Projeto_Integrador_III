@@ -3,6 +3,8 @@ import { Footer } from 'antd/es/layout/layout'
 import React, { useState } from 'react'
 import { Container } from './style'
 import image from '../../../assets/logo.png'
+import { login } from '../../../config/loadApi'
+
 
 type Login = {
     email:string,
@@ -25,7 +27,8 @@ export const Home:React.FC = () => {
     const onFinish:FormProps['onFinish']  = async(data:Login) =>{
         setLoading(true)
         console.log(data);
-        alert(data);
+        const token = await login(data)
+        console.log('Token recebido: ', token)
         clearForm()
         setLoading(false)
     }
