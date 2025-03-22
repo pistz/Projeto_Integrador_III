@@ -45,7 +45,8 @@ export const LoginScreen:React.FC = () => {
     }
 
     useEffect(() =>{
-        if(token){
+        const logged = sessionStorage.getItem('tkn')?.toString();
+        if(logged){
             setSigned(true)
             navigate('/app/home')
         }

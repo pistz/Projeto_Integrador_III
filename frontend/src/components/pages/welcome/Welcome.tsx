@@ -8,7 +8,7 @@ export const Welcome:React.FC = () =>{
     return (
         <>
             <div style={mainDivStyle}>
-                <Divider variant='dotted'>{new Date().getDate()}</Divider>
+                <Divider variant='dotted'>Bem vindo</Divider>
                 <div style={innerDivStyle}>
                     <img style={centerImgStyle} src={welcome} alt="welcome"/>
                 </div>

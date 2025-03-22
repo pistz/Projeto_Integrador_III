@@ -1,5 +1,6 @@
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Router } from '../../../routes/types';
+import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
 
 const { Header, Content, Footer } = Layout;
 
@@ -8,7 +9,9 @@ interface ISystemLayout {
   children: React.ReactNode
 }
 
-export const SystemLayout:React.FC<ISystemLayout> = ({menu, children}:ISystemLayout) => {
+export const SystemLayout:React.FC<ISystemLayout> = ({menu}:ISystemLayout) => {
+  const navigate:NavigateFunction = useNavigate();
+
   
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -19,9 +22,17 @@ export const SystemLayout:React.FC<ISystemLayout> = ({menu, children}:ISystemLay
     label:`${item?.label}`,
 }));
 
+const handleRedirect = (pages:Router[], key:string) =>{
+  if(pages){
+      const index = Number(key);
+      navigate(`${pages[index]?.path}`);
+  }
+}
+
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Header
+      <Header 
         style={{
           position: 'sticky',
           top: 0,
@@ -29,11 +40,15 @@ export const SystemLayout:React.FC<ISystemLayout> = ({menu, children}:ISystemLay
           width: '100%',
           display: 'flex',
           alignItems: 'center',
+          background:"#fff"
         }}
       >
         <div className="demo-logo" />
         <Menu
-          theme="dark"
+          onClick={(e)=>{
+            handleRedirect(menu, e.key);
+          }}
+          theme="light"
           mode="horizontal"
           defaultSelectedKeys={['0']}
           items={menuItems}
@@ -58,11 +73,11 @@ export const SystemLayout:React.FC<ISystemLayout> = ({menu, children}:ISystemLay
             borderRadius: borderRadiusLG,
           }}
         >
-          {children}
+          <Outlet />
         </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>
-          Repono - Gestão de Estoque - versão 1.0 ©{new Date().getFullYear()}
+          Repono - Gestão de Estoque - {new Date().getFullYear()} v1.0
       </Footer>
     </Layout>
   );

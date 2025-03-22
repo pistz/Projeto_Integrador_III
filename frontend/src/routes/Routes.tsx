@@ -1,8 +1,8 @@
 import { BrowserRouter, Navigate, Routes as ReactRouter, Route } from "react-router-dom"
 import { LoginScreen } from "../components/pages/login/Login"
 import { useAuth } from "../context/useAuthContext"
-import { Content } from "antd/es/layout/layout"
 import { mainRoutes } from "./mainRoutes"
+import { Content } from "../components/shared/content/Content"
 
 
 export const Routes:React.FC = () => {

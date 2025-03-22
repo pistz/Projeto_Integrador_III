@@ -1,3 +1,4 @@
+import { Logout } from "../components/pages/logout/Logout";
 import { NotFound } from "../components/pages/notFound/NotFound";
 import { Welcome } from "../components/pages/welcome/Welcome";
 import { Router } from "./types";
@@ -21,7 +22,7 @@ export const mainRoutes: Router[] = [
     },
 
     {
-      label: 'Configuraçoes',
+      label: 'Configurações',
       path: 'config',
       element: <NotFound />,
     },
@@ -29,7 +30,7 @@ export const mainRoutes: Router[] = [
     {
       label: 'Sair',
       path: 'logout',
-      element: <NotFound />,
+      element: <Logout />,
     },
 
   ];
