@@ -6,6 +6,8 @@ import image from '../../../assets/logo.png'
 
 import { Login } from '../../../api/Login/Login'
 import { notifyError } from '../../shared/notify/notify'
+import { useAuth } from '../../../context/useAuthContext'
+import { NavigateFunction, useNavigate } from 'react-router-dom'
 
 
 type LoginType = {
@@ -15,11 +17,13 @@ type LoginType = {
 
 export const LoginScreen:React.FC = () => {
 
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);
     const [token, setToken] = useState<string>('');
+    const navigate:NavigateFunction = useNavigate()
+
+
+    const {setSigned} = useAuth();
 
 
     const clearForm =()=>{
@@ -42,13 +46,14 @@ export const LoginScreen:React.FC = () => {
 
     useEffect(() =>{
         if(token){
-            alert('token recebido');
+            setSigned(true)
+            navigate('/app/home')
         }
-    },[token])
+    },[token, setSigned, navigate])
 
 
     return (
-        <Container backgroundImage={image}>
+        <Container $bgImage={image}>
             <h1 style={{fontWeight:700, fontSize:'5rem', color:"#fff"}}>Repono</h1>
             <h3 style={{color:'#cabbbb'}}>Acesso ao sistema</h3>
             <Form
@@ -62,7 +67,10 @@ export const LoginScreen:React.FC = () => {
             >
                 <label style={{color:'#FFF'}}>E-mail</label>
                 <Form.Item name={['email']}
-                    rules={[{ required: true, message:"E-mail é um campo obrigatório" },{pattern:emailPattern, message:"e-mail inválido"}]}>
+                    rules={[{ required: true, message:"E-mail é um campo obrigatório" },
+                    {
+                        pattern:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, 
+                        message:"e-mail inválido"}]}>
                 <Input style={{fontWeight:'bold', width:'15rem'}}/>
                 </Form.Item>
 

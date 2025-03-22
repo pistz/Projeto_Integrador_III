@@ -1,5 +1,5 @@
 import axios from "axios";
-import { loginRoute } from "../../routes/endpoints";
+import { loginRoute } from "../endpoints";
 import { LoginData, Token } from "./types";
 
 export class Login {

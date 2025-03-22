@@ -1,13 +1,14 @@
 import React from "react"
-import { LoginScreen } from "./components/pages/login/Login"
 import { ContextProvider } from "./context/appContext"
+import { Routes } from "./routes/Routes"
+
 
 const App:React.FC = () => {
 
   return (
     <>
       <ContextProvider>
-        <LoginScreen />
+        <Routes/>
       </ContextProvider>
     </>
   )

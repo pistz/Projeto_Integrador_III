@@ -4,7 +4,7 @@ const backgroundColor = '#031129';
 
 interface ContainerProps {
   bgColor?: string;
-  backgroundImage?: string;
+  $bgImage?: string;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -26,7 +26,7 @@ export const Container = styled.div<ContainerProps>`
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: ${({ backgroundImage }) => 
+    background-image: ${({ $bgImage: backgroundImage }) => 
       backgroundImage ? `url(${backgroundImage})` : 'none'};
     background-size: cover;
     background-position: center;
