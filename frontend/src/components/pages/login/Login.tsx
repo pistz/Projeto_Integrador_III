@@ -1,11 +1,11 @@
+import React, { useEffect, useState } from 'react'
 import { Button, Form, FormProps, Input } from 'antd'
 import { Footer } from 'antd/es/layout/layout'
-import React, { useEffect, useState } from 'react'
 import { Container } from './style'
 import image from '../../../assets/logo.png'
 
 import { Login } from '../../../api/Login/Login'
-import { notifyError } from '../../shared/Notify/notify'
+import { notifyError } from '../../shared/notify/notify'
 
 
 type LoginType = {
@@ -13,7 +13,7 @@ type LoginType = {
     password:string
 }
 
-export const Home:React.FC = () => {
+export const LoginScreen:React.FC = () => {
 
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 

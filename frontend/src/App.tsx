@@ -1,11 +1,14 @@
 import React from "react"
-import { Home } from "./components/pages/login/Login"
+import { LoginScreen } from "./components/pages/login/Login"
+import { ContextProvider } from "./context/appContext"
 
 const App:React.FC = () => {
 
   return (
     <>
-      <Home />
+      <ContextProvider>
+        <LoginScreen />
+      </ContextProvider>
     </>
   )
 }
