@@ -1,5 +1,5 @@
 import { Config } from "../components/pages/config/Config";
-import { NotFound } from "../components/pages/notFound/NotFound";
+import { Stock } from "../components/pages/stock/Stock";
 import { Welcome } from "../components/pages/welcome/Welcome";
 import { appPath, Router } from "./types";
 
@@ -15,7 +15,7 @@ export const mainRoutes: Router[] = [
     {
       label: 'Estoque',
       path: 'stock',
-      element: <NotFound />,
+      element: <Stock />,
     },
     {
       label: 'Configurações',

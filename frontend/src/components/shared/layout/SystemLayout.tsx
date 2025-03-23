@@ -1,4 +1,4 @@
-import { Breadcrumb, FloatButton, Layout, Menu, theme } from 'antd';
+import { FloatButton, Layout, Menu, theme } from 'antd';
 import { Router } from '../../../routes/types';
 import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
 import { LogoutOutlined } from '@ant-design/icons';
@@ -92,15 +92,13 @@ useEffect(() => {
         </Header>
         <Content
           style={{
-            padding: '0 48px',
+            padding: '0 2rem',
+            margin:'2.5rem 0',
             flex: 1,
             overflowY: 'auto',
             minHeight:'70vh'
           }}
         >
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>{}</Breadcrumb.Item>
-          </Breadcrumb>
           <div
             style={{
               padding: 24,
