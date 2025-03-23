@@ -17,6 +17,7 @@ export const OptionCard:React.FC<Props> = ({title, actions}:Props) => {
     <div style={{alignContent:"center", justifyContent:"center", textAlign:'center'}}>
       <Card
         title={title}
+        variant='borderless'
         style={{
           width: '20rem',
           display: 'flex',

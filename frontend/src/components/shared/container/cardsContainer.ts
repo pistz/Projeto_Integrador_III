@@ -1,11 +1,19 @@
 import styled from "styled-components";
-
-export const CardsContainer = styled.div`
-    display:flex;
+interface CardsContainerProps {
+    minHeight?: string;
+  }
+export const CardsContainer = styled.div<CardsContainerProps>`
+    display: flex;
     flex-wrap: wrap;
-    flex-direction:column;
-    justify-content:flex-start;
-    align-items:start;
-    margin:0 auto;
-    min-height:70vh
-`
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+    align-items: start;
+    margin: 0 auto;
+    min-height: ${({ minHeight }) => minHeight || '70vh'};
+
+    @media (max-width: 768px) {
+    align-items:first baseline;
+    justify-content: center; 
+  }
+`;

@@ -7,6 +7,7 @@ import { CardComponent } from '../../shared/card/CardComponent';
 import { Modal } from '../../shared/modal/Modal';
 import { CreateUser } from './user/createUser';
 import { ListUsers } from './user/listUsers';
+import { Divider } from 'antd';
 
 export const Config:React.FC = () => {
 
@@ -44,6 +45,7 @@ export const Config:React.FC = () => {
 
   return (
     <>
+      <Divider>Configurações de Usuário</Divider>
         <CardsContainer>
             {options.map((option) => (
                 <OptionCard
