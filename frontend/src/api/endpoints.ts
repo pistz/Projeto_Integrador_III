@@ -16,5 +16,6 @@ export const userRoute = {
 
 export const brandRoute = {
     create:`${base.host}/brands`,
-    getAll:`${base.host}/brands/all`
+    getAll:`${base.host}/brands/all`,
+    delete:`${base.host}/brands`
 }

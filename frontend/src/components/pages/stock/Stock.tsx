@@ -6,6 +6,7 @@ import { OptionCard } from '../../shared/card/OptionCard'
 import { CardComponent } from '../../shared/card/CardComponent'
 import { AppstoreAddOutlined, EyeOutlined } from '@ant-design/icons'
 import { CreateBrand } from './brand/createBrand'
+import { ListBrands } from './brand/listBrands'
 
 export const Stock:React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +36,7 @@ export const Stock:React.FC = () => {
             {
               key: 'Listar',
               component: (<CardComponent component={<EyeOutlined />} title={"Listar"}/>),
-              onClick: () => showModal(<p>Teste</p>)
+              onClick: () => showModal( <ListBrands />)
             }
           ]
       },
