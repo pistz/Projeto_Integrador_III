@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 interface Props {
   open:boolean,
-  close: () => void
+  onClose: () => void
 }
 
-export const Logout:React.FC<Props> = ({open, close} :Props) => {
+export const Logout:React.FC<Props> = ({open, onClose: close} :Props) => {
 
     const navigate = useNavigate();
     

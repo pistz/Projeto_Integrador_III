@@ -53,13 +53,13 @@ export const LoginScreen:React.FC = () => {
     }
 
 
-    useEffect(() =>{
-        const logged = sessionStorage.getItem(tokenId)?.toString();
-        if(logged){
-            setSigned(true)
-            handleNavigateHome();
+    useEffect(() => {
+        const token = sessionStorage.getItem(tokenId);
+        if (token) {
+          setSigned(true);
+          handleNavigateHome();
         }
-    },[setSigned,tokenId,handleNavigateHome])
+      }, [setSigned, tokenId, handleNavigateHome]);
 
 
     return (
@@ -85,7 +85,7 @@ export const LoginScreen:React.FC = () => {
                 </Form.Item>
 
                 <label style={{color:'#FFF'}}>Senha</label>
-                <Form.Item name={['password']}>
+                <Form.Item name={['password']} rules={[{ required: true, message: 'Senha é um campo obrigatório' }]}>
                 <Input style={{fontWeight:'bold', width:'15rem'}} type='password'/>
                 </Form.Item>
                 <Button type='primary' htmlType='submit' style={{marginRight:'4rem', marginBottom:'3rem'}} loading={loading}>Entrar</Button> 

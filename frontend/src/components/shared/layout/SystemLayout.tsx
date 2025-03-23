@@ -3,7 +3,9 @@ import { Router } from '../../../routes/types';
 import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Logout } from '../../pages/logout/Logout';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { Alert } from '../alert/Alert';
+import { isTokenExpired } from '../../../config/token';
 
 const { Header, Content, Footer } = Layout;
 
@@ -13,6 +15,7 @@ interface ISystemLayout {
 }
 
 export const SystemLayout:React.FC<ISystemLayout> = ({menu}:ISystemLayout) => {
+  const [expired, setExpired] = useState<boolean>(false);
   const [logout, setLogout] = useState<boolean>(false);
 
   const navigate:NavigateFunction = useNavigate();
@@ -30,12 +33,28 @@ const handleLogout = () =>{
   setLogout(true)
 }
 
+const checkTokenIsExpired = useCallback((() =>{
+  const isExpired = isTokenExpired();
+  setExpired(prev => (prev !== isExpired ? isExpired : prev));
+
+}),[])
+
 const handleRedirect = (pages:Router[], key:string) =>{
   if(pages){
       const index = Number(key);
       navigate(`${pages[index]?.path}`);
   }
 }
+
+useEffect(() => {
+  checkTokenIsExpired();
+
+  const interval = setInterval(() => {
+    checkTokenIsExpired();
+  }, 30000);
+
+  return () => clearInterval(interval);
+}, [checkTokenIsExpired]);
 
   return (
     <>
@@ -97,7 +116,8 @@ const handleRedirect = (pages:Router[], key:string) =>{
             Repono - Gestão de Estoque - {new Date().getFullYear()} v1.0
         </Footer>
       </Layout>
-      <Logout open={logout} close={() => setLogout(false)}/>
+      <Logout open={logout} onClose={() => setLogout(false)}/>
+      <Alert expired={expired}/>
     </>
   );
 };

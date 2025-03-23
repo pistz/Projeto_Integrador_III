@@ -29,22 +29,20 @@ export const getTokenId = () =>{
     return tokenId;
 }
 
-export const isTokenExpired = () =>{
+export const isTokenExpired = () => {
     const token = getTokenFromSessionStorage();
-    if(token === undefined || token === null){
-        return true;
+    if (!token) return true; 
+  
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+      const expired: number = Number(decoded.exp);
+      const currentTime = Date.now() / 1000;
+      return expired < currentTime;
+    } catch (error) {
+      console.error(error);
+      return true;
     }
-    if(token){
-        const decoded = jwtDecode<JwtPayload>(token)
-        const expired:number = Number(decoded.exp);
-        const currentTime = Date.now() / 1000
-
-        if(expired < currentTime){
-            return true;
-        }
-    }
-    return false;
-}
+  };
 
 export const getUserFromToken = ():JwtCustomPayload|undefined =>{
     const token = getTokenFromSessionStorage();

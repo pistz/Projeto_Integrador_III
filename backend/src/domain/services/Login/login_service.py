@@ -55,7 +55,7 @@ class LoginService(ILoginService):
         token = encode(
             {   "name": user.name,
                 "user": user.email, 
-                "exp":(self.now + datetime.timedelta(minutes=30)).timestamp()
+                "exp":(self.now + datetime.timedelta(hours=12)).timestamp()
             },
             JWT_SECRET_KEY,
             algorithm="HS256")
