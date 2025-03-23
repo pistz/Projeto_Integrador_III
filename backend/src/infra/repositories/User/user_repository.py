@@ -22,12 +22,12 @@ class UserRepository(IUserRepository):
                 db.session.rollback()
                 raise DatabaseException(f'Error creating user: {e}')
     
-    def get_user_by_email(self, email: str) -> User:
+    def get_user_by_email(self, email: str) -> User|None:
         user = self.__find_user(email=email)
         return user
             
 
-    def get_user_by_id(self, user_id: int) -> User:
+    def get_user_by_id(self, user_id: int) -> User|None:
         user = self.__find_user(user_id=user_id)
         return user
         

@@ -14,10 +14,6 @@ def get_all_users_route():
 def create_user_route():
 	return user_controller.create_user()
 
-@user_route_bp.route('/users', methods=['GET'])
-def get_user_by_email_route():
-	return user_controller.get_user_by_email()
-
 @user_route_bp.route('/users/<int:id>', methods=['GET'])
 def get_user_by_id_route(id):
 	return user_controller.get_user_by_id(id)

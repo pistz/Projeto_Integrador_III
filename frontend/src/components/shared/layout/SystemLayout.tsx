@@ -1,9 +1,9 @@
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Breadcrumb, FloatButton, Layout, Menu, theme } from 'antd';
 import { Router } from '../../../routes/types';
 import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
-import { Alert } from '../alert/Alert';
-import { useEffect, useState } from 'react';
-import { isTokenExpired } from '../../../config/token';
+import { LogoutOutlined } from '@ant-design/icons';
+import { Logout } from '../../pages/logout/Logout';
+import { useState } from 'react';
 
 const { Header, Content, Footer } = Layout;
 
@@ -13,7 +13,7 @@ interface ISystemLayout {
 }
 
 export const SystemLayout:React.FC<ISystemLayout> = ({menu}:ISystemLayout) => {
-  const [expired, setExpired] = useState<boolean>(false);
+  const [logout, setLogout] = useState<boolean>(false);
 
   const navigate:NavigateFunction = useNavigate();
 
@@ -26,17 +26,16 @@ export const SystemLayout:React.FC<ISystemLayout> = ({menu}:ISystemLayout) => {
     label:`${item?.label}`,
 }));
 
+const handleLogout = () =>{
+  setLogout(true)
+}
+
 const handleRedirect = (pages:Router[], key:string) =>{
   if(pages){
       const index = Number(key);
       navigate(`${pages[index]?.path}`);
   }
 }
-
-useEffect(() => {
-  const exp:boolean = isTokenExpired();
-  setExpired(exp);
-},[]);
 
   return (
     <>
@@ -63,12 +62,21 @@ useEffect(() => {
             items={menuItems}
             style={{ flex: 1, minWidth: 0 }}
           />
+          <FloatButton 
+            type='default' 
+            icon={< LogoutOutlined 
+            style={{color:'#700606'}}/>} 
+            style={{position:"static"}} 
+            tooltip={'Sair'}
+            onClick={handleLogout}
+          />
         </Header>
         <Content
           style={{
             padding: '0 48px',
             flex: 1,
             overflowY: 'auto',
+            minHeight:'70vh'
           }}
         >
           <Breadcrumb style={{ margin: '16px 0' }}>
@@ -89,7 +97,7 @@ useEffect(() => {
             Repono - Gestão de Estoque - {new Date().getFullYear()} v1.0
         </Footer>
       </Layout>
-      <Alert expired={expired}/>
+      <Logout open={logout} close={() => setLogout(false)}/>
     </>
   );
 };

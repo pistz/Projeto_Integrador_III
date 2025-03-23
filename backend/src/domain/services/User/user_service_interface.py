@@ -9,9 +9,6 @@ class IUserService(ABC):
     def create_user(self, user: CreateUserDTO) -> HttpResponse:pass
 
     @abstractmethod
-    def get_user_by_email(self, email: str) -> HttpResponse:pass
-
-    @abstractmethod
     def get_user_by_id(self, id: int) -> HttpResponse:pass
 
     @abstractmethod

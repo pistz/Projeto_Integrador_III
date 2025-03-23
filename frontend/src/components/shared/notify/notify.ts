@@ -13,3 +13,7 @@ export const notifyError = (error:unknown) =>{
         message.error('Erro inesperado');
     }
 }
+
+export const notifyWarning = (msg:string) =>{
+    message.warning(msg);
+}

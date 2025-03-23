@@ -1,5 +1,10 @@
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
+interface JwtCustomPayload extends JwtPayload{
+    user:string,
+    name:string,
+}
+
 export const getTokenFromSessionStorage = ():string =>{
     const token_id = getTokenId();
     const getToken = () =>{
@@ -39,4 +44,17 @@ export const isTokenExpired = () =>{
         }
     }
     return false;
+}
+
+export const getUserFromToken = ():JwtCustomPayload|undefined =>{
+    const token = getTokenFromSessionStorage();
+    let user = undefined;
+    if(token === undefined || token === null){
+        return;
+    }
+    if(token){
+        const decoded = jwtDecode<JwtCustomPayload>(token)
+        user = decoded
+    }
+    return user;
 }

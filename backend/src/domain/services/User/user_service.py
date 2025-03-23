@@ -26,14 +26,6 @@ class UserService(IUserService):
         self.user_repository.create_user(user)
         return HttpResponse(status_code=StatusCode.CREATED.value, body={'message': 'User created successfully'})
     
-    def get_user_by_email(self, email: str) -> HttpResponse:
-        self.__is_valid_email(email)
-        user = self.user_repository.get_user_by_email(email)
-        if not user:
-            raise NotFound('User not found')
-        user_response = UserDTO(id=user.id, name=user.name, email=user.email)
-        return HttpResponse(status_code=StatusCode.OK.value, body=user_response)
-    
     def get_user_by_id(self, user_id: int) -> HttpResponse:
         user = self.user_repository.get_user_by_id(user_id)
         if not user:
@@ -41,7 +33,7 @@ class UserService(IUserService):
         user_response = UserDTO(id=user.id, name=user.name, email=user.email)
         return HttpResponse(status_code=StatusCode.OK.value, body=user_response)
     
-    def get_all_users(self) -> list[UserDTO]:
+    def get_all_users(self) -> HttpResponse:
         users = self.user_repository.get_all_users()
         users_response = [UserDTO(id=user.id, name=user.name, email=user.email) for user in users]
         return HttpResponse(status_code=StatusCode.OK.value, body=users_response)

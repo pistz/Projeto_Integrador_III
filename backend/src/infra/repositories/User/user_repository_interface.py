@@ -6,13 +6,13 @@ from src.model.entities.user import User
 class IUserRepository(ABC):
     
     @abstractmethod
-    def create_user(self, user: CreateUserDTO) -> None:pass
+    def create_user(self, user: CreateUserDTO) -> User:pass
 
     @abstractmethod
-    def get_user_by_email(self, email: str) -> User:pass
+    def get_user_by_email(self, email: str) -> User|None:pass
 
     @abstractmethod
-    def get_user_by_id(self, user_id: int) -> User:pass
+    def get_user_by_id(self, user_id: int) -> User|None:pass
 
     @abstractmethod
     def get_all_users(self) -> list[User]:pass

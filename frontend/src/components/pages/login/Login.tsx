@@ -4,7 +4,7 @@ import { Footer } from 'antd/es/layout/layout'
 import { Container } from './style'
 import image from '../../../assets/logo.png'
 
-import { Login } from '../../../api/Login/Login'
+import { LoginAPI } from '../../../api/Login/LoginAPI'
 import { notifyError } from '../../shared/notify/notify'
 import { useAppContext } from '../../../context/useAppContext'
 import { NavigateFunction, useNavigate } from 'react-router-dom'
@@ -40,7 +40,7 @@ export const LoginScreen:React.FC = () => {
     const onFinish:FormProps['onFinish']  = async(data:LoginType) =>{
         setLoading(true)
         try {
-            const {token} = await Login.login(data)
+            const {token} = await LoginAPI.login(data)
             sessionStorage.setItem(tokenId,token);
             setToken(token);
             handleNavigateHome();

@@ -1,11 +1,15 @@
 import { Modal } from 'antd';
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
-export const Logout:React.FC = () => {
-    const [logout, setLogout] = useState<boolean>(true);
-    const navigate = useNavigate();
+interface Props {
+  open:boolean,
+  close: () => void
+}
 
+export const Logout:React.FC<Props> = ({open, close} :Props) => {
+
+    const navigate = useNavigate();
     
       const handleOk = () => {
         sessionStorage.clear();
@@ -14,14 +18,13 @@ export const Logout:React.FC = () => {
       };
     
       const handleCancel = () => {
-        setLogout(false);
-        navigate('/app/home');
+        close();
       };
 
   return (
     <>
         <Modal title="Confirma a saída do sistema?" 
-            open={logout} 
+            open={open} 
             onOk={handleOk} 
             onCancel={handleCancel} 
             cancelText={'Cancelar'} 

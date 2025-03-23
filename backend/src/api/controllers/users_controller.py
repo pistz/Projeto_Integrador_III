@@ -18,12 +18,6 @@ class UserController:
         create_user_dto = CreateUserDTO(**http_request.body)
         response: HttpResponse = self.__user_service.create_user(create_user_dto)
         return self.__send_response(response)
-
-    def get_user_by_email(self):
-        http_request = HttpRequest(request.json)
-        email = http_request.body['email']
-        response: HttpResponse = self.__user_service.get_user_by_email(email)
-        return self.__send_response(response)
     
     def get_user_by_id(self, user_id):
         response: HttpResponse = self.__user_service.get_user_by_id(user_id)

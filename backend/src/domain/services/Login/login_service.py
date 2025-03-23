@@ -10,6 +10,7 @@ from src.application.exceptions.token_error import TokenError
 from src.domain.services.Login.login_service_interface import ILoginService
 from src.infra.repositories.User.user_repository_interface import IUserRepository
 from src.model.configs.env import load_secret_key
+from src.model.entities.user import User
 
 JWT_SECRET_KEY=load_secret_key()
 
@@ -24,7 +25,7 @@ class LoginService(ILoginService):
             raise InvalidUser("Incorrect email or password")
         if not self.__dehash_password(password, user.password):
             raise InvalidUser("Incorrect email or password")
-        token = self.__generate_token(email)
+        token = self.__generate_token(user)
         return HttpResponse(body=JWTTokenDTO(token), status_code=StatusCode.OK.value)
 
     def decode_token_validity(self, token: str) -> bool:
@@ -50,10 +51,10 @@ class LoginService(ILoginService):
 
         return True
     
-    def __generate_token(self, email:str) -> str:
+    def __generate_token(self, user:User) -> str:
         token = encode(
-            {
-                "user": email, 
+            {   "name": user.name,
+                "user": user.email, 
                 "exp":(self.now + datetime.timedelta(minutes=30)).timestamp()
             },
             JWT_SECRET_KEY,
