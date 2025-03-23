@@ -14,3 +14,7 @@ export const userRoute = {
     delete:`${base.host}/users/`
 }
 
+export const brandRoute = {
+    create:`${base.host}/brands`,
+    getAll:`${base.host}/brands/all`
+}

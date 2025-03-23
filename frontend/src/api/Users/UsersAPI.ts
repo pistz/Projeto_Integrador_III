@@ -1,6 +1,7 @@
 import axios from "axios";
-import { CreateUser, Response, User } from "./types";
+import { CreateUser, User } from "./types";
 import { userRoute } from "../endpoints";
+import { Response } from "../types";
 
 export class UsersAPI{
 

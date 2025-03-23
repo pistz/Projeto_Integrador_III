@@ -83,8 +83,10 @@ useEffect(() => {
           />
           <FloatButton 
             type='default' 
-            icon={< LogoutOutlined 
-            style={{color:'#700606'}}/>} 
+            icon={
+            < LogoutOutlined 
+              style={{color:'#1a195f'}}
+              />} 
             style={{position:"static"}} 
             tooltip={'Sair'}
             onClick={handleLogout}

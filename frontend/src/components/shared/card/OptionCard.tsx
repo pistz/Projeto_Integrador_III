@@ -9,15 +9,20 @@ type ActionsType = {
 
 interface Props{
     title:string,
-    actions:ActionsType[]
+    actions:ActionsType[],
+    background?:string,
+    color?:string,
 }
-export const OptionCard:React.FC<Props> = ({title, actions}:Props) => {
+export const OptionCard:React.FC<Props> = ({title, actions, background, color}:Props) => {
   return (
 
     <div style={{alignContent:"center", justifyContent:"center", textAlign:'center'}}>
       <Card
         title={title}
         variant='borderless'
+        styles={{
+          header:{background:background?background:'#1a195f', color:color?color:'#FFF'}
+        }}
         style={{
           width: '20rem',
           display: 'flex',

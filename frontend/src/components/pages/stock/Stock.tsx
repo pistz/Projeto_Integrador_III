@@ -5,6 +5,7 @@ import { Modal } from '../../shared/modal/Modal'
 import { OptionCard } from '../../shared/card/OptionCard'
 import { CardComponent } from '../../shared/card/CardComponent'
 import { AppstoreAddOutlined, EyeOutlined } from '@ant-design/icons'
+import { CreateBrand } from './brand/createBrand'
 
 export const Stock:React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,9 +23,59 @@ export const Stock:React.FC = () => {
       setModalContent(null);
     };
 
-    const registerOptions = [
+    const register = [
+      {
+          title: 'Marcas',
+          actions: [
+            {
+              key: 'Adicionar',
+              component: (<CardComponent component={<AppstoreAddOutlined />} title={"Criar"}/>),
+              onClick: () => showModal(<CreateBrand close={handleCancel}/>)
+            },
+            {
+              key: 'Listar',
+              component: (<CardComponent component={<EyeOutlined />} title={"Listar"}/>),
+              onClick: () => showModal(<p>Teste</p>)
+            }
+          ]
+      },
+
+      {
+          title: 'Cadastro de Categorias',
+          actions: [
+            {
+              key: 'Adicionar',
+              component: (<CardComponent component={<AppstoreAddOutlined />} title={"Criar"}/>),
+              onClick: () => showModal(<p>Teste</p>)
+            },
+            {
+              key: 'Listar',
+              component: (<CardComponent component={<EyeOutlined />} title={"Listar"}/>),
+              onClick: () => showModal(<p>Teste</p>)
+            }
+          ]
+      },
+
+      {
+          title: 'Cadastro de Produtos',
+          actions: [
+            {
+              key: 'Adicionar',
+              component: (<CardComponent component={<AppstoreAddOutlined />} title={"Criar"}/>),
+              onClick: () => showModal(<p>Teste</p>)
+            },
+            {
+              key: 'Listar',
+              component: (<CardComponent component={<EyeOutlined />} title={"Listar"}/>),
+              onClick: () => showModal(<p>Teste</p>)
+            }
+          ]
+      },
+  ]
+
+    const movements = [
         {
-            title: 'Cadastro de Marcas',
+            title: 'Marcas',
             actions: [
               {
                 key: 'Adicionar',
@@ -40,7 +91,7 @@ export const Stock:React.FC = () => {
         },
 
         {
-            title: 'Cadastro de Categorias',
+            title: 'Categorias',
             actions: [
               {
                 key: 'Adicionar',
@@ -56,7 +107,7 @@ export const Stock:React.FC = () => {
         },
 
         {
-            title: 'Cadastro de Produtos',
+            title: 'Produtos',
             actions: [
               {
                 key: 'Adicionar',
@@ -70,25 +121,29 @@ export const Stock:React.FC = () => {
               }
             ]
         },
-    ]
+    ];
+
+    
 
   return (
 
     <>
-        <Divider>Movimentações</Divider>
+        <Divider>Cadastros</Divider>
         <CardsContainer minHeight={minHeight}>
-            {registerOptions.map((option) => (
+            {register.map((option) => (
                 <OptionCard
                     key={option.title}
                     title={option.title}
                     actions={option.actions}
+                    background='#5aa9f3'
+                    color='#080808'
                 />
             ))}
         </CardsContainer>
 
-        <Divider>Cadastros</Divider>
+        <Divider>Movimentações</Divider>
         <CardsContainer minHeight={minHeight}>
-            {registerOptions.map((option) => (
+            {movements.map((option) => (
                 <OptionCard
                     key={option.title}
                     title={option.title}
