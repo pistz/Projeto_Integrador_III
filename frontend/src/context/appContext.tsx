@@ -8,13 +8,14 @@ export const ContextProvider: React.FC<IChildren> = ({ children }:IChildren) => 
 
     const [signed, setSigned] = useState<boolean>(false);
     const [token, setToken] = useState<string>("");
+    const [expired, setExpired] = useState<boolean>(false);
 
 
     return (
-    
     <AppContext.Provider value={{ 
         signed,setSigned,
-        token, setToken
+        token, setToken,
+        expired, setExpired
 
         }}>
         {children}

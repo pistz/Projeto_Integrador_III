@@ -6,8 +6,9 @@ import image from '../../../assets/logo.png'
 
 import { Login } from '../../../api/Login/Login'
 import { notifyError } from '../../shared/notify/notify'
-import { useAuth } from '../../../context/useAuthContext'
+import { useAppContext } from '../../../context/useAppContext'
 import { NavigateFunction, useNavigate } from 'react-router-dom'
+import { mainRoutes } from '../../../routes/mainRoutes'
 import { getTokenId } from '../../../config/token'
 
 
@@ -22,14 +23,15 @@ export const LoginScreen:React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const navigate:NavigateFunction = useNavigate();
-    
+
     const handleNavigateHome = useCallback(() =>{
-        navigate('/app/home');
+        const home = mainRoutes.filter((e) => e.path == 'home')[0];
+        navigate(home.fullpath!);
     },[navigate]);
 
     const tokenId = getTokenId();
 
-    const {setSigned, setToken} = useAuth();
+    const {setSigned, setToken} = useAppContext();
 
     const clearForm =()=>{
         form.resetFields();
@@ -49,6 +51,7 @@ export const LoginScreen:React.FC = () => {
             setLoading(false);
         }
     }
+
 
     useEffect(() =>{
         const logged = sessionStorage.getItem(tokenId)?.toString();

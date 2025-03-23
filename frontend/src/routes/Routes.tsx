@@ -1,13 +1,14 @@
 import { BrowserRouter, Navigate, Routes as ReactRouter, Route } from "react-router-dom"
 import { LoginScreen } from "../components/pages/login/Login"
-import { useAuth } from "../context/useAuthContext"
+import { useAppContext } from "../context/useAppContext"
 import { mainRoutes } from "./mainRoutes"
 import { Content } from "../components/shared/content/Content"
+import { appPath } from "./types"
 
 
 export const Routes:React.FC = () => {
 
-  const {signed} = useAuth();
+  const {signed} = useAppContext();
 
   const ForbiddenAcces:React.FC =()=>{
     return (<Navigate to='/' />)
@@ -20,7 +21,7 @@ export const Routes:React.FC = () => {
               <Route path={'/'} element={<LoginScreen />} />
               <Route path={'/login'} element={<LoginScreen />} />
 
-              <Route path={'/app/*'} element={signed? <Content /> : <ForbiddenAcces />} >
+              <Route path={`${appPath}*`} element={signed? <Content /> : <ForbiddenAcces />} >
                 {mainRoutes.map((_,index) => <Route path={mainRoutes[index].path} element={mainRoutes[index].element} key={`${index} mainRoute`}/>)}
               </Route>  
           </ReactRouter>

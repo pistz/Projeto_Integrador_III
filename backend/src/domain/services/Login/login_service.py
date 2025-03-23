@@ -53,7 +53,8 @@ class LoginService(ILoginService):
     def __generate_token(self, email:str) -> str:
         token = encode(
             {
-                "user": email, "exp":(self.now + datetime.timedelta(minutes=30)).timestamp()
+                "user": email, 
+                "exp":(self.now + datetime.timedelta(minutes=30)).timestamp()
             },
             JWT_SECRET_KEY,
             algorithm="HS256")

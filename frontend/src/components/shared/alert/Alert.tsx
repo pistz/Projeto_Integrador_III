@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 
 export const Alert:React.FC<{expired:boolean}> = ({expired}) => {
 
-const [api] = notification.useNotification();
+const [api, contextHolder] = notification.useNotification();
 
   const openNotification = () => {
     api.info({
@@ -28,6 +28,7 @@ const [api] = notification.useNotification();
 
   return (
         <>
+          {contextHolder}
         </>
   )
 }

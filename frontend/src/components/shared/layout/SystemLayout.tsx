@@ -2,6 +2,8 @@ import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Router } from '../../../routes/types';
 import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
 import { Alert } from '../alert/Alert';
+import { useEffect, useState } from 'react';
+import { isTokenExpired } from '../../../config/token';
 
 const { Header, Content, Footer } = Layout;
 
@@ -11,6 +13,8 @@ interface ISystemLayout {
 }
 
 export const SystemLayout:React.FC<ISystemLayout> = ({menu}:ISystemLayout) => {
+  const [expired, setExpired] = useState<boolean>(false);
+
   const navigate:NavigateFunction = useNavigate();
 
   const {
@@ -28,6 +32,11 @@ const handleRedirect = (pages:Router[], key:string) =>{
       navigate(`${pages[index]?.path}`);
   }
 }
+
+useEffect(() => {
+  const exp:boolean = isTokenExpired();
+  setExpired(exp);
+},[]);
 
   return (
     <>
@@ -80,7 +89,7 @@ const handleRedirect = (pages:Router[], key:string) =>{
             Repono - Gestão de Estoque - {new Date().getFullYear()} v1.0
         </Footer>
       </Layout>
-      <Alert expired={false}/>
+      <Alert expired={expired}/>
     </>
   );
 };

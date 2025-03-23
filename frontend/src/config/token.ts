@@ -2,12 +2,11 @@ import { jwtDecode, JwtPayload } from "jwt-decode";
 
 export const getTokenFromSessionStorage = ():string =>{
     const token_id = getTokenId();
-    const getToken = sessionStorage.getItem(token_id);
-    let token = ""
-    if(getToken){
-        token = JSON.parse(getToken);
-    
+    const getToken = () =>{
+        return sessionStorage.getItem(token_id);
     }
+    let token = ""
+    token = getToken()!;
     return token;
 }
 
@@ -27,7 +26,7 @@ export const getTokenId = () =>{
 
 export const isTokenExpired = () =>{
     const token = getTokenFromSessionStorage();
-    if(token === undefined){
+    if(token === undefined || token === null){
         return true;
     }
     if(token){
