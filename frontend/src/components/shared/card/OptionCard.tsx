@@ -21,7 +21,7 @@ export const OptionCard:React.FC<Props> = ({title, actions, background, color}:P
         title={title}
         variant='borderless'
         styles={{
-          header:{background:background?background:'#1a195f', color:color?color:'#FFF'}
+          header:{background:background?background:'#51a2fe', color:color?color:'#fdfdfd'}
         }}
         style={{
           width: '20rem',

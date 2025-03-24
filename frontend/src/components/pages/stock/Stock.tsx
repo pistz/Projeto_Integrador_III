@@ -60,7 +60,7 @@ export const Stock:React.FC = () => {
       },
 
       {
-          title: 'Cadastro de Produtos',
+          title: 'Produtos',
           actions: [
             {
               key: 'Adicionar',
@@ -138,8 +138,7 @@ export const Stock:React.FC = () => {
                     key={option.title}
                     title={option.title}
                     actions={option.actions}
-                    background='#5aa9f3'
-                    color='#080808'
+                    background='#8ec0ee'
                 />
             ))}
         </CardsContainer>
@@ -151,6 +150,7 @@ export const Stock:React.FC = () => {
                     key={option.title}
                     title={option.title}
                     actions={option.actions}
+                    background='#51a2fe'
                 />
             ))}
         </CardsContainer>
