@@ -20,4 +20,4 @@ def parse_datetime(date_str: str) -> datetime:
         except ValueError:
             continue
 
-    raise InvalidData(f"Invalid date format: '{date_str}'.")
+    raise InvalidData(f"Formato de data inválido: '{date_str}'.")

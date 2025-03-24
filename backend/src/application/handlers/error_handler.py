@@ -18,6 +18,7 @@ def register_error_handlers(app):
             error = jsonify({
             "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
             "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            "aditional":e.aditional if hasattr(e, 'aditional') else None,
             })
             return error, e.status_code.value
         
@@ -25,6 +26,7 @@ def register_error_handlers(app):
             error = jsonify({
             "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
             "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            "aditional":e.aditional if hasattr(e, 'aditional') else None,
             })
             return error, e.status_code.value
         
@@ -32,6 +34,7 @@ def register_error_handlers(app):
             error = jsonify({
             "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
             "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            "aditional":e.aditional if hasattr(e, 'aditional') else None,
             })
             return error, e.status_code.value
         
@@ -39,6 +42,7 @@ def register_error_handlers(app):
             error = jsonify({
             "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
             "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            "aditional":e.aditional if hasattr(e, 'aditional') else None,
             })
             return error, e.status_code.value
         
@@ -46,6 +50,7 @@ def register_error_handlers(app):
             error = jsonify({
             "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
             "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            "aditional":e.aditional if hasattr(e, 'aditional') else None,
             })
             return error, e.status_code.value
         
@@ -53,6 +58,7 @@ def register_error_handlers(app):
             error = jsonify({
             "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
             "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            "aditional":e.aditional if hasattr(e, 'aditional') else None,
             })
             return error, e.status_code.value
         
@@ -60,6 +66,7 @@ def register_error_handlers(app):
             error = jsonify({
             "error": str(e.type) if hasattr(e, 'type') else "Internal Server Error",
             "message": e.message if hasattr(e, 'message') else "An unexpected error has occurred. Please try again later.",
+            "aditional":e.aditional if hasattr(e, 'aditional') else None,
             })
             return error, e.status_code.value
         

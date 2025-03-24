@@ -17,7 +17,7 @@ class CategoryRepository(ICategoryRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error creating category: {e}')
+                raise DatabaseException(message='Erro ao criar categoria', aditional=str(e))
 
     def get_category_by_name(self, name: str) -> list[Category]:
         category = self.__find_category(name=name)
@@ -43,7 +43,7 @@ class CategoryRepository(ICategoryRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error updating category: {e}')
+                raise DatabaseException(message='Erro ao atualizar categoria', aditional=str(e))
 
     def delete_category(self, category_id:int) -> None:
         with DbConnectionHandler() as db:
@@ -54,7 +54,7 @@ class CategoryRepository(ICategoryRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error deleting category: {e}')
+                raise DatabaseException(message='Erro ao deletar categoria', aditional=str(e))
             
     def __find_category(self, category_id:int = None, name:str = None) -> Category:
         if category_id is not None:

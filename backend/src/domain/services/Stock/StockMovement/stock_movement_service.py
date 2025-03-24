@@ -26,12 +26,12 @@ class StockMovementService(IStockMovementService):
 
         if movement.movement_type == MovementType.OUT:
             if not is_positive_stock:
-                raise InvalidData("Cannot move product, no stock available")
+                raise InvalidData("Não há estoque deste produto")
             
             movement.quantity = (movement.quantity)*(-1) if current_stock.total_quantity >= movement.quantity else 0
 
         if movement.quantity == 0:
-            raise InvalidData('Cannot move product, no stock available')
+            raise InvalidData('Não há estoque deste produto')
         
         new_quantity = current_stock.total_quantity + movement.quantity
         current_stock.total_quantity = new_quantity
@@ -42,7 +42,7 @@ class StockMovementService(IStockMovementService):
         self.__set_current_stock(stock_product=product_stock)
 
         return HttpResponse(
-            body={"message":f"Registered movement {movement.movement_source} from {movement.movement_type}, product: {movement.product_id}, quantity: {movement.quantity}"}, 
+            body={"message":f"Movimento registrado {movement.movement_source} de {movement.movement_type}, produto: {movement.product_id}, quantidade: {movement.quantity}"}, 
             status_code=StatusCode.CREATED.value)
 
     def get_all_stock_movements(self) -> HttpResponse:
@@ -67,7 +67,7 @@ class StockMovementService(IStockMovementService):
             )
         
         if not movement:
-            raise NotFound("Movement not found!")
+            raise NotFound("Movimento não encontrado!")
         
         movement_dto = StockMovementDTO(
             id=movement.id, 
@@ -84,7 +84,7 @@ class StockMovementService(IStockMovementService):
 
     def get_stock_movement_by_date(self, date: str) -> HttpResponse:
         if not date:
-            raise InvalidData("Date cannot be empty")
+            raise InvalidData("Data não pode ser vazia")
         
         parsed_date = parse_datetime(date)
 
@@ -106,7 +106,7 @@ class StockMovementService(IStockMovementService):
 
     def get_stock_movement_by_date_range(self, start_date:str, end_date:str) -> HttpResponse:
         if not start_date or not end_date:
-            raise InvalidData("Date cannot be empty")
+            raise InvalidData("Data não pode ser vazia")
         
         parsed_start_date = parse_datetime(start_date)
         parsed_end_date = parse_datetime(end_date)
@@ -131,11 +131,11 @@ class StockMovementService(IStockMovementService):
 
     def __validate_movements(self, movement: MoveStockDTO):
         if not movement:
-            raise InvalidData("Not a valid movement!")
+            raise InvalidData("Movimento não é válido!")
         
         product = self.__products_repository.get_product_by_id(product_id=movement.product_id)
         if not product:
-            raise InvalidData("Product not registered!")
+            raise InvalidData("Produto não registrado!")
         
         try:
             movement.movement_source = MovementSource(movement.movement_source)
@@ -162,7 +162,7 @@ class StockMovementService(IStockMovementService):
     def __validate_current_stock_exists(self, product_id:int) -> CurrentStockDTO:
         current_stock = self.__get_current_stock_by_product_id(product_id=product_id)
         if not current_stock:
-            raise InvalidData("Current stock is not set for this product!")
+            raise InvalidData("Estoque atual não foi configurado para este produto!")
         return current_stock.body       
 
     def __validate_current_stock_is_positive(self, current_stock:CurrentStockDTO) -> bool:

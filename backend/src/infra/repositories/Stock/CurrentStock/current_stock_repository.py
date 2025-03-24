@@ -29,7 +29,7 @@ class CurrentStockRepository(ICurrentStockRepository):
             
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f"Error creating new stock entry: {e}")
+                raise DatabaseException(message='Erro ao criar nova entrada no estoque', aditional=str(e))
         
 
     def get_current_stock_by_product_id(self, product_id:int) -> CurrentStock:

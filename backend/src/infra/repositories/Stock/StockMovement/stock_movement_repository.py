@@ -25,7 +25,7 @@ class StockMovementRepository(IStockMovementRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error moving stock: {e}')
+                raise DatabaseException(message='Erro ao criar nova movimentação no estoque', aditional=str(e))
 
     def get_all_stock_movements(self) -> list[StockMovement]:
         with DbConnectionHandler() as db:

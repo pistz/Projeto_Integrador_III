@@ -32,12 +32,12 @@ class CurrentStockService(ICurrentStockService):
 
     def __validate_product(self, product_stock:ProductStockDTO) -> None:
         if not product_stock:
-            raise InvalidData("Invalid data")
+            raise InvalidData("Dados inválidos")
     
     def __validate_product_existence(self, id:int) -> CurrentStockDTO:
         found_product = self.__current_stock_repository.get_current_stock_by_product_id(product_id=id)
         if not found_product:
-            raise NotFound(f"Product_id '{id}' not found")
+            raise NotFound(f"Product_id '{id}' não encotrado")
         product_current_stock = CurrentStockDTO(
             product_id=found_product.product_id, 
             total_quantity=found_product.total_quantity, 

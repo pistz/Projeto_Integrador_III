@@ -22,9 +22,9 @@ class LoginService(ILoginService):
     def login(self, email: str, password: str) -> HttpResponse:
         user = self.user_repository.get_user_by_email(email)
         if not user:
-            raise InvalidUser("Incorrect email or password")
+            raise InvalidUser("Email ou password incorretos")
         if not self.__dehash_password(password, user.password):
-            raise InvalidUser("Incorrect email or password")
+            raise InvalidUser("Email ou password incorretos")
         token = self.__generate_token(user)
         return HttpResponse(body=JWTTokenDTO(token), status_code=StatusCode.OK.value)
 

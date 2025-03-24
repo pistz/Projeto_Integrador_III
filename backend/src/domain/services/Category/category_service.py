@@ -15,21 +15,21 @@ class CategoryService(ICategoryService):
     def create_category(self, name: str) -> HttpResponse:
         category_exists = self.category_repository.get_category_by_name(name)
         if category_exists:
-            raise InvalidData('Category already exists')
+            raise InvalidData('Categoria já existe')
         self.category_repository.create_category(name)
-        return HttpResponse(status_code=StatusCode.CREATED.value, body={'message': 'Category created successfully'})
+        return HttpResponse(status_code=StatusCode.CREATED.value, body={'message': 'Categoria criada com sucesso'})
     
     def get_category_by_name(self, name: str) -> HttpResponse:
         found_category = self.category_repository.get_category_by_name(name)
         if not found_category or len(found_category) == 0:
-            raise NotFound('Category not found')
+            raise NotFound('Categoria não existe')
         category = [CategoryDTO(id=category.id, name=category.name)for category in found_category]
         return HttpResponse(status_code=StatusCode.OK.value, body=category)
     
     def get_category_by_id(self, category_id: int) -> HttpResponse:
         found_category = self.category_repository.get_category_by_id(category_id)
         if not found_category:
-            raise NotFound('Category not found')
+            raise NotFound('Categoria não existe')
         category = CategoryDTO(id=found_category.id, name=found_category.name)
         return HttpResponse(status_code=StatusCode.OK.value, body=category)
     
@@ -43,15 +43,15 @@ class CategoryService(ICategoryService):
     def update_category(self, category_id:int, name:str) -> HttpResponse:
         found_category = self.category_repository.get_category_by_id(category_id)
         if not found_category:
-            raise NotFound('Category not found')
+            raise NotFound('Categoria não existe')
         found_category.name = name if name else found_category.name
         self.category_repository.update_category(category_id=found_category.id, name=found_category.name)
-        return HttpResponse(status_code=StatusCode.OK.value, body={'message': 'Category updated successfully'})
+        return HttpResponse(status_code=StatusCode.OK.value, body={'message': 'Categoria atualizada com sucesso'})
         
     
     def delete_category(self, category_id:int) -> HttpResponse:
         found_category = self.category_repository.get_category_by_id(category_id)
         if not found_category:
-            raise NotFound('Category not found')
+            raise NotFound('Categoria não existe')
         self.category_repository.delete_category(category_id)
-        return HttpResponse(status_code=StatusCode.OK.value, body={'message': 'Category deleted successfully'})
+        return HttpResponse(status_code=StatusCode.OK.value, body={'message': 'Categoria deletada com sucesso'})

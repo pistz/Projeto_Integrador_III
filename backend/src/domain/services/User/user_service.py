@@ -19,17 +19,17 @@ class UserService(IUserService):
         self.__is_valid_email(user.email)
         user_exists = self.user_repository.get_user_by_email(user.email)
         if user_exists:
-            raise EmailNotValid('User already exists')
+            raise EmailNotValid('Usuário já existe')
         self.__is_valid_password_len(user.password)
         hashed_password = self.__hash_password(user.password)
         user.password = hashed_password
         self.user_repository.create_user(user)
-        return HttpResponse(status_code=StatusCode.CREATED.value, body={'message': 'User created successfully'})
+        return HttpResponse(status_code=StatusCode.CREATED.value, body={'message': 'Usuário criado com sucesso'})
     
     def get_user_by_id(self, user_id: int) -> HttpResponse:
         user = self.user_repository.get_user_by_id(user_id)
         if not user:
-            raise NotFound('User not found')
+            raise NotFound('Usuário não encontrado')
         user_response = UserDTO(id=user.id, name=user.name, email=user.email)
         return HttpResponse(status_code=StatusCode.OK.value, body=user_response)
     
@@ -41,7 +41,7 @@ class UserService(IUserService):
     def update_user(self, user_id:int, user: UpdateUserDTO) -> HttpResponse:
         user_exists = self.user_repository.get_user_by_id(user_id=user_id)
         if not user_exists:
-            raise InvalidUser('User not valid')
+            raise InvalidUser('Usuário inválido')
         if user.password:
             self.__is_valid_password_len(user.password)
             hashed_password = self.__hash_password(user.password)
@@ -49,14 +49,14 @@ class UserService(IUserService):
         if not user.name:
             user.name = user_exists.name
         self.user_repository.update_user(user_id=user_id, user=user)
-        return HttpResponse(status_code=StatusCode.OK.value, body={'message': 'User updated successfully'})
+        return HttpResponse(status_code=StatusCode.OK.value, body={'message': 'Usuário atualizado com sucesso'})
     
     def delete_user(self, user_id:int) -> HttpResponse:
         user = self.user_repository.get_user_by_id(user_id)
         if not user:
-            raise InvalidUser('User not valid')
+            raise InvalidUser('Usuário inválido')
         self.user_repository.delete_user(user_id)
-        return HttpResponse(status_code=StatusCode.OK.value, body={'message': 'User deleted successfully'})
+        return HttpResponse(status_code=StatusCode.OK.value, body={'message': 'Usuário deletado com sucesso'})
     
     def __hash_password(self, password: str) -> str:
         return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
@@ -66,8 +66,8 @@ class UserService(IUserService):
         is_valid = re.search(regex, email)
         if is_valid:
             return
-        raise EmailNotValid("Email is not a valid email")
+        raise EmailNotValid("Não é um email válido")
     
     def __is_valid_password_len(self, password: str) -> None:
         if len(password) < 4 or len(password) > 8:
-            raise PasswordNotValid('Password must be between 4 and 8 characters')
+            raise PasswordNotValid('Password deve ter entre 4 e 8 caracteres')

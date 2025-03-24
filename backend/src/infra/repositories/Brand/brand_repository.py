@@ -18,7 +18,7 @@ class BrandRepository(IBrandRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error creating Brand: {e}')
+                raise DatabaseException(message='Erro ao criar marca', aditional=str(e))
 
     def get_brand_by_name(self, name: str) -> list[Brand]:
         brand = self.__find_brand(name=name)
@@ -44,7 +44,7 @@ class BrandRepository(IBrandRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error updating Brand: {e}')
+                raise DatabaseException(message='Erro ao atualizar marca', aditional=str(e))
 
     def delete_brand(self, id:int) -> None:
         with DbConnectionHandler() as db:
@@ -55,7 +55,7 @@ class BrandRepository(IBrandRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error deleting Brand: {e}')
+                raise DatabaseException(message='Erro ao deletar marca', aditional=str(e))
             
     def __find_brand(self, id:int = None, name:str = None) -> Optional[Brand]:
         if id is not None:

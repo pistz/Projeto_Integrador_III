@@ -45,7 +45,7 @@ class ProductsRepository(IProductsRepository):
             
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error creating product: {e}')
+                raise DatabaseException(message='Erro ao criar produto', aditional=str(e))
 
     def update_product(self, product_id: int, product: UpdateProductDTO) -> None:
         with DbConnectionHandler() as db:
@@ -61,7 +61,7 @@ class ProductsRepository(IProductsRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error updating product: {e}')
+                raise DatabaseException(message='Erro ao atualizar produto', aditional=str(e))
 
     def delete_product(self, product_id: int) -> None:
         with DbConnectionHandler() as db:
@@ -72,7 +72,7 @@ class ProductsRepository(IProductsRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error deleting product: {e}')
+                raise DatabaseException(message='Erro ao deletar produto', aditional=str(e))
     
     def __find_product_by_name_or_id(self, product_id:int=None, product_name:str=None) -> Product:
         if product_id is not None:

@@ -20,7 +20,7 @@ class UserRepository(IUserRepository):
                 return new_user
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error creating user: {e}')
+                raise DatabaseException(message='Erro ao criar usuário', aditional=str(e))
     
     def get_user_by_email(self, email: str) -> User|None:
         user = self.__find_user(email=email)
@@ -48,7 +48,7 @@ class UserRepository(IUserRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error updating user: {e}')
+                raise DatabaseException(message='Erro ao atualizar usuário', aditional=str(e))
 
 
     def delete_user(self, user_id:int) -> None:
@@ -60,7 +60,7 @@ class UserRepository(IUserRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(f'Error deleting user: {e}')
+                raise DatabaseException(message='Erro ao deletar usuário', aditional=str(e))
             
     def __find_user(self, user_id:int=None, email:str=None) -> Optional[User]:
         if user_id is not None:
