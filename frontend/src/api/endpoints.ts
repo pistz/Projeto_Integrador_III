@@ -19,3 +19,9 @@ export const brandRoute = {
     getAll:`${base.host}/brands/all`,
     delete:`${base.host}/brands`
 }
+
+export const categoryRoute = {
+    create:`${base.host}/categories`,
+    getAll:`${base.host}/categories/all`,
+    delete:`${base.host}/categories`
+}

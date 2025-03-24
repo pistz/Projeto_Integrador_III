@@ -2,14 +2,14 @@ from enum import Enum
 
 
 class ErrorTypes(Enum):
-    INVALID_EMAIL = 'Invalid email'
-    INVALID_PASSWORD = 'Invalid password'
-    INVALID_DATA = 'Invalid data'
-    INVALID_USER = 'Invalid user'
-    NOT_FOUND = 'Not found'
-    TOKEN_ERROR = 'Token error'
-    DATABASE_ERROR = 'Database error'
-    UNEXPECTED_ERROR = 'Unexpected error'
+    INVALID_EMAIL = 'INVALID_EMAIL'
+    INVALID_PASSWORD = 'INVALID_PASSWORD'
+    INVALID_DATA = 'INVALID_DATA'
+    INVALID_USER = 'INVALID_USER'
+    NOT_FOUND = 'NOT_FOUND'
+    TOKEN_ERROR = 'TOKEN_ERROR'
+    DATABASE_ERROR = 'DATABASE_ERROR'
+    UNEXPECTED_ERROR = 'UNEXPECTED_ERROR'
 
     def __str__(self):
         return str(self.value)
