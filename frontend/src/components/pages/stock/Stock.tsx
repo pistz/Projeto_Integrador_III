@@ -76,8 +76,8 @@ export const Stock:React.FC = () => {
               onClick: () => showModal(<CreateBrand close={handleCancel}/>)
             },
             {
-              key: 'Listar',
-              component: (<CardComponent component={<EyeOutlined />} title={"Listar"} boldFont/>),
+              key: 'Listar/Editar',
+              component: (<CardComponent component={<EyeOutlined />} title={"Listar/Editar"} boldFont/>),
               onClick: () => showModal( <ListBrands />)
             }
           ]
@@ -92,8 +92,8 @@ export const Stock:React.FC = () => {
               onClick: () => showModal(<CreateCategory close={handleCancel}/>)
             },
             {
-              key: 'Listar',
-              component: (<CardComponent component={<EyeOutlined />} title={"Listar"} boldFont/>),
+              key: 'Listar/Editar',
+              component: (<CardComponent component={<EyeOutlined />} title={"Listar/Editar"} boldFont/>),
               onClick: () => showModal(<ListCategories />)
             }
           ]
@@ -108,8 +108,8 @@ export const Stock:React.FC = () => {
               onClick: () => showModal(<CreateProduct close={handleCancel} />)
             },
             {
-              key: 'Listar',
-              component: (<CardComponent component={<EyeOutlined />} title={"Listar"} boldFont/>),
+              key: 'Listar/Editar',
+              component: (<CardComponent component={<EyeOutlined />} title={"Listar/Editar"} boldFont/>),
               onClick: () => showModal(<ListProduct />)
             }
           ]

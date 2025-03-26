@@ -28,6 +28,17 @@ export const CreateProduct:React.FC<Props> = ({close}:Props) => {
         close();
       }
     };
+
+    const brandList = productOptions.brands.map((brand) =>({
+      value:brand.id,
+      label:brand.name
+    }));
+
+    const categoryList = productOptions.categories.map((category) =>({
+      value:category.id,
+      label:category.name
+    }));
+
   
     return (
       <>
@@ -56,11 +67,12 @@ export const CreateProduct:React.FC<Props> = ({close}:Props) => {
               label={'Marca'}
               rules={[{required:true, message:'Marca é obrigatório'}]}
             >
-              <Select disabled={isLoading || isFetchingOptions}>
-                {productOptions.brands.map((brand) =>(
-                  <Select.Option value={brand.id}>{brand.name}</Select.Option>
-                ))}
-              </Select>
+              <Select 
+                disabled={isLoading || isFetchingOptions}
+                showSearch
+                optionFilterProp='label'
+                options={brandList}
+              />
             </Form.Item>
 
 
@@ -69,11 +81,12 @@ export const CreateProduct:React.FC<Props> = ({close}:Props) => {
               label={'Categoria'}
               rules={[{required:true, message:'Categoria é obrigatório'}]}
             >
-              <Select disabled={isLoading || isFetchingOptions}>
-                {productOptions.categories.map((category) =>(
-                  <Select.Option value={category.id}>{category.name}</Select.Option>
-                ))}
-              </Select>
+              <Select 
+                disabled={isLoading || isFetchingOptions}
+                showSearch
+                optionFilterProp='label'
+                options={categoryList}
+              />
             </Form.Item>
 
             <Form.Item 

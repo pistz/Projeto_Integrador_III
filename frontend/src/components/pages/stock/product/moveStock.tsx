@@ -35,13 +35,18 @@ export const MoveStock:React.FC<Props> = ({movementType, user, close}) => {
       try {
         const created = await ProductAPI.move(product);
         notifySuccess(created.message);
+        form.resetFields();
       } catch (error) {
         notifyError(error);
       } finally{
         setIsLoading(false);
-        form.resetFields();
       }
     };
+
+    const selectList = productsList.map((product) =>({
+        value:product.id,
+        label:product.name
+    }))
 
   return (
     <>
@@ -59,11 +64,12 @@ export const MoveStock:React.FC<Props> = ({movementType, user, close}) => {
               label={'Produto'} 
               rules={[{required:true, message:'Produto é obrigatório'}]}
               >
-                <Select disabled={isLoading || isFetchingOptions}>
-                    {productsList.map((product) =>(
-                  <Select.Option value={product.id}>{product.name}</Select.Option>
-                ))}
-              </Select>
+                <Select 
+                  disabled={isLoading || isFetchingOptions} 
+                  showSearch 
+                  optionFilterProp="label" 
+                  options={selectList}
+                />
             </Form.Item>
 
             <Form.Item
@@ -81,7 +87,7 @@ export const MoveStock:React.FC<Props> = ({movementType, user, close}) => {
             <Form.Item 
               name={['quantity']} 
               label={'Quantidade'}
-              rules={[{required:true, message:'Quantidade é obrigatório'}]}
+              rules={[{required:true, message:'Quantidade é obrigatória'},{pattern:/[0-9]/}]}
             >
               <Input
                 disabled={isLoading || isFetchingOptions}
