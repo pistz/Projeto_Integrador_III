@@ -39,7 +39,6 @@ export const CreateCategory:React.FC<Props> = ({close}:Props) => {
         >
           <Form.Item 
             name={['name']} 
-            label={'Definição da Categoria'} 
             rules={[{required:true, message:'Nome é obrigatório'}]}
             >
               <Input 

@@ -39,7 +39,6 @@ export const CreateBrand:React.FC<Props> = ({close}:Props) => {
         >
           <Form.Item 
             name={['name']} 
-            label={'Nome da Marca'} 
             rules={[{required:true, message:'Nome é obrigatório'}]}
             >
               <Input 
