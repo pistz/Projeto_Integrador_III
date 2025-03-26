@@ -1,4 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
+import { Brand } from "../api/Brand/types";
+import { Category } from "../api/Category/types";
 
 export interface IChildren {
     children: React.ReactNode;
@@ -6,10 +8,16 @@ export interface IChildren {
 
 export interface AppContextType {
     signed:boolean;
-    token:string;
-    expired:boolean; 
-    
-    setToken: Dispatch<SetStateAction<string>>;
     setSigned: Dispatch<SetStateAction<boolean>>;
+    token:string;
+    setToken: Dispatch<SetStateAction<string>>;
+    expired:boolean; 
     setExpired: Dispatch<SetStateAction<boolean>>;
+
+    productOptions:ProductOptions;
+    isFetchingOptions:boolean;
+}
+export interface ProductOptions {
+    brands:Brand[],
+    categories:Category[]
 }

@@ -9,6 +9,8 @@ import { CreateBrand } from './brand/createBrand'
 import { ListBrands } from './brand/listBrands'
 import { CreateCategory } from './category/createCategory'
 import { ListCategories } from './category/listCategories'
+import { CreateProduct } from './product/createProduct'
+import { ListProduct } from './product/listProduct'
 
 export const Stock:React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,12 +67,12 @@ export const Stock:React.FC = () => {
             {
               key: 'Adicionar',
               component: (<CardComponent component={<AppstoreAddOutlined />} title={"Criar"}/>),
-              onClick: () => showModal(<p>Teste</p>)
+              onClick: () => showModal(<CreateProduct close={handleCancel} />)
             },
             {
               key: 'Listar',
               component: (<CardComponent component={<EyeOutlined />} title={"Listar"}/>),
-              onClick: () => showModal(<p>Teste</p>)
+              onClick: () => showModal(<ListProduct />)
             }
           ]
       },
