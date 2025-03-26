@@ -4,7 +4,13 @@ import { CardsContainer } from '../../shared/container/cardsContainer'
 import { Modal } from '../../shared/modal/Modal'
 import { OptionCard } from '../../shared/card/OptionCard'
 import { CardComponent } from '../../shared/card/CardComponent'
-import { AppstoreAddOutlined, EyeOutlined, MinusCircleFilled, PlusCircleFilled } from '@ant-design/icons'
+import { 
+  AppstoreAddOutlined, 
+  EyeOutlined, 
+  MinusCircleFilled, 
+  PlusCircleFilled,
+  SnippetsOutlined
+} from '@ant-design/icons'
 import { CreateBrand } from './brand/createBrand'
 import { ListBrands } from './brand/listBrands'
 import { CreateCategory } from './category/createCategory'
@@ -15,24 +21,40 @@ import { getUserFromToken } from '../../../config/token'
 import { notifyError } from '../../shared/notify/notify'
 import { MoveStock } from './product/moveStock'
 import { MovementType } from './product/types'
+import { Drawer } from '../../shared/drawer/Drawer'
 
 
 export const Stock:React.FC = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+    const MIN_HEIGHT = '30vh';
+
     const [userName, setUserName] = useState('');
 
-    const minHeight = '30vh'
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState<React.ReactNode>(null);
+
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
+
   
     const showModal = (content: React.ReactNode) => {
       setModalContent(content);
       setIsModalOpen(true);
     };
   
-    const handleCancel = () => {
+    const closeModal = () => {
       setIsModalOpen(false);
       setModalContent(null);
     };
+
+    const openDrawer = (content: React.ReactNode) =>{
+      setDrawerContent(content);
+      setIsDrawerOpen(true);
+    }
+
+    const closeDrawer = () => {
+      setDrawerContent(null);
+      setIsDrawerOpen(false);
+    }
 
     const loadUserName = useCallback(async () => {
       try{
@@ -55,15 +77,25 @@ export const Stock:React.FC = () => {
             {
               key: 'Entrada',
               component: (<CardComponent component={<PlusCircleFilled style={{color:'#059212'}}/>} title={"Entrada"} fontColor='#059212' boldFont/>),
-              onClick: () => showModal(<MoveStock user={userName} movementType={MovementType.IN} close={handleCancel}/>)
+              onClick: () => showModal(<MoveStock user={userName} movementType={MovementType.IN} close={closeModal}/>)
             },
             {
               key: 'Saída',
               component: (<CardComponent component={<MinusCircleFilled style={{color:'#C21010'}}/>} title={"Saída"} fontColor='#C21010' boldFont/>),
-              onClick: () => showModal(<MoveStock user={userName} movementType={MovementType.OUT} close={handleCancel}/>)
+              onClick: () => showModal(<MoveStock user={userName} movementType={MovementType.OUT} close={closeModal}/>)
             }
           ]
       },
+      {
+        title: 'Relatórios de Estoque',
+        actions: [
+          {
+            key: 'Abrir',
+            component: (<CardComponent component={<SnippetsOutlined />} title={"Abrir"} boldFont/>),
+            onClick: () => openDrawer(<p>TESTE</p>)
+          },
+        ]
+    },
   ];
 
     const registerOptions = [
@@ -73,7 +105,7 @@ export const Stock:React.FC = () => {
             {
               key: 'Adicionar',
               component: (<CardComponent component={<AppstoreAddOutlined />} title={"Criar"} boldFont/>),
-              onClick: () => showModal(<CreateBrand close={handleCancel}/>)
+              onClick: () => showModal(<CreateBrand close={closeModal}/>)
             },
             {
               key: 'Listar/Editar',
@@ -89,7 +121,7 @@ export const Stock:React.FC = () => {
             {
               key: 'Adicionar',
               component: (<CardComponent component={<AppstoreAddOutlined />} title={"Criar"} boldFont/>),
-              onClick: () => showModal(<CreateCategory close={handleCancel}/>)
+              onClick: () => showModal(<CreateCategory close={closeModal}/>)
             },
             {
               key: 'Listar/Editar',
@@ -105,7 +137,7 @@ export const Stock:React.FC = () => {
             {
               key: 'Adicionar',
               component: (<CardComponent component={<AppstoreAddOutlined />} title={"Criar"} boldFont/>),
-              onClick: () => showModal(<CreateProduct close={handleCancel} />)
+              onClick: () => showModal(<CreateProduct close={closeModal} />)
             },
             {
               key: 'Listar/Editar',
@@ -119,32 +151,31 @@ export const Stock:React.FC = () => {
   return (
 
     <>
-        <Divider>Movimentações</Divider>
-        <CardsContainer minHeight={minHeight}>
+        <Divider>Movimentações e Relatórios de Estoque</Divider>
+        <CardsContainer minHeight={MIN_HEIGHT}>
             {moveStock.map((option) => (
                 <OptionCard
                     key={option.title}
                     title={option.title}
                     actions={option.actions}
-                    background='#51a2fe'
                 />
             ))}
         </CardsContainer>
 
         <Divider>Cadastros</Divider>
-        <CardsContainer minHeight={minHeight}>
+        <CardsContainer minHeight={MIN_HEIGHT}>
             {registerOptions.map((option) => (
                 <OptionCard
                     key={option.title}
                     title={option.title}
                     actions={option.actions}
-                    background='#8ec0ee'
+                    background='#536493'
                 />
             ))}
         </CardsContainer>
 
-        <Modal open={isModalOpen} onCancel={handleCancel} modalContent={modalContent}/>
-
+        <Modal open={isModalOpen} onCancel={closeModal} modalContent={modalContent}/>
+        <Drawer open={isDrawerOpen} onClose={closeDrawer} content={drawerContent} />
     </>
   )
 }
