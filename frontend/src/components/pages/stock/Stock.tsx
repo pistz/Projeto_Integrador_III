@@ -28,7 +28,7 @@ export const Stock:React.FC = () => {
       setModalContent(null);
     };
 
-    const register = [
+    const registerOptions = [
       {
           title: 'Marcas',
           actions: [
@@ -78,7 +78,7 @@ export const Stock:React.FC = () => {
       },
   ]
 
-    const movements = [
+    const movementOptions = [
         {
             title: 'Marcas',
             actions: [
@@ -135,7 +135,7 @@ export const Stock:React.FC = () => {
     <>
         <Divider>Cadastros</Divider>
         <CardsContainer minHeight={minHeight}>
-            {register.map((option) => (
+            {registerOptions.map((option) => (
                 <OptionCard
                     key={option.title}
                     title={option.title}
@@ -147,7 +147,7 @@ export const Stock:React.FC = () => {
 
         <Divider>Movimentações</Divider>
         <CardsContainer minHeight={minHeight}>
-            {movements.map((option) => (
+            {movementOptions.map((option) => (
                 <OptionCard
                     key={option.title}
                     title={option.title}

@@ -15,15 +15,21 @@ export const ListBrands:React.FC = () => {
     const columns:ColumnsType<Brand> = [
         {
             title:'Nome da Marca',
-            dataIndex:'name'
+            dataIndex:'name',
+            filters:brands.map((item) => ({
+                text:item.name,
+                value:item.name
+            })),
+            filterSearch:true,
+            onFilter: (value, record) => record.name.includes(value as string),
         }
     ]
 
     const loadBrands = async () => {
         setLoading(true);
         try {
-            const brands = await BrandAPI.getAll();
-            setBrands(brands);
+            const brandData = await BrandAPI.getAll();
+            setBrands(brandData);
         } catch (error) {
             notifyError(error);
         } finally {

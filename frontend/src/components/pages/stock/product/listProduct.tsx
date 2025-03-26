@@ -17,8 +17,11 @@ export const ListProduct:React.FC = () => {
         {
             title:'Nome do Produto',
             dataIndex:'name',
+            filters:products.map((item) => ({
+                text:item.name,
+                value:item.name
+            })),
             filterSearch:true,
-            filterMode:'menu',
             onFilter: (value, record) => record.name.includes(value as string),
         },
         {
@@ -37,8 +40,8 @@ export const ListProduct:React.FC = () => {
     const loadData = async () => {
         setLoading(true);
         try {
-            const products = await ProductAPI.getAll();
-            setProducts(products);
+            const productData = await ProductAPI.getAll();
+            setProducts(productData);
         } catch (error) {
             notifyError(error);
         } finally {
