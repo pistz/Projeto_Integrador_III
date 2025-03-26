@@ -19,7 +19,7 @@ import { CreateProduct } from './product/createProduct'
 import { ListProduct } from './product/listProduct'
 import { getUserFromToken } from '../../../config/token'
 import { notifyError } from '../../shared/notify/notify'
-import { MoveStock } from './product/moveStock'
+import { MoveProduct } from './product/moveProduct'
 import { MovementType } from './product/types'
 import { Drawer } from '../../shared/drawer/Drawer'
 
@@ -70,19 +70,19 @@ export const Stock:React.FC = () => {
     },[loadUserName])
 
 
-    const moveStock = [
+    const moveProductStock = [
       {
-          title: 'Movimentar Estoque',
+          title: 'Registrar Movimentação',
           actions: [
             {
               key: 'Entrada',
               component: (<CardComponent component={<PlusCircleFilled style={{color:'#059212'}}/>} title={"Entrada"} fontColor='#059212' boldFont/>),
-              onClick: () => showModal(<MoveStock user={userName} movementType={MovementType.IN} close={closeModal}/>)
+              onClick: () => showModal(<MoveProduct user={userName} movementType={MovementType.IN} close={closeModal}/>)
             },
             {
               key: 'Saída',
               component: (<CardComponent component={<MinusCircleFilled style={{color:'#C21010'}}/>} title={"Saída"} fontColor='#C21010' boldFont/>),
-              onClick: () => showModal(<MoveStock user={userName} movementType={MovementType.OUT} close={closeModal}/>)
+              onClick: () => showModal(<MoveProduct user={userName} movementType={MovementType.OUT} close={closeModal}/>)
             }
           ]
       },
@@ -153,7 +153,7 @@ export const Stock:React.FC = () => {
     <>
         <Divider>Movimentações e Relatórios de Estoque</Divider>
         <CardsContainer minHeight={MIN_HEIGHT}>
-            {moveStock.map((option) => (
+            {moveProductStock.map((option) => (
                 <OptionCard
                     key={option.title}
                     title={option.title}

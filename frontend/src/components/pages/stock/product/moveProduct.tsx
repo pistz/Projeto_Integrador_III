@@ -11,7 +11,7 @@ interface Props {
     user:string,
     close:() => void;
 }
-export const MoveStock:React.FC<Props> = ({movementType, user, close}) => {
+export const MoveProduct:React.FC<Props> = ({movementType, user, close}) => {
 
     const {productsList, isFetchingOptions} = useAppContext();
 
