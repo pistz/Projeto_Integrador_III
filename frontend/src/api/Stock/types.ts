@@ -6,3 +6,8 @@ export interface ProductMovement {
     created_by:string,
     observations?:string,
 }
+
+export interface Movement extends ProductMovement{
+    id:number,
+    movement_date:Date,
+}

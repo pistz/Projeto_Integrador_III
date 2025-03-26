@@ -15,6 +15,7 @@ export const Drawer:React.FC<Props> = ({open, content, title, onClose, width}:Pr
         <AntDrawer
             open={open}
             title={title||''}
+            destroyOnClose
             onClose={onClose}
             width={width}
         >

@@ -16,7 +16,7 @@ export const Modal:React.FC<Props> = ({open, onCancel, modalContent, width}:Prop
         footer={null} 
         destroyOnClose
         closable
-        style={{minWidth:'40rem', maxWidth:'100rem'}}
+        style={{minWidth:'40rem', maxWidth:width? width :'100rem'}}
         width={width}
     >
         {modalContent}

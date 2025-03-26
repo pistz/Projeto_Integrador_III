@@ -22,6 +22,7 @@ import { notifyError } from '../../shared/notify/notify'
 import { MoveProduct } from './product/moveProduct'
 import { MovementType } from './product/types'
 import { Drawer } from '../../shared/drawer/Drawer'
+import { Reports } from './reports/Reports'
 
 
 export const Stock:React.FC = () => {
@@ -92,7 +93,7 @@ export const Stock:React.FC = () => {
           {
             key: 'Abrir',
             component: (<CardComponent component={<SnippetsOutlined />} title={"Abrir"} boldFont/>),
-            onClick: () => openDrawer(<p>TESTE</p>)
+            onClick: () => openDrawer(<Reports />)
           },
         ]
     },
@@ -175,7 +176,7 @@ export const Stock:React.FC = () => {
         </CardsContainer>
 
         <Modal open={isModalOpen} onCancel={closeModal} modalContent={modalContent}/>
-        <Drawer open={isDrawerOpen} onClose={closeDrawer} content={drawerContent} width={500}/>
+        <Drawer open={isDrawerOpen} onClose={closeDrawer} content={drawerContent} width={500} title={moveProductStock[1].title}/>
     </>
   )
 }

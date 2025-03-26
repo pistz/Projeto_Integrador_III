@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Response } from "../types";
-import { ProductMovement } from "./types";
+import { Movement, ProductMovement } from "./types";
 import { stockMovementsRoute } from "../endpoints";
 
 
@@ -11,7 +11,11 @@ export class StockAPI {
         return response.data;
     }
 
-    static getAll = async ():Promise<Response> =>{
+    static delete = async ():Promise<Response> =>{
+        return {message:""} as Response;
+    }
+
+    static getAll = async ():Promise<Movement[]> =>{
         const response = await axios.get(stockMovementsRoute.getAll);
         return response.data;
     }

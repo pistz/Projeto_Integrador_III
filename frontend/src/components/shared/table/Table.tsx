@@ -11,26 +11,34 @@ interface Props<T, API extends APIWithDeleteMethod> {
     data:T[],
     size?:'large'|'middle'|'small',
     loading:boolean,
-    api: API,
-    onDataUpdate: (updatedData: T[]) => void
+    api?: API,
+    hiddenActions?:boolean,
+    onDataUpdate?: (updatedData: T[]) => void
 }
-export const Table = <T extends object, API extends APIWithDeleteMethod>({columns, data, size, loading, api, onDataUpdate}:Props<T, API>) => {
+export const Table = <T extends object, API extends APIWithDeleteMethod>({columns, data, size, loading, api, onDataUpdate, hiddenActions}:Props<T, API>) => {
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleOnClick = async (row:RowProps) =>{
-        const id = row.id
-        setIsLoading(true)
+    const handleOnClick = async (row: RowProps) => {
+        const id = row.id;
+        setIsLoading(true);
+        
         try {
-            const response = await api.delete(id)
-            notifySuccess(response.message)
-            const updatedData = data.filter((item:T) => item.id !== id);
-            onDataUpdate(updatedData);
+            const response = api ? await api.delete(id) : null;
+            if (response) {
+                notifySuccess(response.message);
+            }
+            
+            const updatedData = data.filter((item: T) => item.id !== id);
+            
+            if (onDataUpdate) {
+                onDataUpdate(updatedData);
+            }
         } catch (error) {
-            notifyError(error)
-        }finally{
+            notifyError(error);
+        } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     const tableColumns:TableColumnsType<T> = [
         ...columns,
@@ -38,6 +46,7 @@ export const Table = <T extends object, API extends APIWithDeleteMethod>({column
             title:'Ações',
             width:'5rem',
             align:'center',
+            hidden:hiddenActions,
             render:(value) => (
             <Button type='default' danger title='Deletar' onClick={() => handleOnClick(value)} loading={isLoading}>
                 Deletar
