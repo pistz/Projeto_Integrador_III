@@ -49,7 +49,7 @@ export const CreateProduct:React.FC<Props> = ({close}:Props) => {
               clearOnDestroy={true}
               layout='vertical'
               onFinish={onFinish}
-              disabled={isFetchingOptions}
+              disabled={isFetchingOptions || isLoading}
           >
             <Form.Item 
               name={['name']} 
@@ -100,7 +100,7 @@ export const CreateProduct:React.FC<Props> = ({close}:Props) => {
               />
             </Form.Item>
 
-            <Button type='primary' htmlType='submit' icon={<CheckOutlined />} loading={isLoading}>Salvar</Button>
+            <Button type='primary' htmlType='submit' icon={<CheckOutlined />} loading={isLoading || isFetchingOptions}>Salvar</Button>
           </Form>
         </Space>
       </>

@@ -5,9 +5,10 @@ interface Props {
     open:boolean,
     content:React.ReactNode,
     title?:string,
-    onClose:() => void
+    onClose:() => void,
+    width?:number
 }
-export const Drawer:React.FC<Props> = ({open, content, title, onClose}:Props) => {
+export const Drawer:React.FC<Props> = ({open, content, title, onClose, width}:Props) => {
   return (
 
     <>
@@ -15,6 +16,7 @@ export const Drawer:React.FC<Props> = ({open, content, title, onClose}:Props) =>
             open={open}
             title={title||''}
             onClose={onClose}
+            width={width}
         >
             {content}
         </AntDrawer>

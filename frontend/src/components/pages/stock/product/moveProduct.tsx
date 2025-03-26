@@ -3,8 +3,8 @@ import { Button, Divider, Form, FormProps, Input, Select, Space } from 'antd'
 import { MovementSource, MovementSourceTypeIn, MovementSourceTypeOut, MovementType, ProductMovement } from './types'
 import { useAppContext } from '../../../../context/useAppContext'
 import { notifyError, notifySuccess } from '../../../shared/notify/notify'
-import { ProductAPI } from '../../../../api/Product/ProductAPI'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
+import { StockAPI } from '../../../../api/Stock/StockAPI'
 
 interface Props {
     movementType:MovementType,
@@ -33,7 +33,7 @@ export const MoveProduct:React.FC<Props> = ({movementType, user, close}) => {
       product.quantity = Number(product.quantity);
       setIsLoading(true);
       try {
-        const created = await ProductAPI.move(product);
+        const created = await StockAPI.move(product);
         notifySuccess(created.message);
         form.resetFields();
       } catch (error) {
@@ -57,7 +57,7 @@ export const MoveProduct:React.FC<Props> = ({movementType, user, close}) => {
               clearOnDestroy={true}
               layout='vertical'
               onFinish={onFinish}
-              disabled={isFetchingOptions}
+              disabled={isFetchingOptions || isLoading}
           >
             <Form.Item 
               name={['product_id']} 
@@ -108,8 +108,8 @@ export const MoveProduct:React.FC<Props> = ({movementType, user, close}) => {
             </Form.Item>
 
             <Space style={{display: 'flex', alignItems:'center', justifyContent:"space-evenly"}}>
-                <Button type='primary' htmlType='submit' icon={<CheckOutlined />} loading={isLoading}>Salvar</Button>
-                <Button onClick={close} danger type='default' htmlType='button' icon={<CloseOutlined />} loading={isLoading}>Cancelar</Button> 
+                <Button type='primary' htmlType='submit' icon={<CheckOutlined />} loading={isLoading || isFetchingOptions}>Salvar</Button>
+                <Button onClick={close} danger type='default' htmlType='button' icon={<CloseOutlined />} loading={isLoading || isFetchingOptions}>Cancelar</Button> 
             </Space>
           </Form>
         </Space>

@@ -175,7 +175,7 @@ export const Stock:React.FC = () => {
         </CardsContainer>
 
         <Modal open={isModalOpen} onCancel={closeModal} modalContent={modalContent}/>
-        <Drawer open={isDrawerOpen} onClose={closeDrawer} content={drawerContent} />
+        <Drawer open={isDrawerOpen} onClose={closeDrawer} content={drawerContent} width={500}/>
     </>
   )
 }
