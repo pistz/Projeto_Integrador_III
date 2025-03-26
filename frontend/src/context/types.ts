@@ -16,8 +16,17 @@ export interface AppContextType {
 
     productOptions:ProductOptions;
     isFetchingOptions:boolean;
+    productsList:Product[]
 }
 export interface ProductOptions {
     brands:Brand[],
     categories:Category[]
+}
+
+export interface Product {
+    id:number,
+    name:string,
+    description:string,
+    brand_id:number,
+    category_id:number
 }

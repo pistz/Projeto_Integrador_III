@@ -31,3 +31,9 @@ export const productRoute = {
     getAll:`${base.host}/products/all`,
     delete:`${base.host}/products`
 }
+
+export const stockMovementsRoute = {
+    move:`${base.host}/stock-movements`,
+    getAll:`${base.host}/stock-movements/all`,
+    getSingleById:`${base.host}/stock-movements`
+}

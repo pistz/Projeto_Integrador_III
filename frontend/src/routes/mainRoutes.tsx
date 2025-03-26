@@ -5,7 +5,7 @@ import { appPath, Router } from "./types";
 
 export const mainRoutes: Router[] = [
     {
-      label: 'Inicio',
+      label: 'Início',
       path: 'home',
       element: <Welcome />,
       get fullpath() {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Response } from "../types";
-import { CreateProduct, Product } from "./types";
-import { productRoute } from "../endpoints";
+import { CreateProduct, Product, ProductMovement } from "./types";
+import { productRoute, stockMovementsRoute } from "../endpoints";
 
 export class ProductAPI {
 
@@ -17,6 +17,11 @@ export class ProductAPI {
 
     static delete = async (id:number):Promise<Response> =>{
         const response = await axios.delete(`${productRoute.delete}/${id}`);
+        return response.data;
+    }
+
+    static move = async (movement:ProductMovement):Promise<Response> =>{
+        const response = await axios.post(stockMovementsRoute.move, movement);
         return response.data;
     }
 }

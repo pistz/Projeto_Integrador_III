@@ -1,8 +1,9 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
-import { AppContextType, IChildren, ProductOptions } from './types';
+import { AppContextType, IChildren, Product, ProductOptions } from './types';
 import { BrandAPI } from '../api/Brand/BrandAPI';
 import { CategoryAPI } from '../api/Category/CategoryAPI';
 import { notifyError } from '../components/shared/notify/notify';
+import { ProductAPI } from '../api/Product/ProductAPI';
 
 
 const AppContext = createContext<AppContextType>({} as AppContextType);
@@ -12,6 +13,8 @@ const defaultProductOptions:ProductOptions = {
     categories:[]
 }
 
+const defaultProductsList:Product[] = [];
+
 export const ContextProvider: React.FC<IChildren> = ({ children }:IChildren) => {
 
     const [signed, setSigned] = useState<boolean>(false);
@@ -19,6 +22,7 @@ export const ContextProvider: React.FC<IChildren> = ({ children }:IChildren) => 
     const [expired, setExpired] = useState<boolean>(false);
 
     const [productOptions, setProductOptions] = useState<ProductOptions>(defaultProductOptions);
+    const [productsList, setProductsList] = useState<Product[]>(defaultProductsList);
     const [isFetchingOptions, setIsFetchingOptions] = useState(false);
 
     const getAllBrands = useCallback(async () =>{
@@ -29,20 +33,26 @@ export const ContextProvider: React.FC<IChildren> = ({ children }:IChildren) => 
         return await CategoryAPI.getAll();
     }, []);
 
+    const getAllProducts = useCallback(async () =>{
+        return await ProductAPI.getAll();
+    }, []);
+
     const loadProductOptions = useCallback(async () =>{
         setIsFetchingOptions(true);
         try{
-            const [brands, categories] = await Promise.all([
+            const [brands, categories, products] = await Promise.all([
                 getAllBrands(), 
-                getAllCategories()
+                getAllCategories(),
+                getAllProducts(),
             ]);
-            setProductOptions({brands, categories})
+            setProductOptions({brands, categories});
+            setProductsList(products)
         }catch(error){
             notifyError(error);
         }finally{
             setIsFetchingOptions(false);
         }
-    },[getAllBrands, getAllCategories]);
+    },[getAllBrands, getAllCategories, getAllProducts]);
 
     useEffect(() =>{
         loadProductOptions()
@@ -55,7 +65,8 @@ export const ContextProvider: React.FC<IChildren> = ({ children }:IChildren) => 
         token, setToken,
         expired, setExpired,
         productOptions,
-        isFetchingOptions
+        isFetchingOptions,
+        productsList
 
         }}>
         {children}
