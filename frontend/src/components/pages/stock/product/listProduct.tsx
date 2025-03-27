@@ -6,6 +6,7 @@ import { Divider } from 'antd';
 import { ProductAPI } from '../../../../api/Product/ProductAPI';
 import { Table } from '../../../shared/table/Table';
 import { useAppContext } from '../../../../context/useAppContext';
+import { SortAscendingOutlined } from '@ant-design/icons';
 
 export const ListProduct:React.FC = () => {
 
@@ -22,17 +23,22 @@ export const ListProduct:React.FC = () => {
                 value:item.name
             })),
             filterSearch:true,
+            sorter: (a, b) => a.name.length - b.name.length,
+            sortIcon:()=> <SortAscendingOutlined/>,
             onFilter: (value, record) => record.name.includes(value as string),
+            key:'name'
         },
         {
             title:'Marca do Produto',
             dataIndex:'brand_id',
-            render: (value) => (productOptions.brands.map(brand => brand.id == value ? brand.name : null))
+            render: (value) => (productOptions.brands.map(brand => brand.id == value ? brand.name : null)),
+            key:'brand_id'
         },
         {
             title:'Categoria do Produto',
             dataIndex:'category_id',
-            render: (value) => (productOptions.categories.map(category => category.id == value ? category.name : null))
+            render: (value) => (productOptions.categories.map(category => category.id == value ? category.name : null)),
+            key:'category_id'
         },
 
     ];
