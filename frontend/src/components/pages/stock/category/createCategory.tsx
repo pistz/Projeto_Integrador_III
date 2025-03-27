@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { CheckOutlined } from '@ant-design/icons';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
 import { CategoryAPI } from '../../../../api/Category/CategoryAPI';
+import { formItemStyle } from '../../welcome/styles';
 
 interface Props {
   close:()=>void;
@@ -44,6 +45,7 @@ export const CreateCategory:React.FC<Props> = ({close}:Props) => {
               <Input 
                 type='text' 
                 disabled={isLoading}
+                style={formItemStyle}
               />
           </Form.Item>
 

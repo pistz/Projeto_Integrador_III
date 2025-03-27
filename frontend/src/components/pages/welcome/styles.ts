@@ -21,3 +21,7 @@ export const mainDivStyle:React.CSSProperties = {
     margin:'0 auto',
     height:'70vh'
 }
+
+export const formItemStyle:React.CSSProperties = {
+    width: '40rem'
+}

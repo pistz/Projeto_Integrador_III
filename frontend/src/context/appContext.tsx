@@ -25,6 +25,8 @@ export const ContextProvider: React.FC<IChildren> = ({ children }:IChildren) => 
     const [productsList, setProductsList] = useState<Product[]>(defaultProductsList);
     const [isFetchingOptions, setIsFetchingOptions] = useState(false);
 
+    const [reload, setReload] = useState<number>(1);
+
     const getAllBrands = useCallback(async () =>{
         return await BrandAPI.getAll();
     }, []);
@@ -56,7 +58,7 @@ export const ContextProvider: React.FC<IChildren> = ({ children }:IChildren) => 
 
     useEffect(() =>{
         loadProductOptions()
-    }, [loadProductOptions]);
+    }, [loadProductOptions, reload]);
 
 
     return (
@@ -66,7 +68,8 @@ export const ContextProvider: React.FC<IChildren> = ({ children }:IChildren) => 
         expired, setExpired,
         productOptions,
         isFetchingOptions,
-        productsList
+        productsList,
+        setReload
 
         }}>
         {children}

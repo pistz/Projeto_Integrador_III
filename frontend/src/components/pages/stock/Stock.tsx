@@ -23,10 +23,12 @@ import { MoveProduct } from './product/moveProduct'
 import { MovementType } from './product/types'
 import { Drawer } from '../../shared/drawer/Drawer'
 import { Reports } from './reports/Reports'
+import { useAppContext } from '../../../context/useAppContext'
 
 
 export const Stock:React.FC = () => {
     const MIN_HEIGHT = '30vh';
+    const{setReload} = useAppContext();
 
     const [userName, setUserName] = useState('');
 
@@ -45,6 +47,7 @@ export const Stock:React.FC = () => {
     const closeModal = () => {
       setIsModalOpen(false);
       setModalContent(null);
+      setReload((prev:number) => (prev+1));
     };
 
     const openDrawer = (content: React.ReactNode) =>{
@@ -175,7 +178,7 @@ export const Stock:React.FC = () => {
             ))}
         </CardsContainer>
 
-        <Modal open={isModalOpen} onCancel={closeModal} modalContent={modalContent}/>
+        <Modal open={isModalOpen} onCancel={closeModal} modalContent={modalContent} width={1000}/>
         <Drawer open={isDrawerOpen} onClose={closeDrawer} content={drawerContent} width={500} title={moveProductStock[1].title}/>
     </>
   )

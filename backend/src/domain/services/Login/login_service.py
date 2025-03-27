@@ -17,7 +17,6 @@ JWT_SECRET_KEY=load_secret_key()
 class LoginService(ILoginService):
     def __init__(self, user_repository: IUserRepository):
         self.user_repository = user_repository
-        self.now = datetime.datetime.now(tz=datetime.timezone.utc)
     
     def login(self, email: str, password: str) -> HttpResponse:
         user = self.user_repository.get_user_by_email(email)
@@ -52,10 +51,12 @@ class LoginService(ILoginService):
         return True
     
     def __generate_token(self, user:User) -> str:
+        now = datetime.datetime.now(tz=datetime.timezone.utc)
+
         token = encode(
             {   "name": user.name,
                 "user": user.email, 
-                "exp":(self.now + datetime.timedelta(hours=12)).timestamp()
+                "exp":(now + datetime.timedelta(hours=12)).timestamp()
             },
             JWT_SECRET_KEY,
             algorithm="HS256")

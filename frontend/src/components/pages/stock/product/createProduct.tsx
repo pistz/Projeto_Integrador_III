@@ -5,6 +5,7 @@ import { notifyError, notifySuccess } from '../../../shared/notify/notify';
 import { Product } from './types';
 import { ProductAPI } from '../../../../api/Product/ProductAPI';
 import { useAppContext } from '../../../../context/useAppContext';
+import { formItemStyle } from '../../welcome/styles';
 
 interface Props {
     close: ()=> void
@@ -59,6 +60,7 @@ export const CreateProduct:React.FC<Props> = ({close}:Props) => {
                 <Input 
                   type='text' 
                   disabled={isLoading||isFetchingOptions}
+                  style={formItemStyle}
                 />
             </Form.Item>
 

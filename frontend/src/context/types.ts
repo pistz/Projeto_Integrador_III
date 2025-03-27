@@ -16,7 +16,8 @@ export interface AppContextType {
 
     productOptions:ProductOptions;
     isFetchingOptions:boolean;
-    productsList:Product[]
+    productsList:Product[];
+    setReload: React.Dispatch<React.SetStateAction<number>>
 }
 export interface ProductOptions {
     brands:Brand[],
