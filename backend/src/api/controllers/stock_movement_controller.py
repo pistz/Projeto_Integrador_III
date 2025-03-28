@@ -28,15 +28,15 @@ class StockMovementController:
         return self.__send_response(response)
     
     def get_stock_movements_by_date(self):
-        http_request = HttpRequest(request.json)
-        date = http_request.body['date'] if http_request.body['date'] else None
-        response:HttpResponse = self.__stock_movement_service.get_stock_movement_by_date(date)
+        http_request = HttpRequest(param=request.args)
+        date = http_request.param.get('date')
+        response: HttpResponse = self.__stock_movement_service.get_stock_movement_by_date(date)
         return self.__send_response(response)
     
     def get_stock_movements_by_date_range(self):
-        http_request = HttpRequest(request.json)
-        start_date = http_request.body['start_date'] if http_request.body['start_date'] else None
-        end_date = http_request.body['end_date'] if http_request.body['end_date'] else None
+        http_request = HttpRequest(param=request.args)
+        start_date = http_request.param.get('start_date')
+        end_date = http_request.param.get('end_date')
         response:HttpResponse = self.__stock_movement_service.get_stock_movement_by_date_range(start_date=start_date, end_date=end_date)
         return self.__send_response(response)
 

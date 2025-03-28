@@ -1,4 +1,4 @@
 class HttpRequest:
-    def __init__(self, body:dict = None, param:dict = None) -> None:
-        self.body = body
-        self.param = param
+    def __init__(self, body: dict, param: dict) -> None:
+        self.body = body if body else {}
+        self.param = param if param else {}
