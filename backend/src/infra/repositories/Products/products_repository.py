@@ -3,6 +3,8 @@ from src.application.exceptions.database_exception import DatabaseException
 from src.infra.repositories.Products.products_repository_interface import IProductsRepository
 from src.model.configs.connection import DbConnectionHandler
 from src.model.entities.product import Product
+from sqlalchemy import func
+
 
 
 class ProductsRepository(IProductsRepository):
@@ -79,10 +81,11 @@ class ProductsRepository(IProductsRepository):
             with DbConnectionHandler() as db:
                 product = db.session.query(Product).filter(Product.id == product_id).one_or_none()
                 return product
-            
         if product_name is not None:
             with DbConnectionHandler() as db:
-                product = db.session.query(Product).filter(Product.name == product_name).all()
+                product = db.session.query(Product).filter(
+                    func.lower(Product.name).like(f"%{product_name.lower()}%")
+                ).all()
                 return product
         
     def __find_products_by_brand_or_category_id(self, brand_id:int=None, category_id:int=None) -> list[Product]:    

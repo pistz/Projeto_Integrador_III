@@ -16,8 +16,8 @@ class BrandController:
         return self.__send_response(response)
     
     def get_brand_by_name(self):
-        http_request = HttpRequest(request.json)
-        name = http_request.body['name']
+        http_request = HttpRequest(param=request.args)
+        name = http_request.param['name']
         response: HttpResponse = self.__brand_service.get_brand_by_name(name)
         return self.__send_response(response)
 

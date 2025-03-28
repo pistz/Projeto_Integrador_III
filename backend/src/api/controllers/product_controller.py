@@ -21,8 +21,8 @@ class ProdutController:
         return self.__send_response(response)
     
     def get_product_by_name(self):
-        http_request = HttpRequest(request.json)
-        product_name = http_request.body['name']
+        http_request = HttpRequest(param=request.args)
+        product_name = http_request.param['name']
         response: HttpResponse = self.__product_service.get_product_by_name(product_name=product_name)
         return self.__send_response(response)
     
