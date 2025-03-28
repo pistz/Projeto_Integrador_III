@@ -3,8 +3,18 @@ import { useState } from 'react'
 import { notifyError, notifySuccess } from '../notify/notify';
 
 type APIWithDeleteMethod = {
-    delete: (id: any) => Promise<any>; 
+    delete: (id: number) => Promise<Response>; 
 };
+
+// eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
+interface Entity extends Object {
+    id: number
+}
+
+// eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
+interface Response extends Object {
+    message:string
+}
 
 interface Props<T, API extends APIWithDeleteMethod> {
     columns:TableColumnsType<T>,
@@ -15,11 +25,11 @@ interface Props<T, API extends APIWithDeleteMethod> {
     hiddenActions?:boolean,
     onDataUpdate?: (updatedData: T[]) => void
 }
-export const Table = <T extends object, API extends APIWithDeleteMethod>({columns, data, size, loading, api, onDataUpdate, hiddenActions}:Props<T, API>) => {
+export const Table = <T extends Entity, API extends APIWithDeleteMethod>({columns, data, size, loading, api, onDataUpdate, hiddenActions}:Props<T, API>) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleOnClick = async (row: RowProps) => {
-        const id = row.id;
+        const id = Number(row.id);
         setIsLoading(true);
         
         try {

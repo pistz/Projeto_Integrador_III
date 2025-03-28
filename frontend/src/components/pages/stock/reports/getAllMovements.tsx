@@ -6,8 +6,8 @@ import { Movement, MovementSource, MovementType } from './types';
 import { notifyError } from '../../../shared/notify/notify';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { Table } from '../../../shared/table/Table';
-import dayjs from 'dayjs';
 import { SortAscendingOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
 
 export const GetAllMovements:React.FC = () => {
 
@@ -48,11 +48,21 @@ export const GetAllMovements:React.FC = () => {
         sortIcon: () => <SortAscendingOutlined />,
     },
     {
+        title: 'Quantidade',
+        dataIndex: 'quantity',
+        sorter: (a, b) => a.quantity - b.quantity,
+        sortIcon: () => <SortAscendingOutlined />,
+    },
+    {
         title: 'Data:Hora',
         dataIndex: 'movement_date',
-        sorter: (a, b) => dayjs(a.movement_date).valueOf() - dayjs(b.movement_date).valueOf(),
+        sorter: (a, b) => {
+            const dateA = dayjs(a.movement_date).format('DD/MM/YYYY hh:mm').toString();
+            const dateB = dayjs(b.movement_date).format('DD/MM/YYYY hh:mm').toString();
+            return dateA.localeCompare(dateB)
+        },
         sortIcon: () => <SortAscendingOutlined />,
-        render: (value) => dayjs(value).format('DD/MM/YYYY HH:mm')
+        render: (value) => dayjs(value).format('DD/MM/YYYY hh:mm').toString()
     },
     {
         title: 'Criado por',

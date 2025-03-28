@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 import { Modal } from '../../../shared/modal/Modal'
 import { GetAllMovements } from './getAllMovements'
 import { ButtonContent } from './types'
+import { GetSingleDateMovement } from './getSingleDateMovement'
+import { GetDateRangeMovement } from './getDateRangeMovement'
 
 
 export const Reports:React.FC = () => {
@@ -42,11 +44,11 @@ export const Reports:React.FC = () => {
         },
         {
             type:'getSingleDateMovement',
-            content:<p>TODO</p>
+            content:<GetSingleDateMovement />
         },
         {
             type:'getDateRangeMovement',
-            content:<p>TODO</p>
+            content:<GetDateRangeMovement />
         },
     ]
 

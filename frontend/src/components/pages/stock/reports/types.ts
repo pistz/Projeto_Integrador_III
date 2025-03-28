@@ -21,7 +21,7 @@ export interface Movement {
     movement_type:string,
     movement_source:string,
     quantity:number,
-    movement_date:Date,
+    movement_date:string,
     created_by:string,
     observations?:string,
 }

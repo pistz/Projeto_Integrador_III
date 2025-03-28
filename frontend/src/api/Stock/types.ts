@@ -9,5 +9,5 @@ export interface ProductMovement {
 
 export interface Movement extends ProductMovement{
     id:number,
-    movement_date:Date,
+    movement_date:string,
 }

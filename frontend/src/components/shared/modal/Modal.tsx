@@ -18,6 +18,7 @@ export const Modal:React.FC<Props> = ({open, onCancel, modalContent, width}:Prop
         closable
         style={{minWidth:'40rem', maxWidth:width? width :'100rem'}}
         width={width}
+        key={(Math.random())}
     >
         {modalContent}
     </AntModal>

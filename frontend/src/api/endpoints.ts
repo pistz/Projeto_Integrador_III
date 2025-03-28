@@ -35,5 +35,7 @@ export const productRoute = {
 export const stockMovementsRoute = {
     move:`${base.host}/stock-movements`,
     getAll:`${base.host}/stock-movements/all`,
-    getSingleById:`${base.host}/stock-movements`
+    getSingleById:`${base.host}/stock-movements`,
+    getByDate:`${base.host}/stock-movements/date?`,
+    getByDateRange:`${base.host}/stock-movements/date-range?`
 }

@@ -25,13 +25,15 @@ export class StockAPI {
         return response.data;
     }
 
-    static getMovementsByDate = async (date:string):Promise<Response> =>{
-        const response = await axios.get(stockMovementsRoute.getSingleById, {params:date});
+    static getMovementsByDate = async (date:string):Promise<Movement []> =>{
+        const param = `date=${date}`
+        const response = await axios.get(`${stockMovementsRoute.getByDate}${param}`);
         return response.data;
     }
 
-    static getMovementsByDateRange = async (start_date:string, end_date:string):Promise<Response> =>{
-        const response = await axios.get(stockMovementsRoute.getSingleById, {params:{start_date, end_date}});
+    static getMovementsByDateRange = async (start_date:string, end_date:string):Promise<Movement []> =>{
+        const params = `start_date=${start_date}&end_date=${end_date}`
+        const response = await axios.get(`${stockMovementsRoute.getByDateRange}${params}`);
         return response.data;
     }
 
