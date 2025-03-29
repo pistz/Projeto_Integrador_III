@@ -39,3 +39,8 @@ export const stockMovementsRoute = {
     getByDate:`${base.host}/stock-movements/date?`,
     getByDateRange:`${base.host}/stock-movements/date-range?`
 }
+
+export const currentStockRoute = {
+    getCurrentStockByProductId: `${base.host}/current-stock`,
+    getCurrentStock:`${base.host}/current-stock/all`
+}

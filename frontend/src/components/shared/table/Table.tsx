@@ -8,7 +8,8 @@ type APIWithDeleteMethod = {
 
 // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
 interface Entity extends Object {
-    id: number
+    id?: number
+    product_id?:number
 }
 
 // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types

@@ -11,3 +11,9 @@ export interface Movement extends ProductMovement{
     id:number,
     movement_date:string,
 }
+
+export interface CurrentStock {
+    product_id:number,
+    total_quantity:number,
+    last_updated:string
+}

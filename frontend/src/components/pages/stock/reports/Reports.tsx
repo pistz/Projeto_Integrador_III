@@ -1,20 +1,34 @@
-import { BarChartOutlined, ScheduleOutlined, CalendarOutlined } from '@ant-design/icons'
-import { Button, Divider, Flex } from 'antd'
 import React, { useState } from 'react'
+import { 
+    ScheduleOutlined, 
+    CalendarOutlined, 
+    FileSearchOutlined, 
+    GoldOutlined, 
+    ProjectOutlined } from '@ant-design/icons'
+import { Button, Divider, Flex } from 'antd'
 import { Modal } from '../../../shared/modal/Modal'
 import { GetAllMovements } from './getAllMovements'
 import { ButtonContent } from './types'
 import { GetSingleDateMovement } from './getSingleDateMovement'
 import { GetDateRangeMovement } from './getDateRangeMovement'
+import { GetCurrentStockByProductId } from './getCurrentStockByProductId'
+import { GetCurrentStock } from './getCurrentStock'
 
 
 export const Reports:React.FC = () => {
     
-    const buttonStyles:React.CSSProperties ={
+    const movementButtonStyles:React.CSSProperties ={
         alignContent:'center',
         justifyContent:"stretch",
         fontWeight:'bolder', 
         color:'#496989'
+    }
+
+    const currentStockButtonStyles:React.CSSProperties ={
+        alignContent:'center',
+        justifyContent:"stretch",
+        fontWeight:'bolder', 
+        color:'#074173'
     }
 
     const [modalContent, setModalContent] = useState<React.ReactNode>(null);
@@ -50,31 +64,54 @@ export const Reports:React.FC = () => {
             type:'getDateRangeMovement',
             content:<GetDateRangeMovement />
         },
+        {
+            type:'getCurrentStockByProductId',
+            content:<GetCurrentStockByProductId />
+        },
+        {
+            type:'getCurrentStock',
+            content:<GetCurrentStock />
+        },
     ]
 
   return (
 
     <>
+        <Divider orientation='left'style={{color:'#a19ba1'}}>Estoque Atual</Divider>
+            <Flex align='stretch' justify='space-around' vertical gap={15}>
+
+                <Button htmlType='button' type='text' icon={<FileSearchOutlined />} onClick={() => handleOnClick("getCurrentStockByProductId")}
+                style={currentStockButtonStyles}>
+                    Estoque por Produto
+                </Button>
+
+                <Button htmlType='button' type='text' icon={<GoldOutlined />} onClick={() => handleOnClick("getCurrentStock")}
+                style={currentStockButtonStyles}>
+                    Estoque Total Atual
+                </Button>
+
+
+            </Flex>
+
         <Divider orientation='left' style={{color:'#a19ba1'}}>Movimentações de Produtos</Divider>
             <Flex align='stretch' justify='space-around' vertical gap={15}>
 
-                <Button htmlType='button' type='text' icon={<BarChartOutlined />} onClick={() => handleOnClick("getAllMovements")} 
-                    style={buttonStyles} >
+                <Button htmlType='button' type='text' icon={<ProjectOutlined />} onClick={() => handleOnClick("getAllMovements")} 
+                    style={movementButtonStyles} >
                     Todas
                 </Button>
 
                 <Button htmlType='button' type='text' icon={<ScheduleOutlined />} onClick={() => handleOnClick("getSingleDateMovement")}
-                    style={buttonStyles}>
+                    style={movementButtonStyles}>
                     Por dia
                 </Button>
 
                 <Button htmlType='button' type='text' icon={<CalendarOutlined />} onClick={() => handleOnClick("getDateRangeMovement")}
-                    style={buttonStyles}>
+                    style={movementButtonStyles}>
                     Entre datas
                 </Button>
 
             </Flex>
-        <Divider orientation='left'style={{color:'#a19ba1'}}>Estoque Atual</Divider>
 
         <Modal open={isModalOpen} onCancel={closeModal} modalContent={modalContent} key={key} width={1500}/>
     </>

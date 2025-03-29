@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Response } from "../types";
-import { Movement, ProductMovement } from "./types";
-import { stockMovementsRoute } from "../endpoints";
+import { CurrentStock, Movement, ProductMovement } from "./types";
+import { currentStockRoute, stockMovementsRoute } from "../endpoints";
 
 
 export class StockAPI {
@@ -34,6 +34,16 @@ export class StockAPI {
     static getMovementsByDateRange = async (start_date:string, end_date:string):Promise<Movement []> =>{
         const params = `start_date=${start_date}&end_date=${end_date}`
         const response = await axios.get(`${stockMovementsRoute.getByDateRange}${params}`);
+        return response.data;
+    }
+
+    static getCurrentStockByProductId = async (id:number):Promise<CurrentStock> =>{
+        const response = await axios.get(`${currentStockRoute.getCurrentStockByProductId}/${id}`);
+        return response.data;
+    }
+
+    static getCurrentStock = async ():Promise<CurrentStock[]> =>{
+        const response = await axios.get(currentStockRoute.getCurrentStock);
         return response.data;
     }
 

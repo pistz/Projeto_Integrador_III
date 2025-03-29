@@ -25,3 +25,9 @@ export interface Movement {
     created_by:string,
     observations?:string,
 }
+
+export interface CurrentStock {
+    product_id:number,
+    total_quantity:number,
+    last_updated:string
+}
