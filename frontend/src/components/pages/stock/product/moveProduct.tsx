@@ -5,6 +5,7 @@ import { useAppContext } from '../../../../context/useAppContext'
 import { notifyError, notifySuccess } from '../../../shared/notify/notify'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
 import { StockAPI } from '../../../../api/Stock/StockAPI'
+import { formItemStyle } from '../../welcome/styles'
 
 interface Props {
     movementType:MovementType,
@@ -63,6 +64,7 @@ export const MoveProduct:React.FC<Props> = ({movementType, user, close}) => {
               name={['product_id']} 
               label={'Produto'} 
               rules={[{required:true, message:'Produto é obrigatório'}]}
+              style={formItemStyle}
               >
                 <Select 
                   disabled={isLoading || isFetchingOptions} 
@@ -87,7 +89,7 @@ export const MoveProduct:React.FC<Props> = ({movementType, user, close}) => {
             <Form.Item 
               name={['quantity']} 
               label={'Quantidade'}
-              rules={[{required:true, message:'Quantidade é obrigatória'},{pattern:/[0-9]/}]}
+              rules={[{required:true, message:'Quantidade é obrigatória'},{pattern:/[0-9]/}, {min:1}, {max:9999, message:"Quantidade não permitida"}]}
             >
               <Input
                 disabled={isLoading || isFetchingOptions}
