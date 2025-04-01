@@ -1,9 +1,12 @@
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Table as AntTable, Button, RowProps, TableColumnsType } from 'antd';
 import { useState } from 'react';
+import { DeleteButton } from '../deleteButton/DeleteButton';
 import { notifyError, notifySuccess } from '../notify/notify';
 
 type APIWithDeleteMethod = {
   delete: (id: number) => Promise<Response>;
+  update: (id: number) => Promise<Response>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
@@ -37,12 +40,34 @@ export const Table = <T extends Entity, API extends APIWithDeleteMethod>({
 }: Props<T, API>) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleOnClick = async (row: RowProps) => {
+  const handleDelete = async (row: RowProps) => {
     const id = Number(row.id);
     setIsLoading(true);
 
     try {
       const response = api ? await api.delete(id) : null;
+      if (response) {
+        notifySuccess(response.message);
+      }
+
+      const updatedData = data.filter((item: T) => item.id !== id);
+
+      if (onDataUpdate) {
+        onDataUpdate(updatedData);
+      }
+    } catch (error) {
+      notifyError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleUpdate = async (row: RowProps) => {
+    const id = Number(row.id);
+    setIsLoading(true);
+
+    try {
+      const response = api ? await api.update(id) : null;
       if (response) {
         notifySuccess(response.message);
       }
@@ -68,16 +93,31 @@ export const Table = <T extends Entity, API extends APIWithDeleteMethod>({
       key: 'actions',
       hidden: hiddenActions,
       render: (value) => (
-        <Button
-          type="default"
-          danger
-          title="Deletar"
-          onClick={() => handleOnClick(value)}
-          loading={isLoading}
-          key={'actions-delete'}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '0.5rem',
+          }}
         >
-          Deletar
-        </Button>
+          <Button
+            type="primary"
+            title="Atualizar"
+            onClick={() => handleUpdate(value)}
+            loading={isLoading}
+            key={'actions-update'}
+          >
+            <EditOutlined />
+          </Button>
+          <DeleteButton
+            value={value}
+            handleAction={() => handleDelete(value)}
+            isLoading={isLoading}
+            icon={<DeleteOutlined />}
+            key={'actions-delete'}
+          />
+        </div>
       ),
     },
   ];
