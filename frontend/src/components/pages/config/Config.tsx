@@ -30,14 +30,22 @@ export const Config: React.FC = () => {
         {
           key: 'Criar',
           component: (
-            <CardComponent component={<UserAddOutlined />} title={'Criar'} />
+            <CardComponent
+              component={<UserAddOutlined />}
+              title={'Criar'}
+              boldFont
+            />
           ),
           onClick: () => showModal(<CreateUser close={handleCancel} />),
         },
         {
           key: 'Listar',
           component: (
-            <CardComponent component={<EyeOutlined />} title={'Listar'} />
+            <CardComponent
+              component={<EyeOutlined />}
+              title={'Listar'}
+              boldFont
+            />
           ),
           onClick: () => showModal(<ListUsers />),
         },
