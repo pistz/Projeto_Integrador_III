@@ -1,3 +1,4 @@
+from flasgger import Swagger
 from flask import Flask
 from flask_cors import CORS
 
@@ -8,6 +9,7 @@ from src.api.routes.login_routes import login_route_bp
 from src.api.routes.product_routes import product_route_bp
 from src.api.routes.stock_movement_routes import stock_movement_route_bp
 from src.api.routes.user_routes import user_route_bp
+from src.api.swagger.template import swagger_sec_template
 from src.application.handlers.error_handler import register_error_handlers
 from src.model.configs.env import load_db_env, load_frontend_origin
 
@@ -27,6 +29,9 @@ app.register_blueprint(brand_route_bp)
 app.register_blueprint(product_route_bp)
 app.register_blueprint(stock_movement_route_bp)
 app.register_blueprint(current_stock_route_bp)
+
+# Documentação
+swagger = Swagger(app, template=swagger_sec_template)
 
 # Handlers de erro
 register_error_handlers(app)

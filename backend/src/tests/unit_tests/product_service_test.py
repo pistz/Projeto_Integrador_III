@@ -82,18 +82,14 @@ def test_create_product_invalid(product_service):
 
 
 def test_update_product_success(product_service):
-    update_data = UpdateProductDTO(
-        name="Updated Laptop", description="Updated", brand_id=99, category_id=88
-    )
+    update_data = UpdateProductDTO(name="Updated Laptop", description="Updated")
     response = product_service.update_product(1, update_data)
     assert response.status_code == StatusCode.CREATED.value
     assert response.body["message"] == "Produto atualizado com sucesso"
 
 
 def test_update_product_not_found(product_service):
-    update_data = UpdateProductDTO(
-        name="Updated", description="Updated", brand_id=99, category_id=88
-    )
+    update_data = UpdateProductDTO(name="Updated", description="Updated")
     with pytest.raises(NotFound):
         product_service.update_product(999, update_data)
 

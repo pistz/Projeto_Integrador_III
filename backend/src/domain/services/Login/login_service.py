@@ -7,8 +7,8 @@ from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.dtos.jwt.jwt_token_dto import JWTTokenDTO
 from src.application.enums.status_codes import StatusCode
 from src.application.exceptions.invalid_user import InvalidUser
-from src.application.exceptions.not_found import NotFound
 from src.application.exceptions.token_error import TokenError
+from src.application.exceptions.unauthorized import Unauthorized
 from src.domain.services.Login.login_service_interface import ILoginService
 from src.infra.repositories.User.user_repository_interface import IUserRepository
 from src.model.configs.env import load_secret_key
@@ -34,9 +34,9 @@ class LoginService(ILoginService):
         try:
             decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
         except ExpiredSignatureError:
-            raise TokenError("Token expirado.")
+            raise Unauthorized("Token expirado.")
         except InvalidTokenError:
-            raise TokenError("Token inválido.")
+            raise Unauthorized("Token inválido.")
 
         return True
 

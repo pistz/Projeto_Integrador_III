@@ -8,6 +8,7 @@ import pytest
 from src.application.enums.status_codes import StatusCode
 from src.application.exceptions.invalid_user import InvalidUser
 from src.application.exceptions.token_error import TokenError
+from src.application.exceptions.unauthorized import Unauthorized
 from src.domain.services.Login.login_service import LoginService
 from src.model.configs.env import load_secret_key
 from src.tests.mocks.mock_user_repository import get_mock_user_repository
@@ -108,7 +109,7 @@ def test_decode_token_expired():
         algorithm="HS256",
     )
 
-    with pytest.raises(TokenError):
+    with pytest.raises(Unauthorized):
         service.decode_token_validity(token)
 
 
