@@ -17,7 +17,7 @@ def category_service():
 def test_create_category_success(category_service):
     response = category_service.create_category("Books")
     assert response.status_code == StatusCode.CREATED.value
-    assert response.body["message"] == "Category created successfully"
+    assert response.body["message"] == "Categoria criada com sucesso"
 
 
 def test_create_category_already_exists():
@@ -25,7 +25,7 @@ def test_create_category_already_exists():
     repo.get_category_by_name.return_value = True
     service = CategoryService(repo)
 
-    with pytest.raises(InvalidData, match="Category already exists"):
+    with pytest.raises(InvalidData, match="Categoria já existe"):
         service.create_category("Food")
 
 
@@ -40,7 +40,7 @@ def test_get_category_by_name_not_found():
     repo.get_category_by_name.return_value = None
     service = CategoryService(repo)
 
-    with pytest.raises(NotFound, match="Category not found"):
+    with pytest.raises(NotFound, match="Categoria não existe"):
         service.get_category_by_name("Unknown")
 
 
@@ -56,7 +56,7 @@ def test_get_category_by_id_not_found():
     repo.get_category_by_id.return_value = None
     service = CategoryService(repo)
 
-    with pytest.raises(NotFound, match="Category not found"):
+    with pytest.raises(NotFound, match="Categoria não existe"):
         service.get_category_by_id(999)
 
 
@@ -81,7 +81,7 @@ def test_get_all_categories_empty():
 def test_update_category_success(category_service):
     response = category_service.update_category(1, "New Name")
     assert response.status_code == StatusCode.OK.value
-    assert response.body["message"] == "Category updated successfully"
+    assert response.body["message"] == "Categoria atualizada com sucesso"
 
 
 def test_update_category_not_found():
@@ -89,14 +89,14 @@ def test_update_category_not_found():
     repo.get_category_by_id.return_value = None
     service = CategoryService(repo)
 
-    with pytest.raises(NotFound, match="Category not found"):
+    with pytest.raises(NotFound, match="Categoria não existe"):
         service.update_category(999, "Whatever")
 
 
 def test_delete_category_success(category_service):
     response = category_service.delete_category(1)
     assert response.status_code == StatusCode.OK.value
-    assert response.body["message"] == "Category deleted successfully"
+    assert response.body["message"] == "Categoria deletada com sucesso"
 
 
 def test_delete_category_not_found():
@@ -104,5 +104,5 @@ def test_delete_category_not_found():
     repo.get_category_by_id.return_value = None
     service = CategoryService(repo)
 
-    with pytest.raises(NotFound, match="Category not found"):
+    with pytest.raises(NotFound, match="Categoria não existe"):
         service.delete_category(999)

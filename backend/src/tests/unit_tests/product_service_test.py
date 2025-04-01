@@ -70,7 +70,7 @@ def test_create_product_success(product_service):
     response = product_service.create_product(product)
 
     assert response.status_code == StatusCode.CREATED.value
-    assert response.body["message"] == "Product created successfully"
+    assert response.body["message"] == "Produto criado com sucesso"
 
 
 def test_create_product_invalid(product_service):
@@ -87,7 +87,7 @@ def test_update_product_success(product_service):
     )
     response = product_service.update_product(1, update_data)
     assert response.status_code == StatusCode.CREATED.value
-    assert response.body["message"] == "Product updated successfully"
+    assert response.body["message"] == "Produto atualizado com sucesso"
 
 
 def test_update_product_not_found(product_service):
@@ -101,7 +101,7 @@ def test_update_product_not_found(product_service):
 def test_delete_product_success(product_service):
     response = product_service.delete_product(1)
     assert response.status_code == StatusCode.OK.value
-    assert response.body["message"] == "Product deleted successfully"
+    assert response.body["message"] == "Produto deletado com sucesso"
 
 
 def test_delete_product_not_found(product_service):
