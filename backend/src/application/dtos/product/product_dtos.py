@@ -21,15 +21,11 @@ class CreateProductDTO:
 class UpdateProductDTO:
     name: str
     description: str
-    brand_id: int
-    category_id: int
 
     def to_dict(self):
         return {
             "name": self.name,
             "description": self.description,
-            "brand_id": self.brand_id,
-            "category_id": self.category_id,
         }
 
 

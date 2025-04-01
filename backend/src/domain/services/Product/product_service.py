@@ -118,12 +118,6 @@ class ProductService(IProductService):
         found_product.description = (
             product.description if product.description else found_product.description
         )
-        found_product.brand_id = (
-            product.brand_id if product.brand_id else found_product.brand_id
-        )
-        found_product.category_id = (
-            product.category_id if product.category_id else found_product.category_id
-        )
 
         self.__product_repository.update_product(
             product_id=product_id, product=found_product

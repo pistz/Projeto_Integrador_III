@@ -57,9 +57,8 @@ class ProductsRepository(IProductsRepository):
         with DbConnectionHandler() as db:
             try:
                 found_product = self.__find_product_by_name_or_id(product_id=product_id)
+
                 found_product.name = product.name
-                found_product.category_id = product.category_id
-                found_product.brand_id = product.brand_id
                 found_product.description = product.description
 
                 db.session.add(found_product)
