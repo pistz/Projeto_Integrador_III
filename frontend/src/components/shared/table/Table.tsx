@@ -1,7 +1,7 @@
 import {
   CloseOutlined,
-  DeleteOutlined,
-  EditOutlined,
+  DeleteFilled,
+  EditFilled,
   SaveOutlined,
 } from '@ant-design/icons';
 import { Table as AntTable, Button, Form, Input, TableColumnsType } from 'antd';
@@ -126,7 +126,11 @@ export const Table = <T extends Entity, API extends APIWithDeleteMethod>({
         const editable = isEditing(record);
         return editable ? (
           <div
-            style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}
+            style={{
+              display: 'flex',
+              gap: '0.5rem',
+              justifyContent: 'space-between',
+            }}
           >
             <Button
               icon={<SaveOutlined />}
@@ -137,7 +141,8 @@ export const Table = <T extends Entity, API extends APIWithDeleteMethod>({
             <Button
               icon={<CloseOutlined />}
               onClick={cancel}
-              disabled={isLoading}
+              loading={isLoading}
+              type="default"
             />
           </div>
         ) : (
@@ -150,17 +155,19 @@ export const Table = <T extends Entity, API extends APIWithDeleteMethod>({
             }}
           >
             <Button
-              icon={<EditOutlined />}
+              icon={<EditFilled style={{ color: 'blue' }} />}
               onClick={() => edit(record)}
+              loading={isLoading}
               disabled={!!editingKey || isLoading}
               key={'action-edit'}
-              type="primary"
+              type="default"
             />
             <DeleteButton
               value={record}
               handleAction={() => handleDelete(record)}
               isLoading={isLoading}
-              icon={<DeleteOutlined />}
+              icon={<DeleteFilled />}
+              disabled={!!editingKey || isLoading}
             />
           </div>
         );

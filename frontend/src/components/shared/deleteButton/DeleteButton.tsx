@@ -7,6 +7,7 @@ interface Props {
   isLoading: boolean;
   action?: string;
   icon?: React.ReactNode;
+  disabled?: boolean;
 }
 
 export const DeleteButton: React.FC<Props> = ({
@@ -15,6 +16,7 @@ export const DeleteButton: React.FC<Props> = ({
   value,
   action,
   icon,
+  disabled,
 }: Props) => {
   return (
     <>
@@ -24,6 +26,8 @@ export const DeleteButton: React.FC<Props> = ({
         okText="Sim"
         cancelText="Não"
         key={'popconfirm-delete'}
+        icon={icon}
+        disabled={disabled}
       >
         <Button
           type="default"
@@ -31,9 +35,8 @@ export const DeleteButton: React.FC<Props> = ({
           title={action ?? 'Deletar'}
           loading={isLoading}
           key={'actions-delete'}
-        >
-          {icon ?? 'Deletar'}
-        </Button>
+          icon={icon ?? null}
+        />
       </Popconfirm>
     </>
   );
