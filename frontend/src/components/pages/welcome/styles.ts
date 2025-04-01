@@ -23,5 +23,5 @@ export const mainDivStyle: React.CSSProperties = {
 };
 
 export const formItemStyle: React.CSSProperties = {
-  width: '40rem',
+  width: '100%',
 };

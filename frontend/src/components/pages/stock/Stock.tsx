@@ -221,7 +221,7 @@ export const Stock: React.FC = () => {
 
   return (
     <>
-      <Divider>Movimentações e Relatórios de Estoque</Divider>
+      <Divider>Movimentos de Estoque</Divider>
       <CardsContainer $minHeight={MIN_HEIGHT}>
         {moveProductStock.map((option, index) => (
           <OptionCard
@@ -248,7 +248,6 @@ export const Stock: React.FC = () => {
         open={isModalOpen}
         onCancel={closeModal}
         modalContent={modalContent}
-        width={1000}
       />
       <Drawer
         open={isDrawerOpen}
