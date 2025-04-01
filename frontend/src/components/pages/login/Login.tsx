@@ -57,9 +57,10 @@ export const LoginScreen:React.FC = () => {
         const token = sessionStorage.getItem(tokenId);
         if (token) {
           setSigned(true);
+          setToken(token);
           handleNavigateHome();
         }
-      }, [setSigned, tokenId, handleNavigateHome]);
+      }, [setSigned, tokenId, handleNavigateHome, setToken]);
 
 
     return (
