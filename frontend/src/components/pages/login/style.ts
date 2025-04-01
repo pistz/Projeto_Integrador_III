@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const backgroundColor = '#031129';
 
@@ -20,13 +20,13 @@ export const Container = styled.div<ContainerProps>`
   z-index: 0;
 
   &::before {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: ${({ $bgImage: backgroundImage }) => 
+    background-image: ${({ $bgImage: backgroundImage }) =>
       backgroundImage ? `url(${backgroundImage})` : 'none'};
     background-size: cover;
     background-position: center;

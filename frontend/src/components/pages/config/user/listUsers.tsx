@@ -1,12 +1,15 @@
-import { Button, Divider, List, Skeleton } from 'antd'
-import React, { useCallback, useEffect, useState } from 'react'
-import { ListUsers as SystemUser } from './types';
+import { Button, Divider, List, Skeleton } from 'antd';
+import React, { useCallback, useEffect, useState } from 'react';
 import { UsersAPI } from '../../../../api/Users/UsersAPI';
-import { notifyError, notifySuccess, notifyWarning } from '../../../shared/notify/notify';
 import { getUserFromToken } from '../../../../config/token';
+import {
+  notifyError,
+  notifySuccess,
+  notifyWarning,
+} from '../../../shared/notify/notify';
+import { ListUsers as SystemUser } from './types';
 
-export const ListUsers:React.FC = () => {
-
+export const ListUsers: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<SystemUser[]>([]);
 
@@ -24,9 +27,9 @@ export const ListUsers:React.FC = () => {
 
   const handleDelete = async (user: SystemUser) => {
     const tokenUser = getUserFromToken();
-    if(user.email === tokenUser?.user){
+    if (user.email === tokenUser?.user) {
       notifyWarning('Usuário com sessão ativa não pode ser deletado');
-      return
+      return;
     }
     setLoading(true);
     try {
@@ -50,22 +53,25 @@ export const ListUsers:React.FC = () => {
       <List
         loading={loading}
         dataSource={users}
-        itemLayout='horizontal'
-        renderItem={(item:SystemUser) =>(
+        itemLayout="horizontal"
+        renderItem={(item: SystemUser) => (
           <List.Item
-            actions={[<Button danger onClick={() => handleDelete(item)} key={'delete-btn'}>Delete</Button>]}>
-              <Skeleton title={false} loading={loading} active>
-                <List.Item.Meta 
-                  title={item.name}
-                  description={item.email}
-                />
-              </Skeleton>
+            actions={[
+              <Button
+                danger
+                onClick={() => handleDelete(item)}
+                key={'delete-btn'}
+              >
+                Delete
+              </Button>,
+            ]}
+          >
+            <Skeleton title={false} loading={loading} active>
+              <List.Item.Meta title={item.name} description={item.email} />
+            </Skeleton>
           </List.Item>
         )}
-      
-      >
-
-      </List>
+      ></List>
     </>
-  )
-}
+  );
+};

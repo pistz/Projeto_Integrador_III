@@ -1,17 +1,15 @@
-import React from "react"
-import { ContextProvider } from "./context/appContext"
-import { Routes } from "./routes/Routes"
+import React from 'react';
+import { ContextProvider } from './context/appContext';
+import { Routes } from './routes/Routes';
 
-
-const App:React.FC = () => {
-
+const App: React.FC = () => {
   return (
     <>
       <ContextProvider>
-        <Routes/>
+        <Routes />
       </ContextProvider>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

@@ -1,10 +1,10 @@
-import React from "react"
+import React from 'react';
 
 export interface Router {
-    label:string,
-    path:string,
-    element:React.ReactElement,
-    fullpath?:string
+  label: string;
+  path: string;
+  element: React.ReactElement;
+  fullpath?: string;
 }
 
-export const appPath = '/app/'
+export const appPath = '/app/';
