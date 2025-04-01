@@ -23,9 +23,9 @@ export class CategoryAPI {
     return response.data;
   };
 
-  //TODO
-  static update = async (body: any): Promise<Response> => {
-    const response = await axios.put('/', body);
+  static update = async (id: number, request: string): Promise<Response> => {
+    const body = { name: request };
+    const response = await axios.put(`${categoryRoute.update}/${id}`, body);
     return response.data;
   };
 }

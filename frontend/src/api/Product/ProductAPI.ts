@@ -26,4 +26,10 @@ export class ProductAPI {
     );
     return response.data;
   };
+
+  static update = async (id: number, request: string): Promise<Response> => {
+    const body = { name: request };
+    const response = await axios.put(`${productRoute.update}/${id}`, body);
+    return response.data;
+  };
 }

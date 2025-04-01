@@ -27,9 +27,9 @@ export class BrandAPI {
     return response.data;
   };
 
-  //TODO
-  static update = async (body: any): Promise<Response> => {
-    const response = await axios.put('/', body);
+  static update = async (id: number, request: string): Promise<Response> => {
+    const body = { name: request };
+    const response = await axios.put(`${brandRoute.update}/${id}`, body);
     return response.data;
   };
 }

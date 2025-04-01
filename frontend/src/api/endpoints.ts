@@ -18,18 +18,21 @@ export const brandRoute = {
   create: `${base.host}/brands`,
   getAll: `${base.host}/brands/all`,
   delete: `${base.host}/brands`,
+  update: `${base.host}/brands`,
 };
 
 export const categoryRoute = {
   create: `${base.host}/categories`,
   getAll: `${base.host}/categories/all`,
   delete: `${base.host}/categories`,
+  update: `${base.host}/categories`,
 };
 
 export const productRoute = {
   create: `${base.host}/products`,
   getAll: `${base.host}/products/all`,
   delete: `${base.host}/products`,
+  update: `${base.host}/products`,
 };
 
 export const stockMovementsRoute = {
