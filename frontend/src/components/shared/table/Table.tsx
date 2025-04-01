@@ -11,7 +11,7 @@ import { EditableColumnType } from '../../pages/stock/brand/types';
 import { DeleteButton } from '../deleteButton/DeleteButton';
 import { notifyError, notifySuccess } from '../notify/notify';
 
-type APIWithDeleteMethod = {
+type APIWithMethods = {
   delete: (id: number) => Promise<Response>;
   update: (id: number, data: any) => Promise<Response>; // update agora recebe dados
 };
@@ -25,7 +25,7 @@ interface Response {
   message: string;
 }
 
-interface Props<T extends Entity, API extends APIWithDeleteMethod> {
+interface Props<T extends Entity, API extends APIWithMethods> {
   columns: TableColumnsType<T>;
   data: T[];
   size?: 'large' | 'middle' | 'small';
@@ -35,7 +35,7 @@ interface Props<T extends Entity, API extends APIWithDeleteMethod> {
   onDataUpdate?: (updatedData: T[]) => void;
 }
 
-export const Table = <T extends Entity, API extends APIWithDeleteMethod>({
+export const Table = <T extends Entity, API extends APIWithMethods>({
   columns,
   data,
   size,
