@@ -1,11 +1,11 @@
 import { SortAscendingOutlined } from '@ant-design/icons';
 import { Divider } from 'antd';
-import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
 import { ProductAPI } from '../../../../api/Product/ProductAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError } from '../../../shared/notify/notify';
 import { Table } from '../../../shared/table/Table';
+import { EditableColumnType } from '../brand/types';
 import { ProductId } from './types';
 
 export const ListProduct: React.FC = () => {
@@ -13,7 +13,7 @@ export const ListProduct: React.FC = () => {
   const [products, setProducts] = useState<ProductId[]>([]);
   const { productOptions } = useAppContext();
 
-  const columns: ColumnsType<ProductId> = [
+  const columns: EditableColumnType<ProductId>[] = [
     {
       title: 'Nome do Produto',
       dataIndex: 'name',
@@ -25,7 +25,8 @@ export const ListProduct: React.FC = () => {
       sorter: (a, b) => a.name.length - b.name.length,
       sortIcon: () => <SortAscendingOutlined />,
       onFilter: (value, record) => record.name.includes(value as string),
-      key: 'name',
+      key: 'product-name',
+      editable: true,
     },
     {
       title: 'Marca do Produto',
@@ -44,6 +45,12 @@ export const ListProduct: React.FC = () => {
           category.id == value ? category.name : null,
         ),
       key: 'category_id',
+    },
+    {
+      title: 'Descrição',
+      dataIndex: 'description',
+      key: 'description',
+      editable: true,
     },
   ];
 

@@ -48,9 +48,7 @@ class BrandService(IBrandService):
         if not found_brand:
             raise NotFound('Marca não existe')
         found_brand.name = name if name else found_brand.name
-        self.brand_repository.update_brand(
-            brand_id=found_brand.id, name=found_brand.name
-        )
+        self.brand_repository.update_brand(id=found_brand.id, name=found_brand.name)
         return HttpResponse(
             status_code=StatusCode.OK.value,
             body={'message': 'Marca atualizada com sucesso'},

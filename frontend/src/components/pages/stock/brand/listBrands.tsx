@@ -1,16 +1,15 @@
 import { Divider } from 'antd';
-import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react';
 import { BrandAPI } from '../../../../api/Brand/BrandAPI';
 import { notifyError } from '../../../shared/notify/notify';
 import { Table } from '../../../shared/table/Table';
-import { Brand } from './types';
+import { Brand, EditableColumnType } from './types';
 
 export const ListBrands: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [brands, setBrands] = useState<Brand[]>([]);
 
-  const columns: ColumnsType<Brand> = [
+  const columns: EditableColumnType<Brand>[] = [
     {
       title: 'Nome da Marca',
       dataIndex: 'name',
@@ -20,6 +19,8 @@ export const ListBrands: React.FC = () => {
       })),
       filterSearch: true,
       onFilter: (value, record) => record.name.includes(value as string),
+      key: 'brand-name',
+      editable: true,
     },
   ];
 

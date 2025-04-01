@@ -1,3 +1,5 @@
+import { Update } from '../types';
+
 export interface CreateProduct {
   name: string;
   description: string;
@@ -17,3 +19,5 @@ export interface ProductMovement {
   created_by: string;
   observations?: string;
 }
+
+export type UpdateProduct = Update & { description: string };

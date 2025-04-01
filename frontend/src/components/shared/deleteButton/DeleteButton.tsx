@@ -2,7 +2,7 @@ import { Button, Popconfirm, RowProps } from 'antd';
 import React from 'react';
 
 interface Props {
-  value: RowProps;
+  value: any;
   handleAction: (value: RowProps) => void;
   isLoading: boolean;
   action?: string;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { authHeader } from '../../config/token';
 import { brandRoute } from '../endpoints';
-import { Response } from '../types';
+import { Response, Update } from '../types';
 import { Brand } from './types';
 
 export class BrandAPI {
@@ -27,9 +27,12 @@ export class BrandAPI {
     return response.data;
   };
 
-  static update = async (id: number, request: string): Promise<Response> => {
-    const body = { name: request };
-    const response = await axios.put(`${brandRoute.update}/${id}`, body);
+  static update = async (id: number, request: Update): Promise<Response> => {
+    const response = await axios.put(
+      `${brandRoute.update}/${id}`,
+      request,
+      authHeader(),
+    );
     return response.data;
   };
 }

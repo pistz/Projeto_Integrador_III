@@ -1,26 +1,31 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Table as AntTable, Button, RowProps, TableColumnsType } from 'antd';
+import {
+  CloseOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  SaveOutlined,
+} from '@ant-design/icons';
+import { Table as AntTable, Button, Form, Input, TableColumnsType } from 'antd';
+import { ColumnType } from 'antd/es/table';
 import { useState } from 'react';
+import { EditableColumnType } from '../../pages/stock/brand/types';
 import { DeleteButton } from '../deleteButton/DeleteButton';
 import { notifyError, notifySuccess } from '../notify/notify';
 
 type APIWithDeleteMethod = {
   delete: (id: number) => Promise<Response>;
-  update: (id: number) => Promise<Response>;
+  update: (id: number, data: any) => Promise<Response>; // update agora recebe dados
 };
 
-// eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
-interface Entity extends Object {
+interface Entity {
   id?: number;
-  product_id?: number;
+  [key: string]: any;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
-interface Response extends Object {
+interface Response {
   message: string;
 }
 
-interface Props<T, API extends APIWithDeleteMethod> {
+interface Props<T extends Entity, API extends APIWithDeleteMethod> {
   columns: TableColumnsType<T>;
   data: T[];
   size?: 'large' | 'middle' | 'small';
@@ -29,6 +34,7 @@ interface Props<T, API extends APIWithDeleteMethod> {
   hiddenActions?: boolean;
   onDataUpdate?: (updatedData: T[]) => void;
 }
+
 export const Table = <T extends Entity, API extends APIWithDeleteMethod>({
   columns,
   data,
@@ -38,99 +44,170 @@ export const Table = <T extends Entity, API extends APIWithDeleteMethod>({
   onDataUpdate,
   hiddenActions,
 }: Props<T, API>) => {
+  const [form] = Form.useForm();
+  const [editingKey, setEditingKey] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleDelete = async (row: RowProps) => {
-    const id = Number(row.id);
+  const isEditing = (record: T) => record.id === editingKey;
+
+  const edit = (record: T) => {
+    form.setFieldsValue({ ...record });
+    setEditingKey(record.id ?? null);
+  };
+
+  const cancel = () => {
+    setEditingKey(null);
+  };
+
+  const save = async (record: T) => {
+    try {
+      const updated = await form.validateFields();
+      const id = record.id!;
+      setIsLoading(true);
+
+      const response = api ? await api.update(id, updated) : null;
+      if (response) {
+        notifySuccess(response.message);
+      }
+
+      const newData = data.map((item: T) =>
+        item.id === id ? { ...item, ...updated } : item,
+      );
+      setEditingKey(null);
+      if (onDataUpdate) {
+        onDataUpdate(newData);
+      }
+    } catch (err) {
+      notifyError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async (record: T) => {
+    const id = record.id!;
     setIsLoading(true);
 
     try {
       const response = api ? await api.delete(id) : null;
-      if (response) {
-        notifySuccess(response.message);
-      }
-
-      const updatedData = data.filter((item: T) => item.id !== id);
-
-      if (onDataUpdate) {
-        onDataUpdate(updatedData);
-      }
-    } catch (error) {
-      notifyError(error);
+      if (response) notifySuccess(response.message);
+      const newData = data.filter((item) => item.id !== id);
+      if (onDataUpdate) onDataUpdate(newData);
+    } catch (err) {
+      notifyError(err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleUpdate = async (row: RowProps) => {
-    const id = Number(row.id);
-    setIsLoading(true);
+  const mergedColumns: ColumnType<T>[] = [
+    ...columns.map((col) => {
+      const editableCol = col as EditableColumnType<T>;
 
-    try {
-      const response = api ? await api.update(id) : null;
-      if (response) {
-        notifySuccess(response.message);
-      }
+      if (!editableCol.editable) return col;
 
-      const updatedData = data.filter((item: T) => item.id !== id);
-
-      if (onDataUpdate) {
-        onDataUpdate(updatedData);
-      }
-    } catch (error) {
-      notifyError(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const tableColumns: TableColumnsType<T> = [
-    ...columns,
+      return {
+        ...editableCol,
+        onCell: (record: T) => ({
+          record,
+          inputType: 'text',
+          dataIndex: editableCol.dataIndex,
+          editing: isEditing(record),
+        }),
+      } as ColumnType<T>;
+    }),
     {
       title: 'Ações',
-      width: '5rem',
+      width: '6rem',
       align: 'center',
       key: 'actions',
       hidden: hiddenActions,
-      render: (value) => (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '0.5rem',
-          }}
-        >
-          <Button
-            type="primary"
-            title="Atualizar"
-            onClick={() => handleUpdate(value)}
-            loading={isLoading}
-            key={'actions-update'}
+      render: (_: any, record: T) => {
+        const editable = isEditing(record);
+        return editable ? (
+          <div
+            style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}
           >
-            <EditOutlined />
-          </Button>
-          <DeleteButton
-            value={value}
-            handleAction={() => handleDelete(value)}
-            isLoading={isLoading}
-            icon={<DeleteOutlined />}
-            key={'actions-delete'}
-          />
-        </div>
-      ),
-    },
+            <Button
+              icon={<SaveOutlined />}
+              type="primary"
+              loading={isLoading}
+              onClick={() => save(record)}
+            />
+            <Button
+              icon={<CloseOutlined />}
+              onClick={cancel}
+              disabled={isLoading}
+            />
+          </div>
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+              gap: '0.5rem',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Button
+              icon={<EditOutlined />}
+              onClick={() => edit(record)}
+              disabled={!!editingKey || isLoading}
+              key={'action-edit'}
+              type="primary"
+            />
+            <DeleteButton
+              value={record}
+              handleAction={() => handleDelete(record)}
+              isLoading={isLoading}
+              icon={<DeleteOutlined />}
+            />
+          </div>
+        );
+      },
+    } as ColumnType<T>,
   ];
 
+  const EditableCell: React.FC<{
+    editing: boolean;
+    dataIndex: keyof T;
+    record: T;
+    inputType: string;
+    children: React.ReactNode;
+  }> = ({ editing, dataIndex, inputType, record, children, ...restProps }) => {
+    return (
+      <td {...restProps}>
+        {editing ? (
+          <Form.Item
+            name={dataIndex as string}
+            style={{ margin: 0 }}
+            rules={[{ required: true, message: 'Obrigatório' }]}
+          >
+            <Input />
+          </Form.Item>
+        ) : (
+          children
+        )}
+      </td>
+    );
+  };
+
   return (
-    <AntTable
-      columns={tableColumns}
-      dataSource={data}
-      loading={loading}
-      size={size ? size : 'small'}
-      rowHoverable
-      showSorterTooltip={{ target: 'sorter-icon' }}
-      key={Math.random()}
-    />
+    <Form form={form} component={false}>
+      <AntTable
+        components={{
+          body: {
+            cell: EditableCell,
+          },
+        }}
+        columns={mergedColumns as TableColumnsType<any>}
+        dataSource={data}
+        loading={loading}
+        size={size ?? 'small'}
+        rowClassName="editable-row"
+        pagination={false}
+        rowKey="id"
+      />
+    </Form>
   );
 };
