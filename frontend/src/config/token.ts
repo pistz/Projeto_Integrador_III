@@ -7,11 +7,7 @@ interface JwtCustomPayload extends JwtPayload{
 
 export const getTokenFromSessionStorage = ():string =>{
     const token_id = getTokenId();
-    const getToken = () =>{
-        return sessionStorage.getItem(token_id);
-    }
-    let token = ""
-    token = getToken()!;
+    const token = sessionStorage.getItem(token_id)!;
     return token;
 }
 

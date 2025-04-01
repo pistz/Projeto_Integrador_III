@@ -56,9 +56,11 @@ export const ContextProvider: React.FC<IChildren> = ({ children }:IChildren) => 
         }
     },[getAllBrands, getAllCategories, getAllProducts]);
 
-    useEffect(() =>{
-        loadProductOptions()
-    }, [loadProductOptions, reload]);
+    useEffect(() => {
+        if (signed && token) {
+            loadProductOptions();
+        }
+    }, [signed, token, reload, loadProductOptions]);
 
 
     return (
