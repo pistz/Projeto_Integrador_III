@@ -1,0 +1,19 @@
+[tool.ruff]
+line-length = 88
+indent-width = 2
+target-version = "py310"  # ou py311, py39 etc
+exclude = ["venv", "migrations"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D", "ANN", "TRY003", "ERA001"]  # ignora docstrings, type hints obrigatórios etc
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = true
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+skip-string-normalization = true

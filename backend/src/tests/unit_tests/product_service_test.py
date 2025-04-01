@@ -1,10 +1,12 @@
 from unittest.mock import MagicMock
+
 import pytest
-from src.application.enums.status_codes import StatusCode
-from src.domain.services.Product.product_service import ProductService
+
 from src.application.dtos.product.product_dtos import CreateProductDTO, UpdateProductDTO
-from src.application.exceptions.not_found import NotFound
+from src.application.enums.status_codes import StatusCode
 from src.application.exceptions.invalid_data import InvalidData
+from src.application.exceptions.not_found import NotFound
+from src.domain.services.Product.product_service import ProductService
 from src.tests.mocks.mock_product_repository import get_mock_product_repository
 
 
@@ -56,7 +58,9 @@ def test_get_all_products_by_category_id(product_service):
 
 
 def test_create_product_success(product_service):
-    product = CreateProductDTO(name="Mouse", description="Wireless mouse", brand_id=1, category_id=2)
+    product = CreateProductDTO(
+        name="Mouse", description="Wireless mouse", brand_id=1, category_id=2
+    )
 
     mock_product_repository = get_mock_product_repository()
     product_service._ProductService__product_repository = mock_product_repository
@@ -70,20 +74,26 @@ def test_create_product_success(product_service):
 
 
 def test_create_product_invalid(product_service):
-    product = CreateProductDTO(name="", description="desc", brand_id=None, category_id=None)
+    product = CreateProductDTO(
+        name="", description="desc", brand_id=None, category_id=None
+    )
     with pytest.raises(InvalidData):
         product_service.create_product(product)
 
 
 def test_update_product_success(product_service):
-    update_data = UpdateProductDTO(name="Updated Laptop", description="Updated", brand_id=99, category_id=88)
+    update_data = UpdateProductDTO(
+        name="Updated Laptop", description="Updated", brand_id=99, category_id=88
+    )
     response = product_service.update_product(1, update_data)
     assert response.status_code == StatusCode.CREATED.value
     assert response.body["message"] == "Product updated successfully"
 
 
 def test_update_product_not_found(product_service):
-    update_data = UpdateProductDTO(name="Updated", description="Updated", brand_id=99, category_id=88)
+    update_data = UpdateProductDTO(
+        name="Updated", description="Updated", brand_id=99, category_id=88
+    )
     with pytest.raises(NotFound):
         product_service.update_product(999, update_data)
 

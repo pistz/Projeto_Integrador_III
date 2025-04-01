@@ -1,10 +1,12 @@
 from functools import wraps
-from flask import request, jsonify
+
+from flask import request
 
 from src.application.exceptions.token_error import TokenError
 from src.domain.containers.service_container import ServiceContainer
 
 auth_service = ServiceContainer.login_service()
+
 
 def jwt_required(f):
     @wraps(f)
@@ -19,8 +21,7 @@ def jwt_required(f):
             auth_service.decode_token_validity(token)
         except Exception as e:
             raise TokenError(str(e))
-        
-        return f(*args, **kwargs)
 
+        return f(*args, **kwargs)
 
     return decorated_function

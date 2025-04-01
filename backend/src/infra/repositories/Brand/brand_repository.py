@@ -1,4 +1,5 @@
 from typing import Optional
+
 from src.application.exceptions.database_exception import DatabaseException
 from src.infra.repositories.Brand.brand_repository_interface import IBrandRepository
 from src.model.configs.connection import DbConnectionHandler
@@ -33,7 +34,7 @@ class BrandRepository(IBrandRepository):
             brands = db.session.query(Brand).all()
             return brands
 
-    def update_brand(self, id:int, name:str) -> None:
+    def update_brand(self, id: int, name: str) -> None:
         with DbConnectionHandler() as db:
             try:
                 found_brand = self.__find_brand(id=id)
@@ -44,9 +45,11 @@ class BrandRepository(IBrandRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(message='Erro ao atualizar marca', aditional=str(e))
+                raise DatabaseException(
+                    message='Erro ao atualizar marca', aditional=str(e)
+                )
 
-    def delete_brand(self, id:int) -> None:
+    def delete_brand(self, id: int) -> None:
         with DbConnectionHandler() as db:
             try:
                 brand = self.__find_brand(id=id)
@@ -55,14 +58,16 @@ class BrandRepository(IBrandRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(message='Erro ao deletar marca', aditional=str(e))
-            
-    def __find_brand(self, id:int = None, name:str = None) -> Optional[Brand]:
+                raise DatabaseException(
+                    message='Erro ao deletar marca', aditional=str(e)
+                )
+
+    def __find_brand(self, id: int = None, name: str = None) -> Optional[Brand]:
         if id is not None:
             with DbConnectionHandler() as db:
                 brand = db.session.query(Brand).filter_by(id=id).one_or_none()
                 return brand
-            
+
         if name is not None:
             with DbConnectionHandler() as db:
                 brand = db.session.query(Brand).filter_by(name=name).all()

@@ -1,6 +1,8 @@
 import datetime
+
 import bcrypt
-from jwt import decode, ExpiredSignatureError, InvalidTokenError, encode
+from jwt import ExpiredSignatureError, InvalidTokenError, decode, encode
+
 from src.application.dtos.http_types.http_response import HttpResponse
 from src.application.dtos.jwt.jwt_token_dto import JWTTokenDTO
 from src.application.enums.status_codes import StatusCode
@@ -12,12 +14,13 @@ from src.infra.repositories.User.user_repository_interface import IUserRepositor
 from src.model.configs.env import load_secret_key
 from src.model.entities.user import User
 
-JWT_SECRET_KEY=load_secret_key()
+JWT_SECRET_KEY = load_secret_key()
+
 
 class LoginService(ILoginService):
     def __init__(self, user_repository: IUserRepository):
         self.user_repository = user_repository
-    
+
     def login(self, email: str, password: str) -> HttpResponse:
         user = self.user_repository.get_user_by_email(email)
         if not user:
@@ -36,7 +39,7 @@ class LoginService(ILoginService):
             raise TokenError("Token inválido.")
 
         return True
-    
+
     def decode_token_user(self, token: str, email: str) -> bool:
         try:
             decoded = decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
@@ -49,19 +52,20 @@ class LoginService(ILoginService):
             raise TokenError("Token não pertence a este usuário.")
 
         return True
-    
-    def __generate_token(self, user:User) -> str:
+
+    def __generate_token(self, user: User) -> str:
         now = datetime.datetime.now(tz=datetime.timezone.utc)
 
         token = encode(
-            {   "name": user.name,
-                "user": user.email, 
-                "exp":(now + datetime.timedelta(hours=12)).timestamp()
+            {
+                "name": user.name,
+                "user": user.email,
+                "exp": (now + datetime.timedelta(hours=12)).timestamp(),
             },
             JWT_SECRET_KEY,
-            algorithm="HS256")
+            algorithm="HS256",
+        )
         return token
-    
-    def __dehash_password(self, password: str, user_password:str) -> bool:
+
+    def __dehash_password(self, password: str, user_password: str) -> bool:
         return bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8'))
-    

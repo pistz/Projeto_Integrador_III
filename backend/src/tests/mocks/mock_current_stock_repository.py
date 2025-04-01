@@ -1,5 +1,6 @@
-from unittest.mock import MagicMock
 from datetime import datetime
+from unittest.mock import MagicMock
+
 
 def get_mock_current_stock_repository():
     repo = MagicMock()

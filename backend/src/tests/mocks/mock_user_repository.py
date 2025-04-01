@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock
 
+
 def get_mock_user_repository():
     repo = MagicMock()
 

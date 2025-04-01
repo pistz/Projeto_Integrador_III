@@ -1,7 +1,8 @@
-from unittest.mock import MagicMock
 from datetime import datetime
+from unittest.mock import MagicMock
 
 from src.application.enums.stock_movement import MovementSource, MovementType
+
 
 def get_mock_stock_movement_repository():
     repo = MagicMock()

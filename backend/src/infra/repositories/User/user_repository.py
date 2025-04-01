@@ -1,18 +1,20 @@
 from typing import Optional
+
+from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO
 from src.application.exceptions.database_exception import DatabaseException
+from src.infra.repositories.User.user_repository_interface import IUserRepository
 from src.model.configs.connection import DbConnectionHandler
 from src.model.entities.user import User
-from src.infra.repositories.User.user_repository_interface import IUserRepository
-from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO
-
 
 
 class UserRepository(IUserRepository):
 
-    def create_user(self, user:CreateUserDTO) -> User:
+    def create_user(self, user: CreateUserDTO) -> User:
         with DbConnectionHandler() as db:
             try:
-                new_user = User(name=user.name, email=user.email, password=user.password)
+                new_user = User(
+                    name=user.name, email=user.email, password=user.password
+                )
 
                 db.session.add(new_user)
                 db.session.commit()
@@ -20,23 +22,24 @@ class UserRepository(IUserRepository):
                 return new_user
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(message='Erro ao criar usuário', aditional=str(e))
-    
-    def get_user_by_email(self, email: str) -> User|None:
+                raise DatabaseException(
+                    message='Erro ao criar usuário', aditional=str(e)
+                )
+
+    def get_user_by_email(self, email: str) -> User | None:
         user = self.__find_user(email=email)
         return user
-            
 
-    def get_user_by_id(self, user_id: int) -> User|None:
+    def get_user_by_id(self, user_id: int) -> User | None:
         user = self.__find_user(user_id=user_id)
         return user
-        
+
     def get_all_users(self) -> list[User]:
         with DbConnectionHandler() as db:
             users = db.session.query(User).all()
             return users
 
-    def update_user(self, user_id:int, user:UpdateUserDTO) -> None:
+    def update_user(self, user_id: int, user: UpdateUserDTO) -> None:
         with DbConnectionHandler() as db:
             try:
                 found_user = self.__find_user(user_id=user_id)
@@ -48,10 +51,11 @@ class UserRepository(IUserRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(message='Erro ao atualizar usuário', aditional=str(e))
+                raise DatabaseException(
+                    message='Erro ao atualizar usuário', aditional=str(e)
+                )
 
-
-    def delete_user(self, user_id:int) -> None:
+    def delete_user(self, user_id: int) -> None:
         with DbConnectionHandler() as db:
             try:
                 user = self.__find_user(user_id=user_id)
@@ -60,9 +64,11 @@ class UserRepository(IUserRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(message='Erro ao deletar usuário', aditional=str(e))
-            
-    def __find_user(self, user_id:int=None, email:str=None) -> Optional[User]:
+                raise DatabaseException(
+                    message='Erro ao deletar usuário', aditional=str(e)
+                )
+
+    def __find_user(self, user_id: int = None, email: str = None) -> Optional[User]:
         if user_id is not None:
             with DbConnectionHandler() as db:
                 user = db.session.query(User).filter(User.id == user_id).one_or_none()

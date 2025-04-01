@@ -1,5 +1,7 @@
 from src.application.exceptions.database_exception import DatabaseException
-from src.infra.repositories.Category.category_repository_interface import ICategoryRepository
+from src.infra.repositories.Category.category_repository_interface import (
+    ICategoryRepository,
+)
 from src.model.configs.connection import DbConnectionHandler
 from src.model.entities.category import Category
 
@@ -17,7 +19,9 @@ class CategoryRepository(ICategoryRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(message='Erro ao criar categoria', aditional=str(e))
+                raise DatabaseException(
+                    message='Erro ao criar categoria', aditional=str(e)
+                )
 
     def get_category_by_name(self, name: str) -> list[Category]:
         category = self.__find_category(name=name)
@@ -32,7 +36,7 @@ class CategoryRepository(ICategoryRepository):
             categories = db.session.query(Category).all()
             return categories
 
-    def update_category(self, category_id:int, name:str) -> None:
+    def update_category(self, category_id: int, name: str) -> None:
         with DbConnectionHandler() as db:
             try:
                 found_category = self.__find_category(category_id=category_id)
@@ -43,9 +47,11 @@ class CategoryRepository(ICategoryRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(message='Erro ao atualizar categoria', aditional=str(e))
+                raise DatabaseException(
+                    message='Erro ao atualizar categoria', aditional=str(e)
+                )
 
-    def delete_category(self, category_id:int) -> None:
+    def delete_category(self, category_id: int) -> None:
         with DbConnectionHandler() as db:
             try:
                 category = self.__find_category(category_id=category_id)
@@ -54,12 +60,16 @@ class CategoryRepository(ICategoryRepository):
                 return
             except Exception as e:
                 db.session.rollback()
-                raise DatabaseException(message='Erro ao deletar categoria', aditional=str(e))
-            
-    def __find_category(self, category_id:int = None, name:str = None) -> Category:
+                raise DatabaseException(
+                    message='Erro ao deletar categoria', aditional=str(e)
+                )
+
+    def __find_category(self, category_id: int = None, name: str = None) -> Category:
         if category_id is not None:
             with DbConnectionHandler() as db:
-                category = db.session.query(Category).filter_by(id=category_id).one_or_none()
+                category = (
+                    db.session.query(Category).filter_by(id=category_id).one_or_none()
+                )
                 return category
         if name is not None:
             with DbConnectionHandler() as db:

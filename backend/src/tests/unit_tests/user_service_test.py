@@ -1,5 +1,7 @@
 from unittest.mock import MagicMock
+
 import pytest
+
 from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO, UserDTO
 from src.application.enums.status_codes import StatusCode
 from src.application.exceptions.email_not_valid import EmailNotValid
@@ -11,7 +13,9 @@ from src.tests.mocks.mock_user_repository import get_mock_user_repository
 
 def test_create_user_success():
     repo = get_mock_user_repository()
-    repo.get_user_by_email.return_value = None  # Corrigido: simula que o e-mail ainda não está cadastrado
+    repo.get_user_by_email.return_value = (
+        None  # Corrigido: simula que o e-mail ainda não está cadastrado
+    )
     repo.create_user.return_value = None  # Opcional, apenas para clareza
 
     service = UserService(repo)
