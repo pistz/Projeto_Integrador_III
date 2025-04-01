@@ -69,4 +69,8 @@ export class StockAPI {
     );
     return response.data;
   };
+
+  static update = async () => {
+    return { message: '' } as Response;
+  };
 }
