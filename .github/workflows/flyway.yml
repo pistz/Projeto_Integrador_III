@@ -2,8 +2,12 @@ name: Run Flyway Migrations
 
 on:
   push:
+    paths:
+      - 'database/migrations/**'
     branches:
       - main
+
+  workflow_dispatch: # permite executar manualmente
 
 jobs:
   migrate:
