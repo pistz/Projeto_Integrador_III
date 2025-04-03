@@ -40,9 +40,11 @@ export const Modal: React.FC<Props> = ({
           : { minWidth: '40rem', maxWidth: width ?? '100vh' }
       }
       width={isMobile ? '100vw' : width}
-      bodyStyle={
-        isMobile ? { height: '100vh', overflowY: 'auto', padding: '1rem' } : {}
-      }
+      styles={{
+        body: isMobile
+          ? { height: '100vh', overflowY: 'auto', padding: '1rem' }
+          : {},
+      }}
       key={Math.random()}
     >
       {modalContent}
