@@ -118,6 +118,7 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
           <Form.Item
             name={['observations']}
             label={'Descrição da Movimentação'}
+            rules={[{ required: true, message: 'Adicione uma descrição' }]}
           >
             <Input.TextArea
               disabled={isLoading || isFetchingOptions}

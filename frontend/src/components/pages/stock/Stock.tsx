@@ -1,6 +1,4 @@
 import {
-  AppstoreAddOutlined,
-  EyeOutlined,
   MinusCircleFilled,
   PlusCircleFilled,
   SnippetsOutlined,
@@ -15,18 +13,11 @@ import { CardsContainer } from '../../shared/container/cardsContainer';
 import { Drawer } from '../../shared/drawer/Drawer';
 import { Modal } from '../../shared/modal/Modal';
 import { notifyError } from '../../shared/notify/notify';
-import { CreateBrand } from './brand/createBrand';
-import { ListBrands } from './brand/listBrands';
-import { CreateCategory } from './category/createCategory';
-import { ListCategories } from './category/listCategories';
-import { CreateProduct } from './product/createProduct';
-import { ListProduct } from './product/listProduct';
-import { MoveProduct } from './product/moveProduct';
-import { MovementType } from './product/types';
+import { MoveProduct } from './movement/moveProduct';
+import { MovementType } from './movement/types';
 import { Reports } from './reports/Reports';
 
 export const Stock: React.FC = () => {
-  const MIN_HEIGHT = '30vh';
   const { setReload } = useAppContext();
 
   const [userName, setUserName] = useState('');
@@ -133,113 +124,15 @@ export const Stock: React.FC = () => {
     },
   ];
 
-  const registerOptions = [
-    {
-      title: 'Marcas',
-      actions: [
-        {
-          key: 'Adicionar',
-          component: (
-            <CardComponent
-              component={<AppstoreAddOutlined />}
-              title={'Criar'}
-              boldFont
-            />
-          ),
-          onClick: () => showModal(<CreateBrand close={closeModal} />),
-        },
-        {
-          key: 'Listar/Editar',
-          component: (
-            <CardComponent
-              component={<EyeOutlined />}
-              title={'Listar/Editar'}
-              boldFont
-            />
-          ),
-          onClick: () => showModal(<ListBrands />),
-        },
-      ],
-    },
-
-    {
-      title: 'Categorias',
-      actions: [
-        {
-          key: 'Adicionar',
-          component: (
-            <CardComponent
-              component={<AppstoreAddOutlined />}
-              title={'Criar'}
-              boldFont
-            />
-          ),
-          onClick: () => showModal(<CreateCategory close={closeModal} />),
-        },
-        {
-          key: 'Listar/Editar',
-          component: (
-            <CardComponent
-              component={<EyeOutlined />}
-              title={'Listar/Editar'}
-              boldFont
-            />
-          ),
-          onClick: () => showModal(<ListCategories />),
-        },
-      ],
-    },
-
-    {
-      title: 'Produtos',
-      actions: [
-        {
-          key: 'Adicionar',
-          component: (
-            <CardComponent
-              component={<AppstoreAddOutlined />}
-              title={'Criar'}
-              boldFont
-            />
-          ),
-          onClick: () => showModal(<CreateProduct close={closeModal} />),
-        },
-        {
-          key: 'Listar/Editar',
-          component: (
-            <CardComponent
-              component={<EyeOutlined />}
-              title={'Listar/Editar'}
-              boldFont
-            />
-          ),
-          onClick: () => showModal(<ListProduct />),
-        },
-      ],
-    },
-  ];
-
   return (
     <>
       <Divider>Movimentos de Estoque</Divider>
-      <CardsContainer $minHeight={MIN_HEIGHT}>
+      <CardsContainer>
         {moveProductStock.map((option, index) => (
           <OptionCard
             key={`${option.title}-${index}`}
             title={option.title}
             actions={option.actions}
-          />
-        ))}
-      </CardsContainer>
-
-      <Divider>Cadastros</Divider>
-      <CardsContainer $minHeight={MIN_HEIGHT}>
-        {registerOptions.map((option, index) => (
-          <OptionCard
-            key={`${option.title}-${index}`}
-            title={option.title}
-            actions={option.actions}
-            background="#536493"
           />
         ))}
       </CardsContainer>

@@ -7,7 +7,7 @@ import {
 import { Table as AntTable, Button, Form, Input, TableColumnsType } from 'antd';
 import { ColumnType } from 'antd/es/table';
 import { useState } from 'react';
-import { EditableColumnType } from '../../pages/stock/brand/types';
+import { EditableColumnType } from '../../pages/registrations/brand/types';
 import { DeleteButton } from '../deleteButton/DeleteButton';
 import { notifyError, notifySuccess } from '../notify/notify';
 
