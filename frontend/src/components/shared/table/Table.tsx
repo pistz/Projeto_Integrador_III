@@ -212,7 +212,7 @@ export const Table = <T extends Entity, API extends APIWithMethods>({
         loading={loading}
         size={size ?? 'small'}
         rowClassName="editable-row"
-        pagination={false}
+        pagination={{ pageSize: 10 }}
         rowKey="id"
       />
     </Form>

@@ -1,4 +1,4 @@
-import { Button, Divider, Input, Select, Skeleton, Space } from 'antd';
+import { Button, Divider, Input, Select, Skeleton } from 'antd';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -15,11 +15,36 @@ const Container = styled.div`
   width: 100%;
   gap: 2rem;
 `;
+
+const ResponsiveResultContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-top: 2rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+
+    input {
+      width: 100% !important;
+    }
+
+    .ant-skeleton-input {
+      width: 100% !important;
+    }
+  }
+`;
 export const GetCurrentStockByProductId: React.FC = () => {
   const [currentStock, setCurrentStock] = useState<CurrentStock | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<number | null>(null);
-  const { productsList, isFetchingOptions } = useAppContext();
+  const { productsList, isFetchingOptions, productOptions } = useAppContext();
+
+  const brands = productOptions.brands;
 
   const selectList = productsList.map((product) => ({
     value: product.id,
@@ -44,8 +69,12 @@ export const GetCurrentStockByProductId: React.FC = () => {
     }
   };
 
-  const productName = productsList.find(
+  const selectedProduct = productsList.find(
     (value) => value.id === currentStock?.product_id,
+  );
+  const productName = selectedProduct?.name;
+  const brandName = brands.find(
+    (b) => b.id === selectedProduct?.brand_id,
   )?.name;
   const lastUpdate = dayjs(currentStock?.last_updated).format(
     'DD/MM/YYYY hh:mm',
@@ -67,26 +96,27 @@ export const GetCurrentStockByProductId: React.FC = () => {
           Buscar
         </Button>
       </Container>
-      <Container>
+
+      <ResponsiveResultContainer>
         {currentStock ? (
           <>
-            <Space style={{ margin: '3rem 0' }}>
-              <Input addonBefore="Produto" value={productName} />
-              <Input
-                addonBefore="Quantidade"
-                value={currentStock.total_quantity}
-              />
-              <Input addonBefore="Última atualização" value={lastUpdate} />
-            </Space>
+            <Input addonBefore="Produto" value={productName} />
+            <Input addonBefore="Marca" value={brandName} />
+            <Input
+              addonBefore="Quantidade"
+              value={currentStock.total_quantity}
+            />
+            <Input addonBefore="Atualização" value={lastUpdate} />
           </>
         ) : (
           <>
-            <Skeleton.Input size="large" style={{ margin: '3rem 0' }} />
-            <Skeleton.Input size="large" style={{ margin: '3rem 0' }} />
-            <Skeleton.Input size="large" style={{ margin: '3rem 0' }} />
+            <Skeleton.Input size="large" />
+            <Skeleton.Input size="large" />
+            <Skeleton.Input size="large" />
+            <Skeleton.Input size="large" />
           </>
         )}
-      </Container>
+      </ResponsiveResultContainer>
     </>
   );
 };

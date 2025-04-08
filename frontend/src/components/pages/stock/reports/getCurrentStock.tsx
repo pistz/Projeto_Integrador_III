@@ -10,9 +10,28 @@ import { Table } from '../../../shared/table/Table';
 import { CurrentStock } from './types';
 
 export const GetCurrentStock: React.FC = () => {
-  const { productsList, isFetchingOptions } = useAppContext();
+  const { productsList, isFetchingOptions, productOptions } = useAppContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tableData, setTableData] = useState<CurrentStock[]>([]);
+
+  const brands = productOptions.brands;
+  const productMap = new Map(productsList.map((p) => [p.id, p]));
+  const brandMap = new Map(brands.map((b) => [b.id, b]));
+
+  const brandFilters = Array.from(
+    new Map(
+      productsList
+        .map((product) => {
+          const brand = brandMap.get(product.brand_id);
+          if (!brand?.id) return null;
+          return [brand.id, { text: brand.name, value: brand.id }];
+        })
+        .filter(
+          (item): item is [number, { text: string; value: number }] =>
+            item !== null,
+        ),
+    ).values(),
+  );
 
   const columns: ColumnsType<CurrentStock> = [
     {
@@ -34,7 +53,30 @@ export const GetCurrentStock: React.FC = () => {
       render: (value) =>
         productsList.find((product) => product.id === value)?.name || null,
     },
+    {
+      title: 'Marca',
+      filters: brandFilters,
+      filterSearch: true,
+      onFilter: (value, record) => {
+        const product = productMap.get(record.product_id);
+        return product?.brand_id === value;
+      },
+      sortIcon: () => <SortAscendingOutlined />,
+      sorter: (a, b) => {
+        const brandAId = productMap.get(a.product_id)?.brand_id;
+        const brandBId = productMap.get(b.product_id)?.brand_id;
 
+        const brandAName = brandMap.get(brandAId!)?.name || '';
+        const brandBName = brandMap.get(brandBId!)?.name || '';
+
+        return brandAName.localeCompare(brandBName);
+      },
+      render: (_, record) => {
+        const product = productMap.get(record.product_id);
+        const brand = brandMap.get(product?.brand_id!);
+        return brand?.name || null;
+      },
+    },
     {
       title: 'Quantidade',
       dataIndex: 'total_quantity',
