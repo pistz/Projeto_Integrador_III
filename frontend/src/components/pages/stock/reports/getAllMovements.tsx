@@ -13,6 +13,17 @@ import { Movement, MovementSource, MovementType } from './types';
 
 export const GetAllMovements: React.FC = () => {
   const REPORT_NAME = 'Relatório Geral de Movimentações';
+  const reportHeaders = [
+    'Produto',
+    'Marca',
+    'Tipo',
+    'Origem',
+    'Quantidade',
+    'Data:Hora',
+    'Criado por',
+    'Observações',
+  ];
+
   const [loading, setLoading] = useState<boolean>(false);
   const [movements, setMovements] = useState<Movement[]>([]);
 
@@ -41,7 +52,7 @@ export const GetAllMovements: React.FC = () => {
 
   const columns: ColumnsType<Movement> = [
     {
-      title: 'Nome do Produto',
+      title: reportHeaders[0],
       dataIndex: 'product_id',
       filters: productsList.map((item) => ({
         text: item.name,
@@ -60,7 +71,7 @@ export const GetAllMovements: React.FC = () => {
         productsList.find((product) => product.id === value)?.name || null,
     },
     {
-      title: 'Marca',
+      title: reportHeaders[1],
       filters: brandFilters,
       filterSearch: true,
       onFilter: (value, record) => {
@@ -84,7 +95,7 @@ export const GetAllMovements: React.FC = () => {
       },
     },
     {
-      title: 'Tipo',
+      title: reportHeaders[2],
       dataIndex: 'movement_type',
       render: (value: keyof typeof MovementType) =>
         MovementType[value] || value,
@@ -92,7 +103,7 @@ export const GetAllMovements: React.FC = () => {
       sortIcon: () => <SortAscendingOutlined />,
     },
     {
-      title: 'Origem',
+      title: reportHeaders[3],
       dataIndex: 'movement_source',
       render: (value: keyof typeof MovementSource) =>
         MovementSource[value] || value,
@@ -100,13 +111,13 @@ export const GetAllMovements: React.FC = () => {
       sortIcon: () => <SortAscendingOutlined />,
     },
     {
-      title: 'Quantidade',
+      title: reportHeaders[4],
       dataIndex: 'quantity',
       sorter: (a, b) => a.quantity - b.quantity,
       sortIcon: () => <SortAscendingOutlined />,
     },
     {
-      title: 'Data:Hora',
+      title: reportHeaders[5],
       dataIndex: 'movement_date',
       sorter: (a, b) => {
         const dateA = dayjs(a.movement_date)
@@ -121,13 +132,13 @@ export const GetAllMovements: React.FC = () => {
       render: (value) => dayjs(value).format('DD/MM/YYYY hh:mm').toString(),
     },
     {
-      title: 'Criado por',
+      title: reportHeaders[6],
       dataIndex: 'created_by',
       sorter: (a, b) => a.created_by.localeCompare(b.created_by),
       sortIcon: () => <SortAscendingOutlined />,
     },
     {
-      title: 'Observações',
+      title: reportHeaders[7],
       dataIndex: 'observations',
       sorter: (a, b) => {
         const obsA = a.observations || '';
@@ -185,16 +196,7 @@ export const GetAllMovements: React.FC = () => {
 
       <PrintPage
         title={REPORT_NAME}
-        headers={[
-          'Produto',
-          'Marca',
-          'Tipo',
-          'Origem',
-          'Quantidade',
-          'Data:Hora',
-          'Criado por',
-          'Observações',
-        ]}
+        headers={reportHeaders}
         tableData={movements}
         rowMapper={rowMapper}
         triggerRef={printFnRef}

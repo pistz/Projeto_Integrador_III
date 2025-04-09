@@ -2,11 +2,13 @@ import { SortAscendingOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Divider } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError } from '../../../shared/notify/notify';
+import { PrintPage } from '../../../shared/print/PrintPage';
+import { PrintButton } from '../../../shared/printButton/PrintButton';
 import { Table } from '../../../shared/table/Table';
 import { Movement, MovementSource, MovementType } from './types';
 
@@ -22,8 +24,23 @@ export const GetSingleDateMovement: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [targetDate, setTargetDate] = useState<string>('');
   const [tableData, setTableData] = useState<Movement[]>([]);
+  const [disableButton, setDisableButton] = useState<boolean>(true);
+
+  const REPORT_NAME = 'Movimentações por Dia Específico';
+  const reportHeaders = [
+    'Produto',
+    'Marca',
+    'Tipo',
+    'Origem',
+    'Quantidade',
+    'Data:Hora',
+    'Criado por',
+    'Observações',
+  ];
 
   const { productsList, productOptions } = useAppContext();
+
+  const printFnRef = useRef<() => void>(null);
 
   const brands = productOptions.brands;
   const productMap = new Map(productsList.map((p) => [p.id, p]));
@@ -64,6 +81,14 @@ export const GetSingleDateMovement: React.FC = () => {
   useEffect(() => {
     if (targetDate) return;
   }, [targetDate]);
+
+  useEffect(() => {
+    if (tableData.length > 0) {
+      setDisableButton(false);
+    } else {
+      setDisableButton(true);
+    }
+  }, [tableData]);
 
   const columns: ColumnsType<Movement> = [
     {
@@ -164,9 +189,25 @@ export const GetSingleDateMovement: React.FC = () => {
     },
   ];
 
+  const rowMapper = (m: Movement) => {
+    const product = productMap.get(m.product_id);
+    const brand = brandMap.get(product?.brand_id!);
+
+    return [
+      product?.name || '',
+      brand?.name || '',
+      MovementType[m.movement_type as keyof typeof MovementType],
+      MovementSource[m.movement_source as keyof typeof MovementSource],
+      m.quantity,
+      dayjs(m.movement_date).format('DD/MM/YYYY HH:mm'),
+      m.created_by,
+      m.observations,
+    ];
+  };
+
   return (
     <>
-      <Divider>Movimentações por dia específico</Divider>
+      <Divider>{REPORT_NAME}</Divider>
       <Container>
         <DatePicker
           format={'DD/MM/YYYY'}
@@ -180,6 +221,12 @@ export const GetSingleDateMovement: React.FC = () => {
           {' '}
           Buscar{' '}
         </Button>
+        <PrintButton
+          handlePrint={() => printFnRef.current?.()}
+          disabled={disableButton}
+          setMargin
+          margin={0}
+        />
       </Container>
       <Divider />
       <Table<Movement, typeof StockAPI>
@@ -188,6 +235,14 @@ export const GetSingleDateMovement: React.FC = () => {
         hiddenActions
         size="middle"
         loading={isLoading}
+      />
+
+      <PrintPage
+        title={REPORT_NAME}
+        headers={reportHeaders}
+        triggerRef={printFnRef}
+        rowMapper={rowMapper}
+        tableData={tableData}
       />
     </>
   );

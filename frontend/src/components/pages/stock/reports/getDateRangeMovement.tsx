@@ -2,11 +2,13 @@ import { SortAscendingOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Divider } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError } from '../../../shared/notify/notify';
+import { PrintPage } from '../../../shared/print/PrintPage';
+import { PrintButton } from '../../../shared/printButton/PrintButton';
 import { Table } from '../../../shared/table/Table';
 import { Movement, MovementSource, MovementType } from './types';
 
@@ -19,10 +21,25 @@ const Container = styled.div`
   gap: 2rem;
 `;
 export const GetDateRangeMovement: React.FC = () => {
+  const REPORT_NAME = 'Movimentações por Intervalo de Datas';
+  const reportHeaders = [
+    'Produto',
+    'Marca',
+    'Tipo',
+    'Origem',
+    'Quantidade',
+    'Data:Hora',
+    'Criado por',
+    'Observações',
+  ];
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [startingDate, setStartingDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [tableData, setTableData] = useState<Movement[]>([]);
+  const [disableButton, setDisableButton] = useState<boolean>(true);
+
+  const printFnRef = useRef<() => void>(null);
 
   const { productsList, productOptions } = useAppContext();
 
@@ -74,9 +91,17 @@ export const GetDateRangeMovement: React.FC = () => {
     if (startingDate && endDate) return;
   }, [startingDate, endDate]);
 
+  useEffect(() => {
+    if (tableData.length > 0) {
+      setDisableButton(false);
+    } else {
+      setDisableButton(true);
+    }
+  }, [tableData]);
+
   const columns: ColumnsType<Movement> = [
     {
-      title: 'Nome do Produto',
+      title: reportHeaders[0],
       dataIndex: 'product_id',
       filters: productsList.map((item) => ({
         text: item.name,
@@ -95,7 +120,7 @@ export const GetDateRangeMovement: React.FC = () => {
         productsList.find((product) => product.id === value)?.name || null,
     },
     {
-      title: 'Marca',
+      title: reportHeaders[1],
       filters: brandFilters,
       filterSearch: true,
       onFilter: (value, record) => {
@@ -119,7 +144,7 @@ export const GetDateRangeMovement: React.FC = () => {
       },
     },
     {
-      title: 'Tipo',
+      title: reportHeaders[2],
       dataIndex: 'movement_type',
       render: (value: keyof typeof MovementType) =>
         MovementType[value] || value,
@@ -127,7 +152,7 @@ export const GetDateRangeMovement: React.FC = () => {
       sortIcon: () => <SortAscendingOutlined />,
     },
     {
-      title: 'Origem',
+      title: reportHeaders[3],
       dataIndex: 'movement_source',
       render: (value: keyof typeof MovementSource) =>
         MovementSource[value] || value,
@@ -135,13 +160,13 @@ export const GetDateRangeMovement: React.FC = () => {
       sortIcon: () => <SortAscendingOutlined />,
     },
     {
-      title: 'Quantidade',
+      title: reportHeaders[4],
       dataIndex: 'quantity',
       sorter: (a, b) => a.quantity - b.quantity,
       sortIcon: () => <SortAscendingOutlined />,
     },
     {
-      title: 'Data:Hora',
+      title: reportHeaders[5],
       dataIndex: 'movement_date',
       sorter: (a, b) => {
         const dateA = dayjs(a.movement_date)
@@ -156,13 +181,13 @@ export const GetDateRangeMovement: React.FC = () => {
       render: (value) => dayjs(value).format('DD/MM/YYYY hh:mm').toString(),
     },
     {
-      title: 'Criado por',
+      title: reportHeaders[6],
       dataIndex: 'created_by',
       sorter: (a, b) => a.created_by.localeCompare(b.created_by),
       sortIcon: () => <SortAscendingOutlined />,
     },
     {
-      title: 'Observações',
+      title: reportHeaders[7],
       dataIndex: 'observations',
       sorter: (a, b) => {
         const obsA = a.observations || '';
@@ -173,9 +198,25 @@ export const GetDateRangeMovement: React.FC = () => {
     },
   ];
 
+  const rowMapper = (m: Movement) => {
+    const product = productMap.get(m.product_id);
+    const brand = brandMap.get(product?.brand_id!);
+
+    return [
+      product?.name || '',
+      brand?.name || '',
+      MovementType[m.movement_type as keyof typeof MovementType],
+      MovementSource[m.movement_source as keyof typeof MovementSource],
+      m.quantity,
+      dayjs(m.movement_date).format('DD/MM/YYYY HH:mm'),
+      m.created_by,
+      m.observations,
+    ];
+  };
+
   return (
     <>
-      <Divider>Movimentações por Intervalo de Datas</Divider>
+      <Divider>{REPORT_NAME}</Divider>
       <Container>
         <DatePicker
           format={'DD/MM/YYYY'}
@@ -198,14 +239,28 @@ export const GetDateRangeMovement: React.FC = () => {
           {' '}
           Buscar{' '}
         </Button>
+        <PrintButton
+          handlePrint={() => printFnRef.current?.()}
+          disabled={disableButton}
+          setMargin
+          margin={0}
+        />
       </Container>
       <Divider />
+
       <Table<Movement, typeof StockAPI>
         columns={columns}
         data={tableData}
         hiddenActions
         size="middle"
         loading={isLoading}
+      />
+      <PrintPage
+        title={REPORT_NAME}
+        headers={reportHeaders}
+        triggerRef={printFnRef}
+        rowMapper={rowMapper}
+        tableData={tableData}
       />
     </>
   );
