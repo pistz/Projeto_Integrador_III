@@ -2,12 +2,14 @@ import { LogoutOutlined } from '@ant-design/icons';
 import { FloatButton, Layout, Menu, theme } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
+import { loadSystemVersion } from '../../../config/loadEnv';
 import { isTokenExpired } from '../../../config/token';
 import { Router } from '../../../routes/types';
 import { Logout } from '../../pages/logout/Logout';
 import { Alert } from '../alert/Alert';
 
 const { Header, Content, Footer } = Layout;
+const SYSTEM_VERSION = loadSystemVersion();
 
 interface ISystemLayout {
   menu: Router[];
@@ -111,7 +113,7 @@ export const SystemLayout: React.FC<ISystemLayout> = ({
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Repono - Gestão de Estoque - {new Date().getFullYear()} v1.0
+          {SYSTEM_VERSION} - {new Date().getFullYear()}
         </Footer>
       </Layout>
       <Logout open={logout} onClose={() => setLogout(false)} />

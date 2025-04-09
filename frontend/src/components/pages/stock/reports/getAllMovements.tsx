@@ -2,16 +2,21 @@ import { SortAscendingOutlined } from '@ant-design/icons';
 import { Divider } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError } from '../../../shared/notify/notify';
+import { PrintPage } from '../../../shared/print/PrintPage';
+import { PrintButton } from '../../../shared/printButton/PrintButton';
 import { Table } from '../../../shared/table/Table';
 import { Movement, MovementSource, MovementType } from './types';
 
 export const GetAllMovements: React.FC = () => {
+  const REPORT_NAME = 'Relatório Geral de Movimentações';
   const [loading, setLoading] = useState<boolean>(false);
   const [movements, setMovements] = useState<Movement[]>([]);
+
+  const printFnRef = useRef<() => void>(null);
 
   const { productsList, isFetchingOptions, productOptions } = useAppContext();
 
@@ -133,6 +138,22 @@ export const GetAllMovements: React.FC = () => {
     },
   ];
 
+  const rowMapper = (m: Movement) => {
+    const product = productMap.get(m.product_id);
+    const brand = brandMap.get(product?.brand_id!);
+
+    return [
+      product?.name || '',
+      brand?.name || '',
+      MovementType[m.movement_type as keyof typeof MovementType],
+      MovementSource[m.movement_source as keyof typeof MovementSource],
+      m.quantity,
+      dayjs(m.movement_date).format('DD/MM/YYYY HH:mm'),
+      m.created_by,
+      m.observations,
+    ];
+  };
+
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
@@ -151,7 +172,8 @@ export const GetAllMovements: React.FC = () => {
 
   return (
     <>
-      <Divider>Relatório Geral de Movimentações</Divider>
+      <Divider>{REPORT_NAME}</Divider>
+      <PrintButton handlePrint={() => printFnRef.current?.()} />
 
       <Table<Movement, typeof StockAPI>
         data={movements}
@@ -159,6 +181,23 @@ export const GetAllMovements: React.FC = () => {
         loading={loading || isFetchingOptions}
         size="large"
         hiddenActions
+      />
+
+      <PrintPage
+        title={REPORT_NAME}
+        headers={[
+          'Produto',
+          'Marca',
+          'Tipo',
+          'Origem',
+          'Quantidade',
+          'Data:Hora',
+          'Criado por',
+          'Observações',
+        ]}
+        tableData={movements}
+        rowMapper={rowMapper}
+        triggerRef={printFnRef}
       />
     </>
   );
