@@ -9,7 +9,6 @@ from src.application.dtos.stock.stock_dtos import CurrentStockDTO, MoveStockDTO
 from src.application.enums.stock_movement import MovementSource, MovementType
 from src.application.exceptions.invalid_data import InvalidData
 from src.application.exceptions.not_found import NotFound
-from src.application.utils.date_parser import parse_datetime
 from src.domain.services.Stock.StockMovement.stock_movement_service import (
     StockMovementService,
 )
@@ -52,6 +51,41 @@ def test_move_stock_success(mock_service_container):
 
     repo.move_stock.assert_called_once_with(movement=dto)
     assert isinstance(result, HttpResponse)
+
+
+@patch("src.domain.containers.service_container.ServiceContainer")
+def test_move_stock_fail_insufficient_stock(mock_service_container):
+    repo = get_mock_stock_movement_repository()
+    prod_repo = get_mock_product_repository()
+    service = StockMovementService(repo, prod_repo)
+
+    mock_current_stock_service = MagicMock()
+    mock_current_stock_service.get_current_stock_by_product_id.return_value = (
+        SimpleNamespace(
+            body=CurrentStockDTO(
+                product_id=1,
+                total_quantity=5,
+                last_updated="2024-01-01T10:00:00",
+            )
+        )
+    )
+    mock_service_container.current_stock_service.return_value = (
+        mock_current_stock_service
+    )
+
+    dto = MoveStockDTO(
+        product_id=1,
+        movement_type=MovementType.OUT.value,
+        movement_source=MovementSource.USE.value,
+        quantity=10,
+        created_by="admin",
+        observations='teste falha por falta de estoque',
+    )
+
+    with pytest.raises(InvalidData):
+        service.move_stock(dto)
+
+    repo.move_stock.assert_not_called()
 
 
 def test_move_stock_invalid_data():

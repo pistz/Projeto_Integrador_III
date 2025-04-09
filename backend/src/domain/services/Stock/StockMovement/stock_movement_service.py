@@ -43,7 +43,9 @@ class StockMovementService(IStockMovementService):
 
         if movement.movement_type == MovementType.OUT:
             if not is_positive_stock:
-                raise InvalidData("Não há estoque deste produto")
+                raise InvalidData(
+                    "Não há estoque suficiente deste produto para realizar a transação"
+                )
 
             movement.quantity = (
                 (movement.quantity) * (-1)
@@ -52,7 +54,9 @@ class StockMovementService(IStockMovementService):
             )
 
         if movement.quantity == 0:
-            raise InvalidData('Não há estoque deste produto')
+            raise InvalidData(
+                'Não há estoque suficiente deste produto para realizar a transação'
+            )
 
         new_quantity = current_stock.total_quantity + movement.quantity
         current_stock.total_quantity = new_quantity

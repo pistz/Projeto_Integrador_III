@@ -49,6 +49,7 @@ class CurrentStockRepository(ICurrentStockRepository):
             current_stock = (
                 db.session.query(CurrentStock)
                 .filter_by(product_id=product_id)
+                .with_for_update()
                 .one_or_none()
             )
             return current_stock

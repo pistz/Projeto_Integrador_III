@@ -18,7 +18,11 @@ class DbConnectionHandler:
     def __enter__(self):
         session_make = sessionmaker(bind=self.__engine)
         self.session = session_make()
+        self.session.execute("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE")
+
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type:
+            self.session.rollback()
         self.session.close()
