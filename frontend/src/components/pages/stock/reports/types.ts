@@ -1,4 +1,5 @@
 export interface ButtonContent {
+  key: string;
   type: string;
   content: React.ReactNode;
 }

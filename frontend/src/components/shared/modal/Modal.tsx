@@ -6,6 +6,7 @@ interface Props {
   onCancel: () => void;
   modalContent: React.ReactNode;
   width?: number;
+  keyId?: number | string;
 }
 
 export const Modal: React.FC<Props> = ({
@@ -13,6 +14,7 @@ export const Modal: React.FC<Props> = ({
   onCancel,
   modalContent,
   width,
+  keyId = `${Math.random() * 1000} - key-id`,
 }: Props) => {
   const [isMobile, setIsMobile] = useState(false);
 
@@ -45,7 +47,7 @@ export const Modal: React.FC<Props> = ({
           ? { height: '100vh', overflowY: 'auto', padding: '1rem' }
           : {},
       }}
-      key={Math.random()}
+      key={keyId}
     >
       {modalContent}
     </AntModal>

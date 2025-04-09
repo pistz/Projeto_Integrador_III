@@ -27,8 +27,10 @@ export const Stock: React.FC = () => {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerContent, setDrawerContent] = useState<React.ReactNode>(null);
+  const [key, setKey] = useState(Math.random());
 
   const showModal = (content: React.ReactNode) => {
+    setKey((prev: number) => prev + 1 + Math.random());
     setModalContent(content);
     setIsModalOpen(true);
   };
@@ -141,6 +143,7 @@ export const Stock: React.FC = () => {
         open={isModalOpen}
         onCancel={closeModal}
         modalContent={modalContent}
+        keyId={key}
       />
       <Drawer
         open={isDrawerOpen}

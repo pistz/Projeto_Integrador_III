@@ -32,7 +32,9 @@ export const Reports: React.FC = () => {
 
   const [modalContent, setModalContent] = useState<React.ReactNode>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [key, setKey] = useState(1);
+  const [key, setKey] = useState<number | string>(
+    `${Math.random() * 1000} - reports-key`,
+  );
 
   const showModal = (content: React.ReactNode) => {
     setModalContent(content);
@@ -48,28 +50,34 @@ export const Reports: React.FC = () => {
     const content = stockActivityButtons.map((value) =>
       value.type == type ? value.content : null,
     );
-    setKey((value) => value + 1);
+    const key = stockActivityButtons.find((value) => value.type === type)?.key;
+    setKey(key!);
     return showModal(content);
   };
 
   const stockActivityButtons: ButtonContent[] = [
     {
+      key: 'getAllMovements',
       type: 'getAllMovements',
       content: <GetAllMovements />,
     },
     {
+      key: 'getSingleDateMovement',
       type: 'getSingleDateMovement',
       content: <GetSingleDateMovement />,
     },
     {
+      key: 'getDateRangeMovement',
       type: 'getDateRangeMovement',
       content: <GetDateRangeMovement />,
     },
     {
+      key: 'getCurrentStockByProductId',
       type: 'getCurrentStockByProductId',
       content: <GetCurrentStockByProductId />,
     },
     {
+      key: 'getCurrentStock',
       type: 'getCurrentStock',
       content: <GetCurrentStock />,
     },
@@ -141,7 +149,7 @@ export const Reports: React.FC = () => {
         open={isModalOpen}
         onCancel={closeModal}
         modalContent={modalContent}
-        key={key}
+        keyId={key}
         width={1500}
       />
     </>
