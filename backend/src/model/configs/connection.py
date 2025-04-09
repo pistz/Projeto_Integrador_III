@@ -1,6 +1,6 @@
 import os
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -18,7 +18,7 @@ class DbConnectionHandler:
     def __enter__(self):
         session_make = sessionmaker(bind=self.__engine)
         self.session = session_make()
-        self.session.execute("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE")
+        self.session.execute(text("SET TRANSACTION ISOLATION LEVEL SERIALIZABLE"))
 
         return self
 
