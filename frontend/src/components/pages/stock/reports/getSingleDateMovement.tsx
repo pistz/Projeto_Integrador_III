@@ -10,6 +10,7 @@ import { notifyError } from '../../../shared/notify/notify';
 import { PrintPage } from '../../../shared/print/PrintPage';
 import { PrintButton } from '../../../shared/printButton/PrintButton';
 import { Table } from '../../../shared/table/Table';
+import { dayjsDateFormat } from '../../../utils/utils';
 import { Movement, MovementSource, MovementType } from './types';
 
 const Container = styled.div`
@@ -160,16 +161,12 @@ export const GetSingleDateMovement: React.FC = () => {
       title: reportHeaders[5],
       dataIndex: 'movement_date',
       sorter: (a, b) => {
-        const dateA = dayjs(a.movement_date)
-          .format('DD/MM/YYYY hh:mm')
-          .toString();
-        const dateB = dayjs(b.movement_date)
-          .format('DD/MM/YYYY hh:mm')
-          .toString();
+        const dateA = dayjs(a.movement_date).format(dayjsDateFormat).toString();
+        const dateB = dayjs(b.movement_date).format(dayjsDateFormat).toString();
         return dateA.localeCompare(dateB);
       },
       sortIcon: () => <SortAscendingOutlined />,
-      render: (value) => dayjs(value).format('DD/MM/YYYY hh:mm').toString(),
+      render: (value) => dayjs(value).format(dayjsDateFormat).toString(),
     },
     {
       title: reportHeaders[6],
@@ -199,7 +196,7 @@ export const GetSingleDateMovement: React.FC = () => {
       MovementType[m.movement_type as keyof typeof MovementType],
       MovementSource[m.movement_source as keyof typeof MovementSource],
       m.quantity,
-      dayjs(m.movement_date).format('DD/MM/YYYY HH:mm'),
+      dayjs(m.movement_date).format(dayjsDateFormat),
       m.created_by,
       m.observations,
     ];

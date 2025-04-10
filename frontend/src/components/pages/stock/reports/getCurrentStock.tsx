@@ -9,6 +9,7 @@ import { notifyError } from '../../../shared/notify/notify';
 import { PrintPage } from '../../../shared/print/PrintPage';
 import { PrintButton } from '../../../shared/printButton/PrintButton';
 import { Table } from '../../../shared/table/Table';
+import { dayjsDateFormat } from '../../../utils/utils';
 import { CurrentStock } from './types';
 
 export const GetCurrentStock: React.FC = () => {
@@ -98,16 +99,12 @@ export const GetCurrentStock: React.FC = () => {
       title: 'Última Atualização',
       dataIndex: 'last_updated',
       sorter: (a, b) => {
-        const dateA = dayjs(a.last_updated)
-          .format('DD/MM/YYYY hh:mm')
-          .toString();
-        const dateB = dayjs(b.last_updated)
-          .format('DD/MM/YYYY hh:mm')
-          .toString();
+        const dateA = dayjs(a.last_updated).format(dayjsDateFormat).toString();
+        const dateB = dayjs(b.last_updated).format(dayjsDateFormat).toString();
         return dateA.localeCompare(dateB);
       },
       sortIcon: () => <SortAscendingOutlined />,
-      render: (value) => dayjs(value).format('DD/MM/YYYY hh:mm').toString(),
+      render: (value) => dayjs(value).format(dayjsDateFormat).toString(),
     },
   ];
 
@@ -119,7 +116,7 @@ export const GetCurrentStock: React.FC = () => {
       product?.name || '',
       brand?.name || '',
       cs.total_quantity,
-      dayjs(cs.last_updated).format('DD/MM/YYYY HH:mm'),
+      dayjs(cs.last_updated).format(dayjsDateFormat),
     ];
   };
 

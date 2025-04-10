@@ -7,6 +7,7 @@ import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError } from '../../../shared/notify/notify';
 import { PrintPage } from '../../../shared/print/PrintPage';
 import { PrintButton } from '../../../shared/printButton/PrintButton';
+import { dayjsDateFormat } from '../../../utils/utils';
 import { CurrentStock } from './types';
 
 const Container = styled.div`
@@ -90,9 +91,7 @@ export const GetCurrentStockByProductId: React.FC = () => {
   const brandName = brands.find(
     (b) => b.id === selectedProduct?.brand_id,
   )?.name;
-  const lastUpdate = dayjs(currentStock?.last_updated).format(
-    'DD/MM/YYYY hh:mm',
-  );
+  const lastUpdate = dayjs(currentStock?.last_updated).format(dayjsDateFormat);
 
   const productMap = new Map(productsList.map((p) => [p.id, p]));
   const brandMap = new Map(brands.map((b) => [b.id, b]));
@@ -105,7 +104,7 @@ export const GetCurrentStockByProductId: React.FC = () => {
       product?.name || '',
       brand?.name || '',
       cs.total_quantity,
-      dayjs(cs.last_updated).format('DD/MM/YYYY HH:mm'),
+      dayjs(cs.last_updated).format(dayjsDateFormat),
     ];
   };
 
