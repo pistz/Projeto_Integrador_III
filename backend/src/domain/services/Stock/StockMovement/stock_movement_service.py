@@ -6,7 +6,11 @@ from src.application.dtos.stock.stock_dtos import (
     StockMovementDTO,
 )
 from src.application.enums.status_codes import StatusCode
-from src.application.enums.stock_movement import MovementSource, MovementType
+from src.application.enums.stock_movement import (
+    MovementSource,
+    MovementSourceType,
+    MovementType,
+)
 from src.application.exceptions.invalid_data import InvalidData
 from src.application.exceptions.not_found import NotFound
 from src.application.utils.date_parser import parse_datetime
@@ -68,10 +72,10 @@ class StockMovementService(IStockMovementService):
         )
 
         self.__set_current_stock(stock_product=product_stock)
-
+        movement_source = MovementSourceType[movement.movement_type.value].value
         return HttpResponse(
             body={
-                "message": f"Movimento registrado {movement.movement_source} de {movement.movement_type}, produto: {movement.product_id}, quantidade: {movement.quantity}"
+                "message": f"Movimento de {movement_source} registrado, quantidade: {movement.quantity}"
             },
             status_code=StatusCode.CREATED.value,
         )

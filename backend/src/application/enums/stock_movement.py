@@ -11,3 +11,8 @@ class MovementSource(Enum):
     DONATION = "DONATION"
     USE = "USE"
     EXPIRED = "EXPIRED"
+
+
+class MovementSourceType(Enum):
+    IN = "ENTRADA"
+    OUT = "SAIDA"
