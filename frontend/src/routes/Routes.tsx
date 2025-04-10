@@ -5,6 +5,7 @@ import {
   Route,
 } from 'react-router-dom';
 import { LoginScreen } from '../components/pages/login/Login';
+import { NotFound } from '../components/pages/notFound/NotFound';
 import { Content } from '../components/shared/content/Content';
 import { useAppContext } from '../context/useAppContext';
 import { mainRoutes } from './mainRoutes';
@@ -32,9 +33,12 @@ export const Routes: React.FC = () => {
               path={mainRoutes[index].path}
               element={mainRoutes[index].element}
               key={`${index} mainRoute`}
+              errorElement={<NotFound />}
             />
           ))}
         </Route>
+
+        <Route path="*" element={<NotFound />} />
       </ReactRouter>
     </BrowserRouter>
   );
