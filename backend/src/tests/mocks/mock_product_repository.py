@@ -11,6 +11,8 @@ def get_mock_product_repository():
     mock_product.description = "A gaming laptop"
     mock_product.brand_id = 10
     mock_product.category_id = 20
+    mock_product.has_pack = False
+    mock_product.pack_value = 0
 
     # Mockando métodos do repositório
     mock.create_product.return_value = mock_product

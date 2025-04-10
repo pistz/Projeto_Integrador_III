@@ -52,7 +52,7 @@ class CurrentStockService(ICurrentStockService):
             product_id=id
         )
         if not found_product:
-            raise NotFound(f"Product_id '{id}' não encotrado")
+            raise NotFound(f"Product_id '{id}' não encontrado")
         product_current_stock = CurrentStockDTO(
             product_id=found_product.product_id,
             total_quantity=found_product.total_quantity,

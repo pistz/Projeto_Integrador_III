@@ -59,7 +59,12 @@ def test_get_all_products_by_category_id(product_service):
 
 def test_create_product_success(product_service):
     product = CreateProductDTO(
-        name="Mouse", description="Wireless mouse", brand_id=1, category_id=2
+        name="Mouse",
+        description="Wireless mouse",
+        brand_id=1,
+        category_id=2,
+        has_pack=False,
+        pack_value=0,
     )
 
     mock_product_repository = get_mock_product_repository()
@@ -75,7 +80,12 @@ def test_create_product_success(product_service):
 
 def test_create_product_invalid(product_service):
     product = CreateProductDTO(
-        name="", description="desc", brand_id=None, category_id=None
+        name="",
+        description="desc",
+        brand_id=None,
+        category_id=None,
+        has_pack=False,
+        pack_value=0,
     )
     with pytest.raises(InvalidData):
         product_service.create_product(product)
