@@ -40,6 +40,8 @@ class ProductsRepository(IProductsRepository):
                     description=product.description,
                     brand_id=product.brand_id,
                     category_id=product.category_id,
+                    has_pack=product.has_pack,
+                    pack_value=product.pack_value,
                 )
 
                 db.session.add(new_product)

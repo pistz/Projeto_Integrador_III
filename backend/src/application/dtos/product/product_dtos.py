@@ -6,6 +6,8 @@ class CreateProductDTO:
     name: str
     description: str
     brand_id: int
+    has_pack: bool
+    pack_value: int
     category_id: int
 
     def to_dict(self):
@@ -13,6 +15,8 @@ class CreateProductDTO:
             "name": self.name,
             "description": self.description,
             "brand_id": self.brand_id,
+            "has_pack": self.has_pack,
+            "pack_value": self.pack_value,
             "category_id": self.category_id,
         }
 
@@ -35,6 +39,8 @@ class ProductDTO:
     name: str
     description: str
     brand_id: int
+    has_pack: bool
+    pack_value: int
     category_id: int
 
     def to_dict(self):
@@ -43,5 +49,7 @@ class ProductDTO:
             "name": self.name,
             "description": self.description,
             "brand_id": self.brand_id,
+            "has_pack": self.has_pack,
+            "pack_value": self.pack_value,
             "category_id": self.category_id,
         }

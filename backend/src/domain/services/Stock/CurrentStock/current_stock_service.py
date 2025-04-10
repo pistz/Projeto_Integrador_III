@@ -41,7 +41,7 @@ class CurrentStockService(ICurrentStockService):
             )
             for current in current_list
         ]
-        return HttpResponse(body=current_stock_dto, status_code=StatusCode.OK.value)
+        return HttpResponse(body={current_stock_dto}, status_code=StatusCode.OK.value)
 
     def __validate_product(self, product_stock: ProductStockDTO) -> None:
         if not product_stock:

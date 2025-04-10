@@ -34,6 +34,8 @@ class ProductService(IProductService):
             description=found_product.description,
             brand_id=found_product.brand_id,
             category_id=found_product.category_id,
+            has_pack=found_product.has_pack,
+            pack_value=found_product.pack_value,
         )
         return HttpResponse(status_code=StatusCode.OK.value, body=product)
 
@@ -48,6 +50,8 @@ class ProductService(IProductService):
                 description=product.description,
                 brand_id=product.brand_id,
                 category_id=product.category_id,
+                has_pack=product.has_pack,
+                pack_value=product.pack_value,
             )
             for product in found_product
         ]
@@ -62,6 +66,8 @@ class ProductService(IProductService):
                 description=product.description,
                 brand_id=product.brand_id,
                 category_id=product.category_id,
+                has_pack=product.has_pack,
+                pack_value=product.pack_value,
             )
             for product in products_list
         ]
@@ -78,6 +84,8 @@ class ProductService(IProductService):
                 description=product.description,
                 brand_id=product.brand_id,
                 category_id=product.category_id,
+                has_pack=product.has_pack,
+                pack_value=product.pack_value,
             )
             for product in products_list
         ]
@@ -94,6 +102,8 @@ class ProductService(IProductService):
                 description=product.description,
                 brand_id=product.brand_id,
                 category_id=product.category_id,
+                has_pack=product.has_pack,
+                pack_value=product.pack_value,
             )
             for product in products_list
         ]
