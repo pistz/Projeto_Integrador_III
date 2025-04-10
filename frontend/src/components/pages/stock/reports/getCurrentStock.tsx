@@ -2,17 +2,28 @@ import { SortAscendingOutlined } from '@ant-design/icons';
 import { Divider } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError } from '../../../shared/notify/notify';
+import { PrintPage } from '../../../shared/print/PrintPage';
+import { PrintButton } from '../../../shared/printButton/PrintButton';
 import { Table } from '../../../shared/table/Table';
 import { CurrentStock } from './types';
 
 export const GetCurrentStock: React.FC = () => {
+  const REPORT_NAME = 'Estoque Total Atual';
+  const reportHeaders = [
+    'Produto',
+    'Marca',
+    'Quantidade',
+    'Última Atualização',
+  ];
   const { productsList, isFetchingOptions, productOptions } = useAppContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [tableData, setTableData] = useState<CurrentStock[]>([]);
+
+  const printFnRef = useRef<() => void>(null);
 
   const brands = productOptions.brands;
   const productMap = new Map(productsList.map((p) => [p.id, p]));
@@ -100,6 +111,18 @@ export const GetCurrentStock: React.FC = () => {
     },
   ];
 
+  const rowMapper = (cs: CurrentStock) => {
+    const product = productMap.get(cs.product_id);
+    const brand = brandMap.get(product?.brand_id!);
+
+    return [
+      product?.name || '',
+      brand?.name || '',
+      cs.total_quantity,
+      dayjs(cs.last_updated).format('DD/MM/YYYY HH:mm'),
+    ];
+  };
+
   const loadTableData = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -118,13 +141,23 @@ export const GetCurrentStock: React.FC = () => {
 
   return (
     <>
-      <Divider>Estoque Total Atual</Divider>
+      <Divider>{REPORT_NAME}</Divider>
+      <PrintButton handlePrint={() => printFnRef.current?.()} />
+
       <Table<CurrentStock, typeof StockAPI>
         columns={columns}
         data={tableData}
         hiddenActions
         size="middle"
         loading={isLoading || isFetchingOptions}
+      />
+
+      <PrintPage
+        title={REPORT_NAME}
+        headers={reportHeaders}
+        tableData={tableData}
+        rowMapper={rowMapper}
+        triggerRef={printFnRef}
       />
     </>
   );

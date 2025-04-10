@@ -1,10 +1,12 @@
 import { Button, Divider, Input, Select, Skeleton } from 'antd';
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError } from '../../../shared/notify/notify';
+import { PrintPage } from '../../../shared/print/PrintPage';
+import { PrintButton } from '../../../shared/printButton/PrintButton';
 import { CurrentStock } from './types';
 
 const Container = styled.div`
@@ -39,10 +41,22 @@ const ResponsiveResultContainer = styled.div`
   }
 `;
 export const GetCurrentStockByProductId: React.FC = () => {
+  const REPORT_NAME = 'Estoque Atual';
+
   const [currentStock, setCurrentStock] = useState<CurrentStock | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState<number | null>(null);
+
   const { productsList, isFetchingOptions, productOptions } = useAppContext();
+
+  const printFnRef = useRef<() => void>(null);
+
+  const reportHeaders = [
+    'Produto',
+    'Marca',
+    'Quantidade',
+    'Última Atualização',
+  ];
 
   const brands = productOptions.brands;
 
@@ -80,6 +94,23 @@ export const GetCurrentStockByProductId: React.FC = () => {
     'DD/MM/YYYY hh:mm',
   );
 
+  const productMap = new Map(productsList.map((p) => [p.id, p]));
+  const brandMap = new Map(brands.map((b) => [b.id, b]));
+
+  const rowMapper = (cs: CurrentStock) => {
+    const product = productMap.get(cs.product_id);
+    const brand = brandMap.get(product?.brand_id!);
+
+    return [
+      product?.name || '',
+      brand?.name || '',
+      cs.total_quantity,
+      dayjs(cs.last_updated).format('DD/MM/YYYY HH:mm'),
+    ];
+  };
+
+  const tableData = currentStock ? [currentStock] : [];
+
   return (
     <>
       <Divider>Selecione o produto</Divider>
@@ -95,6 +126,12 @@ export const GetCurrentStockByProductId: React.FC = () => {
         <Button htmlType="button" type="primary" onClick={loadCurrentStock}>
           Buscar
         </Button>
+        <PrintButton
+          handlePrint={() => printFnRef.current?.()}
+          disabled={tableData.length === 0}
+          setMargin
+          margin={'-0.1rem'}
+        />
       </Container>
 
       <ResponsiveResultContainer>
@@ -117,6 +154,14 @@ export const GetCurrentStockByProductId: React.FC = () => {
           </>
         )}
       </ResponsiveResultContainer>
+
+      <PrintPage
+        title={`${REPORT_NAME} - ${productName}`}
+        headers={reportHeaders}
+        tableData={tableData}
+        rowMapper={rowMapper}
+        triggerRef={printFnRef}
+      />
     </>
   );
 };
