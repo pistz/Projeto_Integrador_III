@@ -28,7 +28,4 @@ export enum MovementSource {
   EXPIRED = 'DESCARTE',
 }
 
-export interface ProductMovement extends ProductMovementApiType {
-  movement_type: MovementType;
-  movement_source: MovementSourceTypeIn | MovementSourceTypeOut;
-}
+export interface ProductMovement extends ProductMovementApiType {}

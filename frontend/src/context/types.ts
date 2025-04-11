@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Brand } from '../api/Brand/types';
 import { Category } from '../api/Category/types';
+import { Product as ProductApiType } from '../api/Product/types';
 
 export interface IChildren {
   children: React.ReactNode;
@@ -24,10 +25,4 @@ export interface ProductOptions {
   categories: Category[];
 }
 
-export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  brand_id: number;
-  category_id: number;
-}
+export interface Product extends ProductApiType {}

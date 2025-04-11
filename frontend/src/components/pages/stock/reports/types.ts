@@ -1,5 +1,7 @@
-import { CurrentStock as CurrentStockApiType } from '../../../../api/Stock/types';
-import { ProductMovement } from '../movement/types';
+import {
+  CurrentStock as CurrentStockApiType,
+  Movement as MovementApiType,
+} from '../../../../api/Stock/types';
 
 export interface ButtonContent {
   key: string;
@@ -19,7 +21,7 @@ export enum MovementType {
   OUT = 'SAÍDA',
 }
 
-export interface Movement extends ProductMovement {
+export interface Movement extends MovementApiType {
   id: number;
 }
 

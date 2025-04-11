@@ -1,5 +1,14 @@
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { Button, Divider, Form, FormProps, Input, Select, Space } from 'antd';
+import {
+  Button,
+  Divider,
+  Form,
+  FormProps,
+  Input,
+  Select,
+  Space,
+  Switch,
+} from 'antd';
 import React, { useState } from 'react';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { useAppContext } from '../../../../context/useAppContext';
@@ -22,6 +31,8 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
   const { productsList, isFetchingOptions } = useAppContext();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
+  const [registerPack, setRegisterPack] = useState<boolean>(false);
 
   const getMovementOptions = (movementType: MovementType): string[] => {
     if (movementType === MovementType.IN) {
@@ -50,6 +61,8 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
       setIsLoading(false);
     }
   };
+
+  console.log('Selected Product:', selectedProduct);
 
   const selectList = productsList.map((product) => ({
     value: product.id,
@@ -85,6 +98,7 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
               showSearch
               optionFilterProp="label"
               options={selectList}
+              onChange={(value) => setSelectedProduct(value)}
             />
           </Form.Item>
 
@@ -102,18 +116,52 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
             </Select>
           </Form.Item>
 
-          <Form.Item
-            name={['quantity']}
-            label={'Quantidade'}
-            rules={[
-              { required: true, message: 'Quantidade é obrigatória' },
-              { pattern: /[0-9]/ },
-              { min: 1 },
-              { max: 9999, message: 'Quantidade não permitida' },
-            ]}
+          <Space
+            style={{
+              display: 'flex',
+              margin: '0.1rem 0 1rem 0',
+              justifyContent: 'space-between',
+            }}
           >
-            <Input disabled={isLoading || isFetchingOptions} type="number" />
-          </Form.Item>
+            <Switch
+              disabled={
+                !productsList.find((value) => value.id === selectedProduct)
+                  ?.has_pack
+              }
+              unCheckedChildren={'Pacote'}
+              checkedChildren={'Pacote'}
+              onChange={(checked) => setRegisterPack(checked)}
+            />
+            <Input defaultValue={0} disabled style={{ width: '4rem' }} />
+          </Space>
+
+          {registerPack && (
+            <Form.Item
+              name={['quantity']}
+              label={'Quantidade de Pacotes'}
+              rules={[
+                { required: true, message: 'Quantidade é obrigatória' },
+                { pattern: /[0-9]/, message: 'Apenas números' },
+                { min: 1, message: 'Quantidade mínima é 1' },
+              ]}
+            >
+              <Input disabled={isLoading || isFetchingOptions} />
+            </Form.Item>
+          )}
+
+          {!registerPack && (
+            <Form.Item
+              name={['quantity']}
+              label={'Quantidade Unitária'}
+              rules={[
+                { required: true, message: 'Quantidade é obrigatória' },
+                { pattern: /[0-9]/, message: 'Apenas números' },
+                { min: 1, message: 'Quantidade mínima é 1' },
+              ]}
+            >
+              <Input disabled={isLoading || isFetchingOptions} />
+            </Form.Item>
+          )}
 
           <Form.Item
             name={['observations']}

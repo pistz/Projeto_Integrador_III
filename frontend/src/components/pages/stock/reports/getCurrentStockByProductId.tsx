@@ -1,4 +1,4 @@
-import { Button, Divider, Input, Select, Skeleton } from 'antd';
+import { Button, Divider, Input, Select, Skeleton, Space } from 'antd';
 import dayjs from 'dayjs';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -17,6 +17,19 @@ const Container = styled.div`
   justify-content: center;
   width: 100%;
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+
+    .btn-container {
+      display: 'flex';
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      gap: 1rem;
+    }
+  }
 `;
 
 const ResponsiveResultContainer = styled.div`
@@ -119,37 +132,51 @@ export const GetCurrentStockByProductId: React.FC = () => {
           showSearch
           optionFilterProp="label"
           options={selectList}
-          style={{ width: '30rem' }}
+          style={{ width: '15rem' }}
           onChange={(id) => handleProductSelection(id)}
         />
-        <Button htmlType="button" type="primary" onClick={loadCurrentStock}>
-          Buscar
-        </Button>
-        <PrintButton
-          handlePrint={() => printFnRef.current?.()}
-          disabled={tableData.length === 0}
-          setMargin
-          margin={'-0.1rem'}
-        />
+        <span
+          className="btn-container"
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            gap: '1rem',
+            alignItems: 'center',
+          }}
+        >
+          <Button htmlType="button" type="primary" onClick={loadCurrentStock}>
+            Buscar
+          </Button>
+          <PrintButton
+            handlePrint={() => printFnRef.current?.()}
+            disabled={tableData.length === 0}
+            setMargin
+            margin={'-0.1rem'}
+          />
+        </span>
       </Container>
 
       <ResponsiveResultContainer>
         {currentStock ? (
           <>
-            <Input addonBefore="Produto" value={productName} />
-            <Input addonBefore="Marca" value={brandName} />
-            <Input
-              addonBefore="Quantidade"
-              value={currentStock.total_quantity}
-            />
-            <Input addonBefore="Atualização" value={lastUpdate} />
+            <Space direction="vertical" style={{ gap: 15 }}>
+              <Input addonBefore="Produto" value={productName} />
+              <Input addonBefore="Marca" value={brandName} />
+              <Input
+                addonBefore="Quantidade"
+                value={currentStock.total_quantity}
+              />
+              <Input addonBefore="Atualização" value={lastUpdate} />
+            </Space>
           </>
         ) : (
           <>
-            <Skeleton.Input size="large" />
-            <Skeleton.Input size="large" />
-            <Skeleton.Input size="large" />
-            <Skeleton.Input size="large" />
+            <Space direction="vertical" style={{ gap: 15 }}>
+              <Skeleton.Input size="large" />
+              <Skeleton.Input size="large" />
+              <Skeleton.Input size="large" />
+              <Skeleton.Input size="large" />
+            </Space>
           </>
         )}
       </ResponsiveResultContainer>
