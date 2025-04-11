@@ -44,12 +44,22 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
 
   const [form] = Form.useForm();
 
+  const hasPack = productsList.find(
+    (value) => value.id === selectedProduct,
+  )?.has_pack;
+
+  const packValue = productsList.find(
+    (value) => value.id === selectedProduct,
+  )?.pack_value;
+
   const onFinish: FormProps<ProductMovement>['onFinish'] = async (
     product: ProductMovement,
   ) => {
     product.movement_type = movementType;
     product.created_by = user;
-    product.quantity = Number(product.quantity);
+    product.quantity = registerPack
+      ? Number(product.quantity) * (packValue ?? 1)
+      : Number(product.quantity);
     setIsLoading(true);
     try {
       const created = await StockAPI.move(product);
@@ -61,8 +71,6 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
       setIsLoading(false);
     }
   };
-
-  console.log('Selected Product:', selectedProduct);
 
   const selectList = productsList.map((product) => ({
     value: product.id,
@@ -124,15 +132,24 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
             }}
           >
             <Switch
-              disabled={
-                !productsList.find((value) => value.id === selectedProduct)
-                  ?.has_pack
-              }
+              disabled={!hasPack}
               unCheckedChildren={'Pacote'}
               checkedChildren={'Pacote'}
               onChange={(checked) => setRegisterPack(checked)}
             />
-            <Input defaultValue={0} disabled style={{ width: '4rem' }} />
+
+            {!hasPack && <p>Não possui pacotes</p>}
+
+            {hasPack && (
+              <span
+                style={{
+                  width: '4rem',
+                  visibility: registerPack ? 'visible' : 'hidden',
+                }}
+              >
+                {registerPack ? `${packValue} Itens por pacote` : ''}
+              </span>
+            )}
           </Space>
 
           {registerPack && (
