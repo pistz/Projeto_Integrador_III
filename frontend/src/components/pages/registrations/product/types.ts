@@ -1,10 +1,6 @@
-export interface Product {
-  name: string;
-  description: string;
-  brand_id: number;
-  category_id: number;
-}
+import { CreateProduct as ProductApiType } from '../../../../api/Product/types';
 
+export interface Product extends ProductApiType {}
 export interface ProductId extends Product {
   id: number;
 }

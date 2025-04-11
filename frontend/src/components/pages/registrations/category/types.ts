@@ -1,4 +1,3 @@
-export interface Category {
-  id: number;
-  name: string;
-}
+import { Category as CategoryApiType } from '../../../../api/Category/types';
+
+export interface Category extends CategoryApiType {}

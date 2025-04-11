@@ -1,8 +1,9 @@
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, CloseCircleFilled } from '@ant-design/icons';
 import { Button, Divider, Form, FormProps, Input, Space } from 'antd';
 import React, { useState } from 'react';
 import { CategoryAPI } from '../../../../api/Category/CategoryAPI';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
+import { SaveButton } from '../../../shared/saveButton/saveButton';
 import { formItemStyle } from '../../welcome/styles';
 
 interface Props {
@@ -52,14 +53,22 @@ export const CreateCategory: React.FC<Props> = ({ close }: Props) => {
             <Input type="text" disabled={isLoading} style={formItemStyle} />
           </Form.Item>
 
-          <Button
-            type="primary"
-            htmlType="submit"
-            icon={<CheckOutlined />}
-            loading={isLoading}
-          >
-            Salvar
-          </Button>
+          <Space>
+            <SaveButton
+              icon={<CheckOutlined />}
+              loading={isLoading}
+              form={form}
+            />
+
+            <Button
+              danger
+              htmlType="button"
+              onClick={close}
+              icon={<CloseCircleFilled />}
+            >
+              Fechar
+            </Button>
+          </Space>
         </Form>
       </Space>
     </>

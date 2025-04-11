@@ -5,6 +5,8 @@ export interface CreateProduct {
   description: string;
   brand_id: number;
   category_id: number;
+  has_pack: boolean;
+  pack_value: number;
 }
 
 export interface Product extends CreateProduct {

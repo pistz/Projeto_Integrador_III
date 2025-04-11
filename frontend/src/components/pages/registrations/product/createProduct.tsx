@@ -1,9 +1,19 @@
-import { CheckOutlined } from '@ant-design/icons';
-import { Button, Divider, Form, FormProps, Input, Select, Space } from 'antd';
+import { CheckOutlined, CloseCircleFilled } from '@ant-design/icons';
+import {
+  Button,
+  Divider,
+  Form,
+  FormProps,
+  Input,
+  Select,
+  Space,
+  Switch,
+} from 'antd';
 import React, { useState } from 'react';
 import { ProductAPI } from '../../../../api/Product/ProductAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
+import { SaveButton } from '../../../shared/saveButton/saveButton';
 import { formItemStyle } from '../../welcome/styles';
 import { Product } from './types';
 
@@ -12,6 +22,7 @@ interface Props {
 }
 export const CreateProduct: React.FC<Props> = ({ close }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [hasPack, setHasPack] = useState<boolean>(false);
   const { isFetchingOptions, productOptions } = useAppContext();
 
   const [form] = Form.useForm();
@@ -26,7 +37,6 @@ export const CreateProduct: React.FC<Props> = ({ close }: Props) => {
     } finally {
       setIsLoading(false);
       form.resetFields();
-      close();
     }
   };
 
@@ -96,6 +106,47 @@ export const CreateProduct: React.FC<Props> = ({ close }: Props) => {
             />
           </Form.Item>
 
+          <Space direction="horizontal">
+            <Form.Item
+              name={['has_pack']}
+              label={'Possui pacote?'}
+              initialValue={false}
+            >
+              <Switch
+                unCheckedChildren={'Não'}
+                checkedChildren={'Sim'}
+                onChange={(checked: boolean) => setHasPack(checked)}
+                value={hasPack}
+              />
+            </Form.Item>
+            <Form.Item
+              name={['pack_value']}
+              label={'Quantidade'}
+              style={{
+                visibility: hasPack ? 'visible' : 'hidden',
+                width: '5rem',
+              }}
+              rules={
+                hasPack
+                  ? [
+                      { min: 0, message: 'Valor deve ser maior do que 0' },
+                      {
+                        max: 1000,
+                        message: 'Valor deve ser menor do que 1000',
+                      },
+                      {
+                        pattern: /^[0-9]+$/,
+                        message: 'Valor deve ser um número',
+                      },
+                    ]
+                  : []
+              }
+              initialValue={0}
+            >
+              <Input defaultValue={0} />
+            </Form.Item>
+          </Space>
+
           <Form.Item name={['description']} label={'Descrição do produto'}>
             <Input.TextArea
               disabled={isLoading || isFetchingOptions}
@@ -104,14 +155,21 @@ export const CreateProduct: React.FC<Props> = ({ close }: Props) => {
             />
           </Form.Item>
 
-          <Button
-            type="primary"
-            htmlType="submit"
-            icon={<CheckOutlined />}
-            loading={isLoading || isFetchingOptions}
-          >
-            Salvar
-          </Button>
+          <Space direction="horizontal" size="large">
+            <SaveButton
+              icon={<CheckOutlined />}
+              loading={isFetchingOptions || isLoading}
+              form={form}
+            />
+            <Button
+              danger
+              htmlType="button"
+              onClick={close}
+              icon={<CloseCircleFilled />}
+            >
+              Fechar
+            </Button>
+          </Space>
         </Form>
       </Space>
     </>

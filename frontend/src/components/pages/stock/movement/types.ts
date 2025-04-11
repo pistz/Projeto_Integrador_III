@@ -1,10 +1,7 @@
-export interface Product {
-  name: string;
-  description: string;
-  brand_id: number;
-  category_id: number;
-}
+import { Product as ProductApiType } from '../../../../api/Product/types';
+import { ProductMovement as ProductMovementApiType } from '../../../../api/Stock/types';
 
+export interface Product extends ProductApiType {}
 export interface ProductId extends Product {
   id: number;
 }
@@ -31,11 +28,7 @@ export enum MovementSource {
   EXPIRED = 'DESCARTE',
 }
 
-export interface ProductMovement {
-  product_id: number;
+export interface ProductMovement extends ProductMovementApiType {
   movement_type: MovementType;
   movement_source: MovementSourceTypeIn | MovementSourceTypeOut;
-  quantity: number;
-  created_by: string;
-  observations?: string;
 }
