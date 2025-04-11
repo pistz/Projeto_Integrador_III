@@ -30,3 +30,6 @@ class Product(Base):
     # Relacionamentos
     brand = relationship('Brand', back_populates='products')
     category = relationship('Category', back_populates='products')
+    barcodes = relationship(
+        'Barcode', back_populates='product', cascade="all, delete-orphan"
+    )
