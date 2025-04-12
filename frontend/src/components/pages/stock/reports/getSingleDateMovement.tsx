@@ -110,6 +110,8 @@ export const GetSingleDateMovement: React.FC = () => {
       sortIcon: () => <SortAscendingOutlined />,
       render: (value) =>
         productsList.find((product) => product.id === value)?.name || null,
+      key: 'product-name',
+      onFilter: (value, record) => record.product_id === value,
     },
     {
       title: reportHeaders[1],

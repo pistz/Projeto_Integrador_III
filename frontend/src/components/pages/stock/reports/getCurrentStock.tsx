@@ -54,6 +54,7 @@ export const GetCurrentStock: React.FC = () => {
         value: item.id,
       })),
       filterSearch: true,
+      onFilter: (value, record) => record.product_id === value,
       sorter: (a, b) => {
         const nameA =
           productsList.find((value) => value.id === a.product_id)?.name || '';
@@ -64,6 +65,7 @@ export const GetCurrentStock: React.FC = () => {
       sortIcon: () => <SortAscendingOutlined />,
       render: (value) =>
         productsList.find((product) => product.id === value)?.name || null,
+      key: 'product-name',
     },
     {
       title: 'Marca',
