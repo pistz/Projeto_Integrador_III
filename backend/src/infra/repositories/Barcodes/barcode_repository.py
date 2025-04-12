@@ -31,10 +31,10 @@ class BarcodeRepositoy(IBarcodeRepository):
                     message='Erro ao criar código de barras', aditional=str(e)
                 )
 
-    def update_barcode(self, barcode: UpdateBarcodeDto) -> None:
+    def update_barcode(self, id: int, barcode: UpdateBarcodeDto) -> None:
         with DbConnectionHandler() as db:
             try:
-                found_barcode: BarcodeDto = self.__find_barcode(barcode.id)
+                found_barcode: BarcodeDto = self.__find_barcode(id)
                 found_barcode.product_id = (
                     barcode.product_id
                     if barcode.product_id

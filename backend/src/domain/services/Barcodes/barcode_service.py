@@ -33,12 +33,12 @@ class BarcodeService(IBarcodeService):
             body={'message': 'Código de barras criado com sucesso'},
         )
 
-    def update_barcode(self, barcode: UpdateBarcodeDto) -> HttpResponse:
-        found_barcode = self.__barcode_repository.get_barcode_by_id(barcode.id)
+    def update_barcode(self, id: int, barcode: UpdateBarcodeDto) -> HttpResponse:
+        found_barcode = self.__barcode_repository.get_barcode_by_id(id)
         if not found_barcode:
             raise NotFound('Código de barras não existe')
         self.__find_product(barcode.product_id)
-        self.__barcode_repository.update_barcode(barcode)
+        self.__barcode_repository.update_barcode(id=id, barcode=barcode)
         return HttpResponse(
             status_code=StatusCode.OK.value,
             body={'message': 'Código de barras atualizado com sucesso'},

@@ -19,7 +19,7 @@ class IBarcodeRepository(ABC):
         pass
 
     @abstractmethod
-    def update_barcode(self, barcode: UpdateBarcodeDto) -> None:
+    def update_barcode(self, id: int, barcode: UpdateBarcodeDto) -> None:
         pass
 
     @abstractmethod

@@ -15,5 +15,6 @@ class BarcodeDto:
 
 
 @dataclass
-class UpdateBarcodeDto(BarcodeDto):
-    pass
+class UpdateBarcodeDto:
+    barcode: str
+    product_id: int

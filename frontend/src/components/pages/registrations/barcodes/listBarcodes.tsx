@@ -6,7 +6,7 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import { Button, Divider, List, Select, Skeleton, Space } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BarcodeAPI } from '../../../../api/Barcodes/BarcodesAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
@@ -20,7 +20,8 @@ export const ListBarcodes: React.FC = () => {
   const [tableData, setTableData] = useState<Barcode[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [editedValue, setEditedValue] = useState<string>('');
+
+  const editableRef = useRef<HTMLDivElement | null>(null);
 
   const selectList = productsList.map((product) => ({
     value: product.id,
@@ -62,7 +63,6 @@ export const ListBarcodes: React.FC = () => {
   };
 
   const handleUpdate = async (id: number, request: UpdateBarcode) => {
-    setIsLoading(true);
     try {
       if (!selectedProduct) {
         notifyError('Produto não selecionado');
@@ -70,50 +70,42 @@ export const ListBarcodes: React.FC = () => {
       }
       const response = await BarcodeAPI.update(id, request);
       notifySuccess(response.message);
-      setTableData((prev) =>
-        prev.map((item) => (item.id === id ? { ...item, ...response } : item)),
-      );
     } catch (error) {
       notifyError(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const handleEdit = (barcode: Barcode) => {
     setEditMode(true);
     setEditingId(barcode.id);
-    setEditedValue(barcode.barcode);
   };
 
   const handleCancelEdit = () => {
     setEditMode(false);
     setEditingId(null);
-    setEditedValue('');
-  };
-
-  const handleInputChange = (event: React.FormEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setEditedValue(event.currentTarget.textContent || '');
   };
 
   const handleSave = async () => {
-    if (!editingId) return;
-    await handleUpdate(editingId, {
-      barcode: editedValue,
-      product_id: selectedProduct!,
-    });
-    handleCancelEdit();
+    if (!editingId || !editableRef.current) return;
+
+    const newValue = editableRef.current.textContent?.trim() || '';
+
+    setIsLoading(true);
+    try {
+      await handleUpdate(editingId, {
+        barcode: newValue,
+        product_id: selectedProduct!,
+      });
+      await handleLoadTable();
+    } finally {
+      handleCancelEdit();
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (selectedProduct) {
-      const selectedBarcode = tableData.find((item) => item.id === editingId);
-      if (selectedBarcode) {
-        setEditedValue(selectedBarcode.barcode);
-      }
-    }
-  }, [editingId, selectedProduct, tableData]);
+    handleLoadTable();
+  }, []);
 
   return (
     <>
@@ -196,7 +188,7 @@ export const ListBarcodes: React.FC = () => {
                     <div
                       contentEditable
                       suppressContentEditableWarning
-                      onInput={handleInputChange}
+                      ref={editableRef}
                       style={{
                         border: '1px solid #d9d9d9',
                         padding: '4px 8px',
@@ -204,7 +196,7 @@ export const ListBarcodes: React.FC = () => {
                         backgroundColor: '#f5f5f5',
                       }}
                     >
-                      {editedValue}
+                      {item.barcode}
                     </div>
                   ) : (
                     item.barcode

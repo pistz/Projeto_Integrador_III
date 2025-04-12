@@ -27,9 +27,9 @@ class BarcodeController:
     def update_barcode(self, barcode_id: int):
         http_request = HttpRequest(request.json)
         barcode_data = http_request.body
-        barcode = UpdateBarcodeDto(id=barcode_id, **barcode_data)
+        barcode = UpdateBarcodeDto(**barcode_data)
         response: HttpResponse = self.__barcode_service.update_barcode(
-            barcode_id=barcode_id, barcode=barcode
+            id=barcode_id, barcode=barcode
         )
         return self.__send_response(response)
 

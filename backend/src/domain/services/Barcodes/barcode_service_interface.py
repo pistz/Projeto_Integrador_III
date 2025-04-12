@@ -15,7 +15,7 @@ class IBarcodeService(ABC):
         pass
 
     @abstractmethod
-    def update_barcode(self, barcode: UpdateBarcodeDto) -> HttpResponse:
+    def update_barcode(self, id: int, barcode: UpdateBarcodeDto) -> HttpResponse:
         """Update an existing barcode."""
         pass
 
