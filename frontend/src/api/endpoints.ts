@@ -33,6 +33,7 @@ export const productRoute = {
   getAll: `${base.host}/products/all`,
   delete: `${base.host}/products`,
   update: `${base.host}/products`,
+  getByBarcode: `${base.host}/products?barcode`,
 };
 
 export const stockMovementsRoute = {

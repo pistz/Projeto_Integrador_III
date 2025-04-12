@@ -19,6 +19,14 @@ export class ProductAPI {
     return response.data;
   };
 
+  static getByBarcode = async (barcode: string): Promise<Product> => {
+    const response = await axios.get(
+      `${productRoute.getByBarcode}=${barcode}`,
+      authHeader(),
+    );
+    return response.data;
+  };
+
   static delete = async (id: number): Promise<Response> => {
     const response = await axios.delete(
       `${productRoute.delete}/${id}`,
