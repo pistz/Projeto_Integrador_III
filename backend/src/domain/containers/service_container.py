@@ -1,3 +1,5 @@
+from src.domain.services.Barcodes.barcode_service import BarcodeService
+from src.domain.services.Barcodes.barcode_service_interface import IBarcodeService
 from src.domain.services.Brand.brand_service import BrandService
 from src.domain.services.Brand.brand_service_interface import IBrandService
 from src.domain.services.Category.category_service import CategoryService
@@ -20,6 +22,10 @@ from src.domain.services.Stock.StockMovement.stock_movement_service_interface im
 )
 from src.domain.services.User.user_service import UserService
 from src.domain.services.User.user_service_interface import IUserService
+from src.infra.repositories.Barcodes.barcode_repository import BarcodeRepositoy
+from src.infra.repositories.Barcodes.barcode_repository_interface import (
+    IBarcodeRepository,
+)
 from src.infra.repositories.Brand.brand_repository import BrandRepository
 from src.infra.repositories.Brand.brand_repository_interface import IBrandRepository
 from src.infra.repositories.Category.category_repository import CategoryRepository
@@ -85,3 +91,11 @@ class ServiceContainer:
     def current_stock_service() -> ICurrentStockService:
         current_stock_repository: ICurrentStockRepository = CurrentStockRepository()
         return CurrentStockService(current_stock_repository=current_stock_repository)
+
+    @staticmethod
+    def barcode_service() -> IBarcodeService:
+        barcode_repository: IBarcodeRepository = BarcodeRepositoy()
+        product_repository: IProductsRepository = ProductsRepository()
+        return BarcodeService(
+            barcode_repository=barcode_repository, product_repository=product_repository
+        )

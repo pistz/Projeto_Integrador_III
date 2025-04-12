@@ -10,6 +10,11 @@ from src.model.entities.barcode import Barcode
 class IBarcodeRepository(ABC):
 
     @abstractmethod
+    def get_barcode_by_id(self, barcode_id: int) -> Barcode:
+        """Get a barcode by its ID."""
+        pass
+
+    @abstractmethod
     def create_barcode(self, barcode: CreateBarcodeDto) -> None:
         pass
 
