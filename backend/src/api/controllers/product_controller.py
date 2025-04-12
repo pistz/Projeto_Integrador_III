@@ -23,11 +23,11 @@ class ProdutController:
         )
         return self.__send_response(response)
 
-    def get_product_by_name(self):
+    def get_product_by_barcode(self):
         http_request = HttpRequest(param=request.args)
-        product_name = http_request.param['name']
-        response: HttpResponse = self.__product_service.get_product_by_name(
-            product_name=product_name
+        product_name = http_request.param['barcode']
+        response: HttpResponse = self.__product_service.get_product_by_barcode(
+            barcode=product_name
         )
         return self.__send_response(response)
 

@@ -39,22 +39,20 @@ class ProductService(IProductService):
         )
         return HttpResponse(status_code=StatusCode.OK.value, body=product)
 
-    def get_product_by_name(self, product_name: str) -> HttpResponse:
-        found_product = self.__product_repository.get_product_by_name(product_name)
-        if not found_product or len(found_product) == 0:
+    def get_product_by_barcode(self, barcode: str) -> HttpResponse:
+        found_product = self.__product_repository.get_product_by_barcode(barcode)
+        if not found_product:
             raise NotFound('Produto não existe')
-        product = [
-            ProductDTO(
-                id=product.id,
-                name=product.name,
-                description=product.description,
-                brand_id=product.brand_id,
-                category_id=product.category_id,
-                has_pack=product.has_pack,
-                pack_value=product.pack_value,
-            )
-            for product in found_product
-        ]
+        product = ProductDTO(
+            id=found_product.id,
+            name=found_product.name,
+            description=found_product.description,
+            brand_id=found_product.brand_id,
+            category_id=found_product.category_id,
+            has_pack=found_product.has_pack,
+            pack_value=found_product.pack_value,
+        )
+
         return HttpResponse(status_code=StatusCode.OK.value, body=product)
 
     def get_all_products(self) -> HttpResponse:

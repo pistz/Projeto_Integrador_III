@@ -7,8 +7,8 @@ from src.api.swagger.product_docs import (
     create_product_doc,
     delete_product_doc,
     get_all_products_doc,
+    get_product_by_barcode_doc,
     get_product_by_id_doc,
-    get_product_by_name_doc,
     get_products_by_brand_id_doc,
     get_products_by_category_id_doc,
     update_product_doc,
@@ -27,9 +27,9 @@ def get_all_products():
 
 @product_route_bp.route('/products', methods=['GET'])
 @jwt_required
-@swag_from(get_product_by_name_doc)
-def get_product_by_name():
-    return product_controller.get_product_by_name()
+@swag_from(get_product_by_barcode_doc)
+def get_product_by_barcode():
+    return product_controller.get_product_by_barcode()
 
 
 @product_route_bp.route('/products', methods=['POST'])

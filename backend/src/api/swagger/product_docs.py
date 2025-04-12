@@ -29,17 +29,17 @@ get_all_products_doc = {
     },
 }
 
-get_product_by_name_doc = {
+get_product_by_barcode_doc = {
     "tags": ["Produtos"],
     "security": [{"Bearer": []}],
     "summary": "Busca um produto pelo nome",
     "parameters": [
         {
-            "name": "name",
+            "name": "barcode",
             "in": "query",
             "type": "string",
             "required": True,
-            "description": "Nome do produto",
+            "description": "Barcode do produto",
         }
     ],
     "responses": {

@@ -11,7 +11,7 @@ class IProductService(ABC):
         pass
 
     @abstractmethod
-    def get_product_by_name(self, product_name: str) -> HttpResponse:
+    def get_product_by_barcode(self, barcode: str) -> HttpResponse:
         pass
 
     @abstractmethod

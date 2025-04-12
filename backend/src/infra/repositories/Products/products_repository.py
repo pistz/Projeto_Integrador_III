@@ -6,6 +6,7 @@ from src.infra.repositories.Products.products_repository_interface import (
     IProductsRepository,
 )
 from src.model.configs.connection import DbConnectionHandler
+from src.model.entities.barcode import Barcode
 from src.model.entities.product import Product
 
 
@@ -20,8 +21,15 @@ class ProductsRepository(IProductsRepository):
         product = self.__find_product_by_name_or_id(product_id=product_id)
         return product
 
-    def get_product_by_name(self, product_name: str) -> list[Product]:
-        product = self.__find_product_by_name_or_id(product_name=product_name)
+    def get_product_by_barcode(self, barcode: str) -> Product:
+        with DbConnectionHandler() as db:
+            product = (
+                db.session.query(Product)
+                .select_from(Barcode)
+                .join(Product, Barcode.product_id == Product.id)
+                .filter(Barcode.barcode == barcode)
+                .one_or_none()
+            )
         return product
 
     def get_all_products_by_category_id(self, category_id: int) -> list[Product]:

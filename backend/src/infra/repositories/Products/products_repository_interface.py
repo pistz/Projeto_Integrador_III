@@ -15,7 +15,7 @@ class IProductsRepository(ABC):
         pass
 
     @abstractmethod
-    def get_product_by_name(self, product_name: str) -> list[Product]:
+    def get_product_by_barcode(self, barcode: str) -> Product:
         pass
 
     @abstractmethod

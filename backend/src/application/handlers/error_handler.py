@@ -42,7 +42,7 @@ def register_error_handlers(app):
                         "aditional": e.aditional if hasattr(e, 'aditional') else None,
                     }
                 )
-                return error, e.status_code.value
+                return error, e.status_code
 
         # Erros inesperados (500)
         error = {
