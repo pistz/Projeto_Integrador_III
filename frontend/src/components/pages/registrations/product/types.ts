@@ -1,6 +1,7 @@
-import { CreateProduct as ProductApiType } from '../../../../api/Product/types';
+import {
+  CreateProduct,
+  Product as ProductApiType,
+} from '../../../../api/Product/types';
 
-export interface Product extends ProductApiType {}
-export interface ProductId extends Product {
-  id: number;
-}
+export interface Product extends CreateProduct {}
+export interface ProductId extends ProductApiType {}

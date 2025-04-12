@@ -6,6 +6,7 @@ import { CardComponent } from '../../shared/card/CardComponent';
 import { OptionCard } from '../../shared/card/OptionCard';
 import { CardsContainer } from '../../shared/container/cardsContainer';
 import { Modal } from '../../shared/modal/Modal';
+import { CreateBarcode } from './barcodes/createBarcode';
 import { CreateBrand } from './brand/createBrand';
 import { ListBrands } from './brand/listBrands';
 import { CreateCategory } from './category/createCategory';
@@ -114,6 +115,34 @@ export const Registrations: React.FC = () => {
         },
       ],
     },
+
+    {
+      title: 'Códigos de Barras',
+      actions: [
+        {
+          key: 'Adicionar',
+          component: (
+            <CardComponent
+              component={<AppstoreAddOutlined />}
+              title={'Criar'}
+              boldFont
+            />
+          ),
+          onClick: () => showModal(<CreateBarcode close={closeModal} />),
+        },
+        {
+          key: 'Listar/Editar',
+          component: (
+            <CardComponent
+              component={<EyeOutlined />}
+              title={'Listar/Editar'}
+              boldFont
+            />
+          ),
+          onClick: () => showModal(<p>Adicionar componente</p>),
+        },
+      ],
+    },
   ];
 
   return (
@@ -134,6 +163,7 @@ export const Registrations: React.FC = () => {
         open={isModalOpen}
         onCancel={closeModal}
         modalContent={modalContent}
+        width={900}
       />
     </>
   );

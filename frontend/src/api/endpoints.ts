@@ -47,3 +47,10 @@ export const currentStockRoute = {
   getCurrentStockByProductId: `${base.host}/current-stock`,
   getCurrentStock: `${base.host}/current-stock/all`,
 };
+
+export const barcodeRoute = {
+  create: `${base.host}/barcodes`,
+  delete: `${base.host}/barcodes`,
+  update: `${base.host}/barcodes`,
+  getBarcodeByProductId: (id: number) => `${base.host}/products/${id}/barcodes`,
+};

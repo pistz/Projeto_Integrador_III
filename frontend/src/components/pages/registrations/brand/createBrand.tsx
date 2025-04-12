@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { BrandAPI } from '../../../../api/Brand/BrandAPI';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
 import { SaveButton } from '../../../shared/saveButton/saveButton';
-import { formItemStyle } from '../../welcome/styles';
+import { formItemStyle } from '../../../shared/styles/globalStyles';
 
 interface Props {
   close: () => void;
