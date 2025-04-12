@@ -128,6 +128,7 @@ export const GetCurrentStockByProductId: React.FC = () => {
       <Divider>Selecione o produto</Divider>
       <Container>
         <Select
+          allowClear
           disabled={isFetchingOptions || isLoading}
           showSearch
           optionFilterProp="label"

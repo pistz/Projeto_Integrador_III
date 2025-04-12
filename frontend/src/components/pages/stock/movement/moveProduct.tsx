@@ -1,4 +1,9 @@
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import {
+  CheckOutlined,
+  CloseOutlined,
+  MinusSquareOutlined,
+  PlusSquareOutlined,
+} from '@ant-design/icons';
 import {
   Button,
   Divider,
@@ -8,8 +13,10 @@ import {
   Select,
   Space,
   Switch,
+  Tooltip,
+  Typography,
 } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
@@ -33,6 +40,10 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
   const [registerPack, setRegisterPack] = useState<boolean>(false);
+  const [hasPack, setHasPack] = useState<boolean>(false);
+  const [packValue, setPackValue] = useState<number | null>(null);
+
+  const [form] = Form.useForm();
 
   const getMovementOptions = (movementType: MovementType): string[] => {
     if (movementType === MovementType.IN) {
@@ -41,26 +52,36 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
       return Object.values(MovementSourceTypeOut);
     }
   };
-
-  const [form] = Form.useForm();
-
-  const hasPack = productsList.find(
-    (value) => value.id === selectedProduct,
-  )?.has_pack;
-
-  const packValue = productsList.find(
-    (value) => value.id === selectedProduct,
-  )?.pack_value;
+  const getMovementLabel = (movementType: MovementType): React.ReactNode => {
+    if (movementType === MovementType.IN) {
+      return (
+        <Typography style={{ fontSize: '1rem', fontWeight: 'inherit' }}>
+          <PlusSquareOutlined style={{ color: 'green', margin: '0.3rem' }} />
+          Movimentação de Entrada
+        </Typography>
+      );
+    } else {
+      return (
+        <Typography style={{ fontSize: '1rem', fontWeight: 'inherit' }}>
+          <MinusSquareOutlined
+            style={{ color: 'red', margin: '0.3rem' }}
+            title="Movimentação de Saída"
+          />
+          Movimentação de Saída
+        </Typography>
+      );
+    }
+  };
 
   const onFinish: FormProps<ProductMovement>['onFinish'] = async (
     product: ProductMovement,
   ) => {
+    setIsLoading(true);
     product.movement_type = movementType;
     product.created_by = user;
     product.quantity = registerPack
       ? Number(product.quantity) * (packValue ?? 1)
       : Number(product.quantity);
-    setIsLoading(true);
     try {
       const created = await StockAPI.move(product);
       notifySuccess(created.message);
@@ -77,9 +98,36 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
     label: product.name,
   }));
 
+  useEffect(() => {
+    if (!selectedProduct) {
+      setRegisterPack(false);
+      setHasPack(false);
+      setPackValue(null);
+    }
+    if (selectedProduct) {
+      const hasPack = productsList.find(
+        (value) => value.id === selectedProduct,
+      )?.has_pack;
+      setHasPack(hasPack ?? false);
+      const packValue = productsList.find(
+        (value) => value.id === selectedProduct,
+      )?.pack_value;
+      setPackValue(packValue ?? null);
+      form.setFieldsValue({
+        product_id: selectedProduct,
+      });
+    }
+  }, [selectedProduct, productsList]);
+
+  useEffect(() => {
+    if (!hasPack) {
+      setRegisterPack(false);
+    }
+  }, [hasPack]);
+
   return (
     <>
-      <Divider>Cadastrar Movimentação de Estoque</Divider>
+      <Divider children={getMovementLabel(movementType)}></Divider>
       <Space
         align="center"
         style={{
@@ -103,7 +151,14 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
           >
             <Select
               disabled={isLoading || isFetchingOptions}
+              allowClear
               showSearch
+              placeholder="Selecione um produto"
+              filterOption={(input, option) =>
+                (option?.label ?? '')
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
               optionFilterProp="label"
               options={selectList}
               onChange={(value) => setSelectedProduct(value)}
@@ -131,24 +186,33 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
               justifyContent: 'space-between',
             }}
           >
-            <Switch
-              disabled={!hasPack}
-              unCheckedChildren={'Pacote'}
-              checkedChildren={'Pacote'}
-              onChange={(checked) => setRegisterPack(checked)}
-            />
+            <Tooltip
+              title={
+                'Habilita ou desabilita o uso de quantidade de pacotes caso haja pacotes disponíveis'
+              }
+              autoAdjustOverflow
+            >
+              <Switch
+                disabled={!hasPack || isLoading || isFetchingOptions}
+                unCheckedChildren={'Pacote'}
+                checkedChildren={'Pacote'}
+                checked={registerPack && hasPack}
+                onChange={(checked) => setRegisterPack(checked)}
+              />
+            </Tooltip>
 
-            {!hasPack && <p>Não possui pacotes</p>}
+            {!hasPack && <Typography>Não possui pacotes</Typography>}
 
             {hasPack && (
-              <span
+              <Typography
+                className="pack-value"
+                direction="rtl"
                 style={{
-                  width: '4rem',
                   visibility: registerPack ? 'visible' : 'hidden',
                 }}
               >
                 {registerPack ? `${packValue} Itens por pacote` : ''}
-              </span>
+              </Typography>
             )}
           </Space>
 
