@@ -2,6 +2,7 @@ from flasgger import Swagger
 from flask import Flask
 from flask_cors import CORS
 
+from src.api.routes.barcode_routes import barcode_route_bp
 from src.api.routes.brand_routes import brand_route_bp
 from src.api.routes.category_routes import category_route_bp
 from src.api.routes.current_stock_routes import current_stock_route_bp
@@ -29,6 +30,7 @@ app.register_blueprint(brand_route_bp)
 app.register_blueprint(product_route_bp)
 app.register_blueprint(stock_movement_route_bp)
 app.register_blueprint(current_stock_route_bp)
+app.register_blueprint(barcode_route_bp)
 
 # Documentação
 swagger = Swagger(app, template=swagger_sec_template)
