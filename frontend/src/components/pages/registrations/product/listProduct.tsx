@@ -76,8 +76,11 @@ export const ListProduct: React.FC = () => {
 
   return (
     <>
-      <Divider>Produtos Cadastrados</Divider>
-
+      <Divider orientation="right">Produtos Cadastrados</Divider>
+      <Divider
+        orientation="right"
+        variant="dotted"
+      >{`Total: ${products.length}`}</Divider>
       <Table<ProductId, typeof ProductAPI>
         data={products}
         columns={columns}

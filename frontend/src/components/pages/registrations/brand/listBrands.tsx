@@ -46,8 +46,11 @@ export const ListBrands: React.FC = () => {
 
   return (
     <>
-      <Divider>Marcas Cadastradas</Divider>
-
+      <Divider orientation="right">Marcas Cadastradas</Divider>
+      <Divider
+        orientation="right"
+        variant="dotted"
+      >{`Total: ${brands.length}`}</Divider>
       <Table<Brand, typeof BrandAPI>
         data={brands}
         columns={columns}

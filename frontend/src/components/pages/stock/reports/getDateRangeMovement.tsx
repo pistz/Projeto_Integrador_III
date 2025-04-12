@@ -1,4 +1,4 @@
-import { SortAscendingOutlined } from '@ant-design/icons';
+import { SearchOutlined, SortAscendingOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Divider } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs, { Dayjs } from 'dayjs';
@@ -234,10 +234,12 @@ export const GetDateRangeMovement: React.FC = () => {
           onChange={(date) => handleEndDatePicking(date)}
           required
         />
-        <Button type="primary" onClick={handleLoadTable}>
-          {' '}
-          Buscar{' '}
-        </Button>
+        <Button
+          type="primary"
+          onClick={handleLoadTable}
+          icon={<SearchOutlined />}
+        />
+
         <PrintButton
           handlePrint={() => printFnRef.current?.()}
           disabled={disableButton}

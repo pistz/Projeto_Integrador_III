@@ -13,7 +13,7 @@ import React, { useState } from 'react';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
-import { formItemStyle } from '../../welcome/styles';
+import { formItemStyle } from '../../../shared/styles/globalStyles';
 import {
   MovementSource,
   MovementSourceTypeIn,

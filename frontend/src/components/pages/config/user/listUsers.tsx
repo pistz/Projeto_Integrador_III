@@ -67,7 +67,11 @@ export const ListUsers: React.FC = () => {
             ]}
           >
             <Skeleton title={false} loading={loading} active>
-              <List.Item.Meta title={item.name} description={item.email} />
+              <List.Item.Meta
+                title={item.name}
+                description={item.email}
+                key={item.id}
+              />
             </Skeleton>
           </List.Item>
         )}

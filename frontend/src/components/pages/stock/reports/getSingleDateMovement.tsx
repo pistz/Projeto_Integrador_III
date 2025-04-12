@@ -1,4 +1,4 @@
-import { SortAscendingOutlined } from '@ant-design/icons';
+import { SearchOutlined, SortAscendingOutlined } from '@ant-design/icons';
 import { Button, DatePicker, Divider } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import dayjs, { Dayjs } from 'dayjs';
@@ -19,7 +19,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  gap: 5rem;
+  gap: 3rem;
 `;
 export const GetSingleDateMovement: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -216,10 +216,12 @@ export const GetSingleDateMovement: React.FC = () => {
           onChange={(date) => handleDatePicking(date)}
           required
         />
-        <Button type="primary" onClick={handleLoadTable}>
-          {' '}
-          Buscar{' '}
-        </Button>
+        <Button
+          type="primary"
+          onClick={handleLoadTable}
+          icon={<SearchOutlined />}
+        />
+
         <PrintButton
           handlePrint={() => printFnRef.current?.()}
           disabled={disableButton}

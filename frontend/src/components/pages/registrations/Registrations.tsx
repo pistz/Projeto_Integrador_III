@@ -7,6 +7,7 @@ import { OptionCard } from '../../shared/card/OptionCard';
 import { CardsContainer } from '../../shared/container/cardsContainer';
 import { Modal } from '../../shared/modal/Modal';
 import { CreateBarcode } from './barcodes/createBarcode';
+import { ListBarcodes } from './barcodes/listBarcodes';
 import { CreateBrand } from './brand/createBrand';
 import { ListBrands } from './brand/listBrands';
 import { CreateCategory } from './category/createCategory';
@@ -139,7 +140,7 @@ export const Registrations: React.FC = () => {
               boldFont
             />
           ),
-          onClick: () => showModal(<p>Adicionar componente</p>),
+          onClick: () => showModal(<ListBarcodes />),
         },
       ],
     },

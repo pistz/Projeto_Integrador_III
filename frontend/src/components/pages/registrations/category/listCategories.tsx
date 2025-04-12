@@ -47,8 +47,11 @@ export const ListCategories: React.FC = () => {
 
   return (
     <>
-      <Divider>Categorias Cadastradas</Divider>
-
+      <Divider orientation="right">Categorias Cadastradas</Divider>
+      <Divider
+        orientation="right"
+        variant="dotted"
+      >{`Total: ${categories.length}`}</Divider>
       <Table<Category, typeof CategoryAPI>
         data={categories}
         columns={columns}
