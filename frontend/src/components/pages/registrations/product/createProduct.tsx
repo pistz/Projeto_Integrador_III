@@ -14,8 +14,8 @@ import { ProductAPI } from '../../../../api/Product/ProductAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
 import { SaveButton } from '../../../shared/saveButton/saveButton';
-import { Product } from './types';
 import { formItemStyle } from '../../../shared/styles/globalStyles';
+import { Product } from './types';
 
 interface Props {
   close: () => void;
@@ -160,6 +160,7 @@ export const CreateProduct: React.FC<Props> = ({ close }: Props) => {
               icon={<CheckOutlined />}
               loading={isFetchingOptions || isLoading}
               form={form}
+              showText
             />
             <Button
               danger

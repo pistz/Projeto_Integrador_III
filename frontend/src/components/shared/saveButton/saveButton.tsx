@@ -7,6 +7,8 @@ interface Props {
   icon: React.ReactNode;
   disabled?: boolean;
   form?: FormInstance<any>;
+  onClick?: () => void;
+  showText?: boolean;
 }
 
 export const SaveButton: React.FC<Props> = ({
@@ -14,12 +16,14 @@ export const SaveButton: React.FC<Props> = ({
   loading,
   disabled,
   form,
+  onClick,
+  showText,
 }: Props) => {
   return (
     <>
       <Popconfirm
         title="Confirma a gravação ?"
-        onConfirm={() => form?.submit()}
+        onConfirm={onClick ? onClick : () => form?.submit()}
         okText="Sim"
         cancelText="Não"
         key={'popconfirm-save'}
@@ -33,7 +37,7 @@ export const SaveButton: React.FC<Props> = ({
           loading={loading}
           disabled={disabled}
         >
-          Salvar
+          {showText ? 'Salvar' : null}
         </Button>
       </Popconfirm>
     </>

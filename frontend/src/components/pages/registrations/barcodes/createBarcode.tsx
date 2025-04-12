@@ -1,6 +1,6 @@
 import { CheckOutlined, CloseCircleFilled } from '@ant-design/icons';
 import { Button, Divider, Form, FormProps, Input, Select, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BarcodeAPI } from '../../../../api/Barcodes/BarcodesAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
@@ -15,6 +15,8 @@ interface Props {
 export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
   const [form] = Form.useForm();
   const { productsList } = useAppContext();
 
@@ -43,6 +45,17 @@ export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
     }
   };
 
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+
+    return () => window.removeEventListener('resize', checkScreen);
+  }, []);
+
   return (
     <>
       <Divider>Cadastro de Código de Barras por Produto</Divider>
@@ -50,6 +63,7 @@ export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
         align="center"
         style={{
           display: 'flex',
+          flexDirection: 'column',
           justifyContent: 'center',
           alignContent: 'center',
           width: '100%',
@@ -57,7 +71,14 @@ export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
       >
         <Select
           allowClear
-          style={{ width: '36rem', marginBottom: '1rem' }}
+          style={{
+            marginBottom: '1rem',
+            alignSelf: 'center',
+            justifySelf: 'flex-start',
+            width: isMobile ? '100%' : '36rem',
+          }}
+          direction="ltr"
+          loading={isLoading}
           disabled={isLoading}
           placeholder="Selecione um produto"
           onChange={(value) => setSelectedProduct(value)}
@@ -67,25 +88,18 @@ export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
             (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
           }
         />
-      </Space>
-      <Space
-        align="center"
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignContent: 'center',
-        }}
-      >
+
         <Form
           form={form}
           clearOnDestroy={true}
           layout="vertical"
           onFinish={onFinish}
+          autoFocus
         >
           <Form.Item
             name={['barcode']}
             label={'Código de Barras'}
-            style={{ width: '36rem' }}
+            style={{ width: isMobile ? '100%' : '36rem' }}
             rules={[{ required: true, message: 'Código é obrigatório' }]}
           >
             <Input type="text" disabled={isLoading} style={formItemStyle} />
@@ -96,6 +110,7 @@ export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
               icon={<CheckOutlined />}
               loading={isLoading}
               form={form}
+              showText
             />
 
             <Button

@@ -57,6 +57,7 @@ export const CreateBrand: React.FC<Props> = ({ close }: Props) => {
               icon={<CheckOutlined />}
               loading={isLoading}
               form={form}
+              showText
             />
 
             <Button

@@ -10,6 +10,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { BarcodeAPI } from '../../../../api/Barcodes/BarcodesAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
+import { SaveButton } from '../../../shared/saveButton/saveButton';
 import { Barcode, UpdateBarcode } from './types';
 
 export const ListBarcodes: React.FC = () => {
@@ -20,6 +21,7 @@ export const ListBarcodes: React.FC = () => {
   const [tableData, setTableData] = useState<Barcode[]>([]);
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const editableRef = useRef<HTMLDivElement | null>(null);
 
@@ -104,7 +106,18 @@ export const ListBarcodes: React.FC = () => {
   };
 
   useEffect(() => {
-    handleLoadTable();
+    if (selectedProduct) handleLoadTable();
+  }, []);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
+
+    return () => window.removeEventListener('resize', checkScreen);
   }, []);
 
   return (
@@ -122,7 +135,7 @@ export const ListBarcodes: React.FC = () => {
       >
         <Select
           allowClear
-          style={{ width: '36rem' }}
+          style={{ width: isMobile ? '100%' : '36rem' }}
           disabled={isLoading || editMode}
           placeholder="Selecione um produto"
           options={selectList}
@@ -149,9 +162,9 @@ export const ListBarcodes: React.FC = () => {
             actions={
               editingId === item.id
                 ? [
-                    <Button
+                    <SaveButton
                       key="save"
-                      type="primary"
+                      loading={isLoading}
                       onClick={handleSave}
                       icon={<SaveFilled />}
                     />,
