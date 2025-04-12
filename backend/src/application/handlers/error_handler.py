@@ -50,4 +50,4 @@ def register_error_handlers(app):
             "message": "An unexpected error has occurred. Please try again later.",
             "type": str(e),
         }
-        return jsonify(error), StatusCode.INTERNAL_SERVER_ERROR
+        return jsonify(error), StatusCode.INTERNAL_SERVER_ERROR.value
