@@ -1,5 +1,17 @@
-import { CheckOutlined, CloseCircleFilled } from '@ant-design/icons';
-import { Button, Divider, Form, FormProps, Input, Space } from 'antd';
+import {
+  CheckOutlined,
+  CloseCircleFilled,
+  FileAddOutlined,
+} from '@ant-design/icons';
+import {
+  Button,
+  Divider,
+  Form,
+  FormProps,
+  Input,
+  Space,
+  Typography,
+} from 'antd';
 import React, { useState } from 'react';
 import { CategoryAPI } from '../../../../api/Category/CategoryAPI';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
@@ -29,9 +41,26 @@ export const CreateCategory: React.FC<Props> = ({ close }: Props) => {
     }
   };
 
+  const dividerText = () => {
+    return (
+      <Typography
+        style={{
+          fontSize: '1rem',
+          fontWeight: 'inherit',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '0.3rem',
+        }}
+      >
+        <FileAddOutlined />
+        <p>Cadastrar Categoria de Produto</p>
+      </Typography>
+    );
+  };
+
   return (
     <>
-      <Divider>Cadastrar Categoria de Produto</Divider>
+      <Divider children={dividerText()} />
       <Space
         align="center"
         style={{

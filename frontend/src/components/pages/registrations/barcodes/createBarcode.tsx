@@ -1,5 +1,18 @@
-import { CheckOutlined, CloseCircleFilled } from '@ant-design/icons';
-import { Button, Divider, Form, FormProps, Input, Select, Space } from 'antd';
+import {
+  BarcodeOutlined,
+  CheckOutlined,
+  CloseCircleFilled,
+} from '@ant-design/icons';
+import {
+  Button,
+  Divider,
+  Form,
+  FormProps,
+  Input,
+  Select,
+  Space,
+  Typography,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { BarcodeAPI } from '../../../../api/Barcodes/BarcodesAPI';
 import { useAppContext } from '../../../../context/useAppContext';
@@ -15,6 +28,7 @@ interface Props {
 export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<number | null>(null);
+  const [focusInput, setFocusInput] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState(false);
 
   const [form] = Form.useForm();
@@ -56,9 +70,34 @@ export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
     return () => window.removeEventListener('resize', checkScreen);
   }, []);
 
+  useEffect(() => {
+    if (selectedProduct) {
+      setFocusInput(true);
+    } else {
+      setFocusInput(false);
+    }
+  }, [selectedProduct]);
+
+  const dividerText = () => {
+    return (
+      <Typography
+        style={{
+          fontSize: '1rem',
+          fontWeight: 'inherit',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '0.3rem',
+        }}
+      >
+        <BarcodeOutlined />
+        <p>Cadastro de Código de Barras : Produto</p>
+      </Typography>
+    );
+  };
+
   return (
     <>
-      <Divider>Cadastro de Código de Barras por Produto</Divider>
+      <Divider children={dividerText()} />
       <Space
         align="center"
         style={{
@@ -94,7 +133,6 @@ export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
           clearOnDestroy={true}
           layout="vertical"
           onFinish={onFinish}
-          autoFocus
         >
           <Form.Item
             name={['barcode']}
@@ -102,7 +140,13 @@ export const CreateBarcode: React.FC<Props> = ({ close }: Props) => {
             style={{ width: isMobile ? '100%' : '36rem' }}
             rules={[{ required: true, message: 'Código é obrigatório' }]}
           >
-            <Input type="text" disabled={isLoading} style={formItemStyle} />
+            <Input
+              type="text"
+              disabled={isLoading || !selectedProduct}
+              style={formItemStyle}
+              autoFocus={focusInput}
+              placeholder="|||||||||||||||||"
+            />
           </Form.Item>
 
           <Space>

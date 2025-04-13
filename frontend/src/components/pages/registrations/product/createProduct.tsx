@@ -1,4 +1,8 @@
-import { CheckOutlined, CloseCircleFilled } from '@ant-design/icons';
+import {
+  CheckOutlined,
+  CloseCircleFilled,
+  FileAddOutlined,
+} from '@ant-design/icons';
 import {
   Button,
   Divider,
@@ -8,6 +12,7 @@ import {
   Select,
   Space,
   Switch,
+  Typography,
 } from 'antd';
 import React, { useState } from 'react';
 import { ProductAPI } from '../../../../api/Product/ProductAPI';
@@ -50,9 +55,26 @@ export const CreateProduct: React.FC<Props> = ({ close }: Props) => {
     label: category.name,
   }));
 
+  const dividerText = () => {
+    return (
+      <Typography
+        style={{
+          fontSize: '1rem',
+          fontWeight: 'inherit',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '0.3rem',
+        }}
+      >
+        <FileAddOutlined />
+        <p>Cadastrar Produtos</p>
+      </Typography>
+    );
+  };
+
   return (
     <>
-      <Divider>Cadastrar Produto</Divider>
+      <Divider children={dividerText()} />
       <Space
         align="center"
         style={{

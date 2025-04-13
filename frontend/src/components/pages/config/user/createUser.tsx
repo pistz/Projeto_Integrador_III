@@ -1,5 +1,13 @@
-import { CheckOutlined } from '@ant-design/icons';
-import { Button, Divider, Form, FormProps, Input, Space } from 'antd';
+import { CheckOutlined, UserAddOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Divider,
+  Form,
+  FormProps,
+  Input,
+  Space,
+  Typography,
+} from 'antd';
 import React, { useState } from 'react';
 import { UsersAPI } from '../../../../api/Users/UsersAPI';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
@@ -30,9 +38,26 @@ export const CreateUser: React.FC<Props> = ({ close }: Props) => {
     }
   };
 
+  const dividerText = () => {
+    return (
+      <Typography
+        style={{
+          fontSize: '1rem',
+          fontWeight: 'inherit',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '0.3rem',
+        }}
+      >
+        <UserAddOutlined />
+        <p>Criar Usuário do Sistema</p>
+      </Typography>
+    );
+  };
+
   return (
     <>
-      <Divider>Criar Usuário do Sistema</Divider>
+      <Divider children={dividerText()} />
       <Space
         align="center"
         style={{
