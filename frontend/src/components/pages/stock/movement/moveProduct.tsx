@@ -17,6 +17,7 @@ import {
   Tooltip,
   Typography,
 } from 'antd';
+import TextArea from 'antd/es/input/TextArea';
 import React, { useEffect, useState } from 'react';
 import { ProductAPI } from '../../../../api/Product/ProductAPI';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
@@ -47,6 +48,12 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
   const [barcodeSearch, setBarcodeSearch] = useState<boolean>(false);
 
   const [form] = Form.useForm();
+
+  const selectList = productsList.map((product) => ({
+    value: product.id,
+    label: product.name,
+    description: product.description,
+  }));
 
   const getMovementOptions = (movementType: MovementType): string[] => {
     if (movementType === MovementType.IN) {
@@ -108,16 +115,12 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
       });
     } catch (error) {
       notifyError(error);
+      form.resetFields();
     } finally {
       setIsLoading(false);
       setBarcodeSearch(false);
     }
   };
-
-  const selectList = productsList.map((product) => ({
-    value: product.id,
-    label: product.name,
-  }));
 
   useEffect(() => {
     if (!selectedProduct) {
@@ -181,9 +184,10 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
               {barcodeSearch ? (
                 <Input
                   name="barcode"
+                  autoFocus
                   disabled={isLoading || isFetchingOptions}
                   placeholder="Código de Barras"
-                  onChange={(value) => searchByBarcode(value.target.value)}
+                  onPressEnter={(e) => searchByBarcode(e.currentTarget.value)}
                 />
               ) : (
                 <Select
@@ -219,6 +223,17 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
               />
             </Tooltip>
           </Space>
+
+          <TextArea
+            disabled
+            autoSize={{ minRows: 3, maxRows: 3 }}
+            size="middle"
+            value={
+              selectList.find((value) => selectedProduct === value.value)
+                ?.description
+            }
+            style={{ margin: '0.5rem 0 1rem 0' }}
+          />
 
           <Form.Item
             name={['movement_source']}

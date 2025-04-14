@@ -42,7 +42,7 @@ class ProductService(IProductService):
     def get_product_by_barcode(self, barcode: str) -> HttpResponse:
         found_product = self.__product_repository.get_product_by_barcode(barcode)
         if not found_product:
-            raise NotFound('Produto não existe')
+            raise NotFound('Não existe produto com esse código de barras')
         product = ProductDTO(
             id=found_product.id,
             name=found_product.name,
