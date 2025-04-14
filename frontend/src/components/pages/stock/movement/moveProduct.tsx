@@ -1,4 +1,5 @@
 import {
+  BarcodeOutlined,
   CheckOutlined,
   CloseOutlined,
   MinusSquareOutlined,
@@ -17,6 +18,7 @@ import {
   Typography,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { ProductAPI } from '../../../../api/Product/ProductAPI';
 import { StockAPI } from '../../../../api/Stock/StockAPI';
 import { useAppContext } from '../../../../context/useAppContext';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
@@ -42,6 +44,7 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
   const [registerPack, setRegisterPack] = useState<boolean>(false);
   const [hasPack, setHasPack] = useState<boolean>(false);
   const [packValue, setPackValue] = useState<number | null>(null);
+  const [barcodeSearch, setBarcodeSearch] = useState<boolean>(false);
 
   const [form] = Form.useForm();
 
@@ -90,6 +93,24 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
       notifyError(error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const searchByBarcode = async (barcode: string) => {
+    setIsLoading(true);
+    try {
+      const product = await ProductAPI.getByBarcode(barcode);
+      notifySuccess('Produto encontrado: ' + product.name);
+      setSelectedProduct(product.id);
+      form.setFieldsValue({
+        product_id: product.id,
+        name: product.name,
+      });
+    } catch (error) {
+      notifyError(error);
+    } finally {
+      setIsLoading(false);
+      setBarcodeSearch(false);
     }
   };
 
@@ -143,27 +164,61 @@ export const MoveProduct: React.FC<Props> = ({ movementType, user, close }) => {
           onFinish={onFinish}
           disabled={isFetchingOptions || isLoading}
         >
-          <Form.Item
-            name={['product_id']}
-            label={'Produto'}
-            rules={[{ required: true, message: 'Produto é obrigatório' }]}
-            style={formItemStyle}
+          <Space
+            align="center"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignContent: 'center',
+            }}
           >
-            <Select
-              disabled={isLoading || isFetchingOptions}
-              allowClear
-              showSearch
-              placeholder="Selecione um produto"
-              filterOption={(input, option) =>
-                (option?.label ?? '')
-                  .toLowerCase()
-                  .includes(input.toLowerCase())
+            <Form.Item
+              name={['product_id']}
+              label={'Produto'}
+              rules={[{ required: true, message: 'Produto é obrigatório' }]}
+              style={formItemStyle}
+            >
+              {barcodeSearch ? (
+                <Input
+                  name="barcode"
+                  disabled={isLoading || isFetchingOptions}
+                  placeholder="Código de Barras"
+                  onChange={(value) => searchByBarcode(value.target.value)}
+                />
+              ) : (
+                <Select
+                  disabled={isLoading || isFetchingOptions}
+                  allowClear
+                  showSearch
+                  placeholder="Selecione um produto"
+                  filterOption={(input, option) =>
+                    (option?.label ?? '')
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                  optionFilterProp="label"
+                  options={selectList}
+                  onChange={(value) => setSelectedProduct(value)}
+                />
+              )}
+            </Form.Item>
+
+            <Tooltip
+              title={
+                barcodeSearch
+                  ? 'Desligar buscar pelo código de barras'
+                  : 'Iniciar buscar pelo código de barras'
               }
-              optionFilterProp="label"
-              options={selectList}
-              onChange={(value) => setSelectedProduct(value)}
-            />
-          </Form.Item>
+              autoAdjustOverflow
+            >
+              <Button
+                icon={<BarcodeOutlined />}
+                style={{ marginTop: '0.3rem' }}
+                type={barcodeSearch ? 'primary' : 'default'}
+                onClick={() => setBarcodeSearch(!barcodeSearch)}
+              />
+            </Tooltip>
+          </Space>
 
           <Form.Item
             name={['movement_source']}

@@ -1,10 +1,4 @@
-import { Product as ProductApiType } from '../../../../api/Product/types';
 import { ProductMovement as ProductMovementApiType } from '../../../../api/Stock/types';
-
-export interface Product extends ProductApiType {}
-export interface ProductId extends Product {
-  id: number;
-}
 
 export enum MovementType {
   IN = 'IN',
