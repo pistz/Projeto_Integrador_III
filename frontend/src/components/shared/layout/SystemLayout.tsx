@@ -1,4 +1,9 @@
-import { LogoutOutlined } from '@ant-design/icons';
+import {
+  FolderOpenTwoTone,
+  FolderTwoTone,
+  LogoutOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { FloatButton, Layout, Menu, theme } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { NavigateFunction, Outlet, useNavigate } from 'react-router-dom';
@@ -6,7 +11,9 @@ import { loadSystemVersion } from '../../../config/loadEnv';
 import { isTokenExpired } from '../../../config/token';
 import { Router } from '../../../routes/types';
 import { Logout } from '../../pages/logout/Logout';
+import { UserSettings } from '../../pages/userSettings/UserSettings';
 import { Alert } from '../alert/Alert';
+import { Modal } from '../modal/Modal';
 
 const { Header, Content, Footer } = Layout;
 const SYSTEM_VERSION = loadSystemVersion();
@@ -21,6 +28,7 @@ export const SystemLayout: React.FC<ISystemLayout> = ({
 }: ISystemLayout) => {
   const [expired, setExpired] = useState<boolean>(false);
   const [logout, setLogout] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const navigate: NavigateFunction = useNavigate();
 
@@ -47,6 +55,13 @@ export const SystemLayout: React.FC<ISystemLayout> = ({
       const index = Number(key);
       navigate(`${pages[index]?.path}`);
     }
+  };
+
+  const openModal = () => {
+    setOpen(true);
+  };
+  const closeModal = () => {
+    setOpen(false);
   };
 
   useEffect(() => {
@@ -84,13 +99,30 @@ export const SystemLayout: React.FC<ISystemLayout> = ({
             items={menuItems}
             style={{ flex: 1, minWidth: 0 }}
           />
-          <FloatButton
-            type="default"
-            icon={<LogoutOutlined style={{ color: '#1a195f' }} />}
+          <FloatButton.Group
             style={{ position: 'static' }}
-            tooltip={'Sair'}
-            onClick={handleLogout}
-          />
+            shape="circle"
+            key={'down'}
+            placement="bottom"
+            trigger="hover"
+            type="default"
+            closeIcon={<FolderOpenTwoTone />}
+            icon={<FolderTwoTone />}
+          >
+            <FloatButton
+              icon={<UserOutlined />}
+              tooltip={'Meu usuário'}
+              type="primary"
+              style={{ margin: '0.5rem 0 0 0' }}
+              onClick={openModal}
+            />
+            <FloatButton
+              type="primary"
+              icon={<LogoutOutlined />}
+              tooltip={'Sair'}
+              onClick={handleLogout}
+            />
+          </FloatButton.Group>
         </Header>
         <Content
           style={{
@@ -112,10 +144,18 @@ export const SystemLayout: React.FC<ISystemLayout> = ({
             <Outlet />
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
+        <Footer
+          style={{ textAlign: 'center', marginTop: '0', paddingTop: '0' }}
+        >
           {SYSTEM_VERSION} - {new Date().getFullYear()}
         </Footer>
       </Layout>
+
+      <Modal
+        open={open}
+        onCancel={closeModal}
+        modalContent={<UserSettings />}
+      />
       <Logout open={logout} onClose={() => setLogout(false)} />
       <Alert expired={expired} />
     </>

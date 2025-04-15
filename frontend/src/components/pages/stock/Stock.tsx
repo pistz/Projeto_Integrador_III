@@ -108,6 +108,7 @@ export const Stock: React.FC = () => {
         },
       ],
     },
+
     {
       title: 'Relatórios de Estoque',
       actions: [

@@ -1,5 +1,5 @@
 import { Roles } from '../api/Login/types';
-import { Config } from '../components/pages/config/Config';
+import { Config } from '../components/pages/management/Config';
 import { Registrations } from '../components/pages/registrations/Registrations';
 import { Stock } from '../components/pages/stock/Stock';
 import { Welcome } from '../components/pages/welcome/Welcome';

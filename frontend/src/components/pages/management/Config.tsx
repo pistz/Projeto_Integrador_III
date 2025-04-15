@@ -55,7 +55,7 @@ export const Config: React.FC = () => {
 
   return (
     <>
-      <Divider>Configurações de Usuário</Divider>
+      <Divider>Gestão de Usuários</Divider>
       <CardsContainer>
         {options.map((option) => (
           <OptionCard
