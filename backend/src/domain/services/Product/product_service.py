@@ -37,7 +37,7 @@ class ProductService(IProductService):
             has_pack=found_product.has_pack,
             pack_value=found_product.pack_value,
         )
-        return HttpResponse(status_code=StatusCode.OK.value, body=product)
+        return HttpResponse(status_code=StatusCode.OK.value, body=product.to_dict())
 
     def get_product_by_barcode(self, barcode: str) -> HttpResponse:
         found_product = self.__product_repository.get_product_by_barcode(barcode)
@@ -53,7 +53,7 @@ class ProductService(IProductService):
             pack_value=found_product.pack_value,
         )
 
-        return HttpResponse(status_code=StatusCode.OK.value, body=product)
+        return HttpResponse(status_code=StatusCode.OK.value, body=product.to_dict())
 
     def get_all_products(self) -> HttpResponse:
         products_list: list[Product] = self.__product_repository.get_all_products()

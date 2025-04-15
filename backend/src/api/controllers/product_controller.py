@@ -52,7 +52,7 @@ class ProdutController:
         return self.__send_response(response)
 
     def update_product(self, product_id: int):
-        http_request = HttpRequest(request.json)
+        http_request = HttpRequest(body=request.json)
         update_product_dto = UpdateProductDTO(**http_request.body)
         response: HttpResponse = self.__product_service.update_product(
             product_id=product_id, product=update_product_dto

@@ -1,6 +1,6 @@
 from functools import wraps
 
-from flask import request
+from flask import request, g
 
 from src.application.exceptions.token_error import TokenError
 from src.domain.containers.service_container import ServiceContainer
@@ -18,7 +18,9 @@ def jwt_required(f):
         token = auth_header.split(" ")[1]
 
         try:
-            auth_service.decode_token_validity(token)
+            user_data = auth_service.decode_token_validity(token)
+            g.user = user_data
+
         except Exception as e:
             raise TokenError(str(e))
 

@@ -2,6 +2,7 @@ from flasgger import swag_from
 from flask import Blueprint
 
 from src.api.auth.authenticator import jwt_required
+from src.api.auth.roles_required import roles_required
 from src.api.controllers.users_controller import UserController
 from src.api.swagger.user_docs import (
     create_user_doc,
@@ -10,6 +11,7 @@ from src.api.swagger.user_docs import (
     get_user_by_id_doc,
     update_user_doc,
 )
+from src.application.enums.user_roles import UserRoles
 
 user_route_bp = Blueprint('user_route', __name__)
 user_controller = UserController()
@@ -18,6 +20,7 @@ user_controller = UserController()
 @user_route_bp.route('/users/all', methods=['GET'])
 @jwt_required
 @swag_from(get_all_users_doc)
+@roles_required(UserRoles.ADMIN.value)
 def get_all_users_route():
     return user_controller.get_all_users()
 

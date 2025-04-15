@@ -8,6 +8,7 @@ class CreateUserDTO:
     name: str
     email: str
     password: str
+    roles: str
 
     def __post_init__(self):
         if not self.name or not self.email or not self.password:
@@ -18,6 +19,7 @@ class CreateUserDTO:
 class UpdateUserDTO:
     name: str
     password: str
+    roles: str
 
 
 @dataclass
@@ -25,9 +27,15 @@ class UserDTO:
     id: int
     name: str
     email: str
+    roles: str
 
     def to_dict(self):
-        return {"id": self.id, "name": self.name, "email": self.email}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "roles": self.roles,
+        }
 
 
 @dataclass

@@ -3,6 +3,7 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 interface JwtCustomPayload extends JwtPayload {
   user: string;
   name: string;
+  roles: string;
 }
 
 export const getTokenFromSessionStorage = (): string => {

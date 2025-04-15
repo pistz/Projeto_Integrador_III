@@ -13,7 +13,10 @@ class UserRepository(IUserRepository):
         with DbConnectionHandler() as db:
             try:
                 new_user = User(
-                    name=user.name, email=user.email, password=user.password
+                    name=user.name,
+                    email=user.email,
+                    password=user.password,
+                    roles=user.roles,
                 )
 
                 db.session.add(new_user)
@@ -43,8 +46,13 @@ class UserRepository(IUserRepository):
         with DbConnectionHandler() as db:
             try:
                 found_user = self.__find_user(user_id=user_id)
-                found_user.name = user.name
-                found_user.password = user.password
+                if not found_user:
+                    raise DatabaseException(message='Usuário não encontrado')
+                found_user.name = user.name if user.name else found_user.name
+                found_user.password = (
+                    user.password if user.password else found_user.password
+                )
+                found_user.roles = user.roles if user.roles else found_user.roles
 
                 db.session.add(found_user)
                 db.session.commit()

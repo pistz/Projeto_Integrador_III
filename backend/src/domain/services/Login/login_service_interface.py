@@ -10,7 +10,7 @@ class ILoginService(ABC):
         pass
 
     @abstractmethod
-    def decode_token_validity(self, token: str) -> bool:
+    def decode_token_validity(self, token: str) -> dict:
         pass
 
     @abstractmethod

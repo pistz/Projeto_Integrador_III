@@ -35,13 +35,18 @@ class UserService(IUserService):
         user = self.user_repository.get_user_by_id(user_id)
         if not user:
             raise NotFound('Usuário não encontrado')
-        user_response = UserDTO(id=user.id, name=user.name, email=user.email)
-        return HttpResponse(status_code=StatusCode.OK.value, body=user_response)
+        user_response = UserDTO(
+            id=user.id, name=user.name, email=user.email, roles=user.roles
+        )
+        return HttpResponse(
+            status_code=StatusCode.OK.value, body=user_response.to_dict()
+        )
 
     def get_all_users(self) -> HttpResponse:
         users = self.user_repository.get_all_users()
         users_response = [
-            UserDTO(id=user.id, name=user.name, email=user.email) for user in users
+            UserDTO(id=user.id, name=user.name, email=user.email, roles=user.roles)
+            for user in users
         ]
         return HttpResponse(status_code=StatusCode.OK.value, body=users_response)
 

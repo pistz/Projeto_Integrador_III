@@ -28,17 +28,18 @@ class LoginService(ILoginService):
         if not self.__dehash_password(password, user.password):
             raise InvalidUser("Email ou password incorretos")
         token = self.__generate_token(user)
-        return HttpResponse(body=JWTTokenDTO(token), status_code=StatusCode.OK.value)
+        return HttpResponse(
+            body=JWTTokenDTO(token).to_dict(), status_code=StatusCode.OK.value
+        )
 
-    def decode_token_validity(self, token: str) -> bool:
+    def decode_token_validity(self, token: str) -> dict:
         try:
-            decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
+            payload = decode(token, JWT_SECRET_KEY, algorithms=["HS256"])
+            return payload
         except ExpiredSignatureError:
             raise Unauthorized("Token expirado.")
         except InvalidTokenError:
             raise Unauthorized("Token inválido.")
-
-        return True
 
     def decode_token_user(self, token: str, email: str) -> bool:
         try:
@@ -60,6 +61,7 @@ class LoginService(ILoginService):
             {
                 "name": user.name,
                 "user": user.email,
+                "roles": user.roles,
                 "exp": (now + datetime.timedelta(hours=12)).timestamp(),
             },
             JWT_SECRET_KEY,

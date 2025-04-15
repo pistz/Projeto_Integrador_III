@@ -1,0 +1,2 @@
+ALTER TABLE Users
+ADD COLUMN roles VARCHAR(150) NOT NULL DEFAULT 'register_only';
