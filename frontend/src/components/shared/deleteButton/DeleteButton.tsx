@@ -8,6 +8,7 @@ interface Props {
   action?: string;
   icon?: React.ReactNode;
   disabled?: boolean;
+  type?: 'default' | 'primary' | 'dashed' | 'link' | 'text';
 }
 
 export const DeleteButton: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const DeleteButton: React.FC<Props> = ({
   action,
   icon,
   disabled,
+  type,
 }: Props) => {
   return (
     <>
@@ -30,7 +32,7 @@ export const DeleteButton: React.FC<Props> = ({
         disabled={disabled}
       >
         <Button
-          type="default"
+          type={type ?? 'default'}
           danger
           title={action ?? 'Deletar'}
           loading={isLoading}

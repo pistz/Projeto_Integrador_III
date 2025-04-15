@@ -4,8 +4,11 @@ export type CreateUserForm = {
   password: string;
 };
 
-export type ListUsers = {
+export interface ListUsers extends TokenUser {
   id: number;
+}
+
+export type TokenUser = {
   name: string;
   email: string;
 };

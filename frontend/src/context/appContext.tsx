@@ -3,7 +3,14 @@ import { BrandAPI } from '../api/Brand/BrandAPI';
 import { CategoryAPI } from '../api/Category/CategoryAPI';
 import { ProductAPI } from '../api/Product/ProductAPI';
 import { notifyError } from '../components/shared/notify/notify';
-import { AppContextType, IChildren, Product, ProductOptions } from './types';
+import { getUserFromToken } from '../config/token';
+import {
+  AppContextType,
+  IChildren,
+  Product,
+  ProductOptions,
+  TokenUser,
+} from './types';
 
 const AppContext = createContext<AppContextType>({} as AppContextType);
 
@@ -20,6 +27,7 @@ export const ContextProvider: React.FC<IChildren> = ({
   const [signed, setSigned] = useState<boolean>(false);
   const [token, setToken] = useState<string>('');
   const [expired, setExpired] = useState<boolean>(false);
+  const [tokenUser, setTokenUser] = useState<TokenUser | null>(null);
 
   const [productOptions, setProductOptions] = useState<ProductOptions>(
     defaultProductOptions,
@@ -65,6 +73,18 @@ export const ContextProvider: React.FC<IChildren> = ({
     }
   }, [signed, token, reload, loadProductOptions]);
 
+  const loadTokenUser = useCallback(() => {
+    if (!token) return;
+    const retrievedUser = getUserFromToken();
+    if (retrievedUser) {
+      setTokenUser({ name: retrievedUser.name, email: retrievedUser.user });
+    }
+  }, [token]);
+
+  useEffect(() => {
+    loadTokenUser();
+  }, [loadTokenUser]);
+
   return (
     <AppContext.Provider
       value={{
@@ -78,6 +98,7 @@ export const ContextProvider: React.FC<IChildren> = ({
         isFetchingOptions,
         productsList,
         setReload,
+        tokenUser,
       }}
     >
       {children}

@@ -1,6 +1,6 @@
 import {
   CloseOutlined,
-  DeleteOutlined,
+  DeleteFilled,
   EditFilled,
   SaveFilled,
   SearchOutlined,
@@ -9,6 +9,7 @@ import { Button, Divider, List, Select, Skeleton, Space } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 import { BarcodeAPI } from '../../../../api/Barcodes/BarcodesAPI';
 import { useAppContext } from '../../../../context/useAppContext';
+import { DeleteButton } from '../../../shared/deleteButton/DeleteButton';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
 import { SaveButton } from '../../../shared/saveButton/saveButton';
 import { Barcode, UpdateBarcode } from './types';
@@ -183,12 +184,13 @@ export const ListBarcodes: React.FC = () => {
                       key={'edit-btn'}
                       icon={<EditFilled style={{ color: 'blue' }} />}
                     />,
-                    <Button
-                      danger
+                    <DeleteButton
+                      value={item}
+                      isLoading={isLoading}
                       disabled={isLoading || editMode}
-                      onClick={() => handleDelete(item.id)}
+                      handleAction={() => handleDelete(item.id)}
                       key={'delete-btn'}
-                      icon={<DeleteOutlined />}
+                      icon={<DeleteFilled />}
                     />,
                   ]
             }
