@@ -21,7 +21,7 @@ category_controller = CategoryController()
 @category_route_bp.route('/categories/all', methods=['GET'])
 @jwt_required
 @swag_from(get_all_categories_doc)
-@roles_required(UserRoles.ADMIN.value)
+@roles_required(UserRoles.ADMIN.value, UserRoles.REGISTER_ONLY.value)
 def get_all_categories():
     return category_controller.get_all_categories()
 
@@ -29,7 +29,7 @@ def get_all_categories():
 @category_route_bp.route('/categories', methods=['GET'])
 @jwt_required
 @swag_from(get_category_by_name_doc)
-@roles_required(UserRoles.ADMIN.value)
+@roles_required(UserRoles.ADMIN.value, UserRoles.REGISTER_ONLY.value)
 def get_category_by_name():
     return category_controller.get_category_by_name()
 
@@ -37,7 +37,7 @@ def get_category_by_name():
 @category_route_bp.route('/categories', methods=['POST'])
 @jwt_required
 @swag_from(create_category_doc)
-@roles_required(UserRoles.ADMIN.value)
+@roles_required(UserRoles.ADMIN.value, UserRoles.REGISTER_ONLY.value)
 def create_category():
     return category_controller.create_category()
 
@@ -45,7 +45,7 @@ def create_category():
 @category_route_bp.route('/categories/<int:id>', methods=['GET'])
 @jwt_required
 @swag_from(get_category_by_id_doc)
-@roles_required(UserRoles.ADMIN.value)
+@roles_required(UserRoles.ADMIN.value, UserRoles.REGISTER_ONLY.value)
 def get_category_by_id(id):
     return category_controller.get_category_by_id(id)
 
@@ -53,7 +53,7 @@ def get_category_by_id(id):
 @category_route_bp.route('/categories/<int:id>', methods=['PUT'])
 @jwt_required
 @swag_from(update_category_doc)
-@roles_required(UserRoles.ADMIN.value)
+@roles_required(UserRoles.ADMIN.value, UserRoles.REGISTER_ONLY.value)
 def update_category(id):
     return category_controller.update_category(id)
 
@@ -61,6 +61,6 @@ def update_category(id):
 @category_route_bp.route('/categories/<int:id>', methods=['DELETE'])
 @jwt_required
 @swag_from(delete_category_doc)
-@roles_required(UserRoles.ADMIN.value)
+@roles_required(UserRoles.ADMIN.value, UserRoles.REGISTER_ONLY.value)
 def delete_category(id):
     return category_controller.delete_category(id)
