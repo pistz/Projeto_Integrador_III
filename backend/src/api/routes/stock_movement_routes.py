@@ -28,7 +28,9 @@ def get_all_stock_movements():
 @stock_movement_route_bp.route('/stock-movements', methods=['POST'])
 @jwt_required
 @swag_from(move_stock_doc)
-@roles_required(UserRoles.ADMIN.value, UserRoles.REPORT_ONLY.value)
+@roles_required(
+    UserRoles.ADMIN.value, UserRoles.REPORT_ONLY.value, UserRoles.REGISTER_ONLY.value
+)
 def move_stock():
     return stock_movement_controller.move_stock()
 

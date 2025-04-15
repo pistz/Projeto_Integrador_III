@@ -7,7 +7,7 @@ export interface LoginData {
   password: string;
 }
 
-enum Roles {
+export enum Roles {
   ADMIN = 'admin',
   REGISTER_ONLY = 'register_only',
   REPORT_ONLY = 'report_only',

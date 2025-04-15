@@ -7,7 +7,10 @@ import {
 } from '@ant-design/icons';
 import { Button, Divider, Flex } from 'antd';
 import React, { useState } from 'react';
+import { Roles } from '../../../../api/Login/types';
+import { useAppContext } from '../../../../context/useAppContext';
 import { Modal } from '../../../shared/modal/Modal';
+import { notifyWarning } from '../../../shared/notify/notify';
 import { GetAllMovements } from './getAllMovements';
 import { GetCurrentStock } from './getCurrentStock';
 import { GetCurrentStockByProductId } from './getCurrentStockByProductId';
@@ -36,6 +39,11 @@ export const Reports: React.FC = () => {
     `${Math.random() * 1000} - reports-key`,
   );
 
+  const { tokenUser } = useAppContext();
+  const authorizedAccess =
+    tokenUser?.roles?.includes(Roles.ADMIN) ||
+    tokenUser?.roles?.includes(Roles.REPORT_ONLY);
+
   const showModal = (content: React.ReactNode) => {
     setModalContent(content);
     setIsModalOpen(true);
@@ -47,6 +55,10 @@ export const Reports: React.FC = () => {
   };
 
   const handleOnClick = (type: string) => {
+    if (!authorizedAccess) {
+      notifyWarning('Acesso não autorizado, verifique suas permissões.');
+      return;
+    }
     const content = stockActivityButtons.map((value) =>
       value.type == type ? value.content : null,
     );

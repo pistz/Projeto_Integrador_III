@@ -5,6 +5,7 @@ export interface Router {
   path: string;
   element: React.ReactElement;
   fullpath?: string;
+  roles: string[];
 }
 
 export const appPath = '/app/';
