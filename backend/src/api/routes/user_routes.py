@@ -28,6 +28,7 @@ def get_all_users_route():
 @user_route_bp.route('/users', methods=['POST'])
 @jwt_required
 @swag_from(create_user_doc)
+@roles_required(UserRoles.ADMIN.value)
 def create_user_route():
     return user_controller.create_user()
 
@@ -35,6 +36,7 @@ def create_user_route():
 @user_route_bp.route('/users/<int:id>', methods=['GET'])
 @jwt_required
 @swag_from(get_user_by_id_doc)
+@roles_required(UserRoles.ADMIN.value)
 def get_user_by_id_route(id):
     return user_controller.get_user_by_id(id)
 
@@ -42,6 +44,7 @@ def get_user_by_id_route(id):
 @user_route_bp.route('/users/<int:id>', methods=['PUT'])
 @jwt_required
 @swag_from(update_user_doc)
+@roles_required(UserRoles.ADMIN.value)
 def update_user_route(id):
     return user_controller.update_user(id)
 
@@ -49,5 +52,6 @@ def update_user_route(id):
 @user_route_bp.route('/users/<int:id>', methods=['DELETE'])
 @jwt_required
 @swag_from(delete_user_doc)
+@roles_required(UserRoles.ADMIN.value)
 def delete_user_route(id):
     return user_controller.delete_user(id)

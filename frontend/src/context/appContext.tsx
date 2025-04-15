@@ -77,7 +77,11 @@ export const ContextProvider: React.FC<IChildren> = ({
     if (!token) return;
     const retrievedUser = getUserFromToken();
     if (retrievedUser) {
-      setTokenUser({ name: retrievedUser.name, email: retrievedUser.user });
+      setTokenUser({
+        name: retrievedUser.name,
+        email: retrievedUser.user,
+        roles: retrievedUser.roles,
+      });
     }
   }, [token]);
 

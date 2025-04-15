@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { Brand } from '../api/Brand/types';
 import { Category } from '../api/Category/types';
 import { Product as ProductApiType } from '../api/Product/types';
-import { TokenUser as TokenUserType } from '../components/pages/config/user/types';
+import { TokenUser as UserToken } from '../api/Users/types';
 
 export interface IChildren {
   children: React.ReactNode;
@@ -28,4 +28,4 @@ export interface ProductOptions {
 }
 
 export interface Product extends ProductApiType {}
-export interface TokenUser extends TokenUserType {}
+export interface TokenUser extends UserToken {}

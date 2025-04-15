@@ -1,14 +1,5 @@
-export type CreateUserForm = {
-  name: string;
-  email: string;
-  password: string;
-};
+import { CreateUser, User } from '../../../../api/Users/types';
 
-export interface ListUsers extends TokenUser {
-  id: number;
-}
+export interface CreateUserForm extends CreateUser {}
 
-export type TokenUser = {
-  name: string;
-  email: string;
-};
+export interface ListUsers extends User {}

@@ -5,10 +5,12 @@ import {
   Form,
   FormProps,
   Input,
+  Select,
   Space,
   Typography,
 } from 'antd';
 import React, { useState } from 'react';
+import { rolesList } from '../../../../api/Login/types';
 import { UsersAPI } from '../../../../api/Users/UsersAPI';
 import { notifyError, notifySuccess } from '../../../shared/notify/notify';
 import { CreateUserForm } from './types';
@@ -102,6 +104,19 @@ export const CreateUser: React.FC<Props> = ({ close }: Props) => {
             rules={[{ required: true, message: 'senha é obrigatório' }]}
           >
             <Input.Password disabled={isLoading} />
+          </Form.Item>
+
+          <Form.Item
+            name={['roles']}
+            label={'Perfil de Acesso'}
+            rules={[{ required: true, message: 'Perfil é obrigatório' }]}
+          >
+            <Select
+              disabled={isLoading}
+              showSearch
+              optionFilterProp="label"
+              options={rolesList}
+            />
           </Form.Item>
 
           <Button
