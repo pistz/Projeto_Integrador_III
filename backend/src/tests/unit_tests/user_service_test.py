@@ -20,7 +20,9 @@ def test_create_user_success():
 
     service = UserService(repo)
 
-    dto = CreateUserDTO(name="Jane Doe", email="jane@example.com", password="123456")
+    dto = CreateUserDTO(
+        name="Jane Doe", email="jane@example.com", password="123456", roles="admin"
+    )
     response = service.create_user(dto)
 
     assert response.status_code == StatusCode.CREATED.value
@@ -33,7 +35,9 @@ def test_create_user_invalid_email():
     repo = get_mock_user_repository()
     service = UserService(repo)
 
-    dto = CreateUserDTO(name="Jane Doe", email="invalid-email", password="123456")
+    dto = CreateUserDTO(
+        name="Jane Doe", email="invalid-email", password="123456", roles="admin"
+    )
 
     with pytest.raises(EmailNotValid):
         service.create_user(dto)
@@ -44,7 +48,9 @@ def test_create_user_short_password():
     repo.get_user_by_email.return_value = None
     service = UserService(repo)
 
-    dto = CreateUserDTO(name="Jane Doe", email="jane@example.com", password="123")
+    dto = CreateUserDTO(
+        name="Jane Doe", email="jane@example.com", password="123", roles="admin"
+    )
 
     with pytest.raises(PasswordNotValid):
         service.create_user(dto)
@@ -69,7 +75,7 @@ def test_update_user_success():
     repo = get_mock_user_repository()
     service = UserService(repo)
 
-    dto = UpdateUserDTO(name="New Name", password="654321")
+    dto = UpdateUserDTO(name="New Name", roles="admin")
     response = service.update_user(1, dto)
 
     assert response.status_code == StatusCode.OK.value
@@ -82,7 +88,7 @@ def test_update_user_not_found():
     repo.get_user_by_id.return_value = None
     service = UserService(repo)
 
-    dto = UpdateUserDTO(name="New Name", password="654321")
+    dto = UpdateUserDTO(name="New Name", roles="admin")
 
     with pytest.raises(InvalidUser):
         service.update_user(99, dto)

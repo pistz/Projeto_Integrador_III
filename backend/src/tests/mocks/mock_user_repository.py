@@ -9,6 +9,7 @@ def get_mock_user_repository():
     fake_user.name = "John Doe"
     fake_user.email = "john@example.com"
     fake_user.password = "password"
+    fake_user.roles = "admin"
 
     repo.get_user_by_email.return_value = fake_user
     repo.get_user_by_id.return_value = fake_user

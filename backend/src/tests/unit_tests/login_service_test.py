@@ -33,6 +33,7 @@ def generate_token(email: str) -> str:
     token = jwt.encode(
         {
             "user": email,
+            "role": "admin",
             "exp": (
                 datetime.datetime.now() + datetime.timedelta(minutes=30)
             ).timestamp(),
@@ -47,9 +48,9 @@ def test_login_success(login_service):
     response = login_service.login("john@example.com", "password")
 
     assert response.status_code == StatusCode.OK.value
-    assert response.body.token is not None
+    assert response.body.get('token') is not None
     decoded = jwt.decode(
-        response.body.token,
+        response.body.get('token'),
         JWT_SECRET_KEY,
         algorithms=["HS256"],
         options={"verify_exp": False},

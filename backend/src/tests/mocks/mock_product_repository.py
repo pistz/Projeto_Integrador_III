@@ -13,6 +13,7 @@ def get_mock_product_repository():
     mock_product.category_id = 20
     mock_product.has_pack = False
     mock_product.pack_value = 0
+    mock_product.barcode = "1234567890123"
 
     # Mockando métodos do repositório
     mock.create_product.return_value = mock_product
@@ -28,6 +29,10 @@ def get_mock_product_repository():
     )
     mock.get_all_products_by_category_id.side_effect = lambda cid: (
         [mock_product] if cid == 20 else []
+    )
+
+    mock.get_product_by_barcode.side_effect = lambda barcode: (
+        mock_product if barcode == "1234567890123" else None
     )
 
     return mock

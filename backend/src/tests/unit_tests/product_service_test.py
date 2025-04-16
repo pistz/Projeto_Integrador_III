@@ -19,7 +19,7 @@ def product_service():
 def test_get_product_by_id_success(product_service):
     response = product_service.get_product_by_id(1)
     assert response.status_code == StatusCode.OK.value
-    assert response.body.name == "Laptop"
+    assert response.body.get('name') == "Laptop"
 
 
 def test_get_product_by_id_not_found(product_service):
@@ -27,16 +27,15 @@ def test_get_product_by_id_not_found(product_service):
         product_service.get_product_by_id(999)
 
 
-def test_get_product_by_name_success(product_service):
-    response = product_service.get_product_by_name("Laptop")
+def test_get_product_by_barcode(product_service):
+    response = product_service.get_product_by_barcode("1234567890123")
     assert response.status_code == StatusCode.OK.value
-    assert len(response.body) == 1
-    assert response.body[0].name == "Laptop"
+    assert response.body.get('name') == "Laptop"
 
 
-def test_get_product_by_name_not_found(product_service):
+def test_get_product_by_barcode_not_found(product_service):
     with pytest.raises(NotFound):
-        product_service.get_product_by_name("NonExisting")
+        product_service.get_product_by_barcode("NonExisting")
 
 
 def test_get_all_products(product_service):
