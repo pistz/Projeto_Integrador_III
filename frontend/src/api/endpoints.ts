@@ -6,6 +6,7 @@ export const base = {
 
 export const loginRoute = {
   login: `${base.host}/login`,
+  resetPassword: `${base.host}/reset-password`,
 };
 
 export const userRoute = {

@@ -1,6 +1,10 @@
 from typing import Optional
 
-from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO
+from src.application.dtos.user.user_dtos import (
+    CreateUserDTO,
+    UpdateUserDTO,
+    UserResetPasswordDTO,
+)
 from src.application.exceptions.database_exception import DatabaseException
 from src.infra.repositories.User.user_repository_interface import IUserRepository
 from src.model.configs.connection import DbConnectionHandler
@@ -49,9 +53,6 @@ class UserRepository(IUserRepository):
                 if not found_user:
                     raise DatabaseException(message='Usuário não encontrado')
                 found_user.name = user.name if user.name else found_user.name
-                found_user.password = (
-                    user.password if user.password else found_user.password
-                )
                 found_user.roles = user.roles if user.roles else found_user.roles
 
                 db.session.add(found_user)
@@ -61,6 +62,23 @@ class UserRepository(IUserRepository):
                 db.session.rollback()
                 raise DatabaseException(
                     message='Erro ao atualizar usuário', aditional=str(e)
+                )
+
+    def reset_user_password(self, user_reset: UserResetPasswordDTO) -> None:
+        with DbConnectionHandler() as db:
+            try:
+                found_user = self.__find_user(email=user_reset.email)
+                if not found_user:
+                    raise DatabaseException(message='Usuário não encontrado')
+                found_user.password = user_reset.new_password
+
+                db.session.add(found_user)
+                db.session.commit()
+                return
+            except Exception as e:
+                db.session.rollback()
+                raise DatabaseException(
+                    message='Erro ao atualizar senha do usuário', aditional=str(e)
                 )
 
     def delete_user(self, user_id: int) -> None:

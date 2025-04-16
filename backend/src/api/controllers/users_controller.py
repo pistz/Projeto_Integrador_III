@@ -2,7 +2,11 @@ from flask import jsonify, request
 
 from src.application.dtos.http_types.http_request import HttpRequest
 from src.application.dtos.http_types.http_response import HttpResponse
-from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO
+from src.application.dtos.user.user_dtos import (
+    CreateUserDTO,
+    UpdateUserDTO,
+    UserResetPasswordDTO,
+)
 from src.domain.containers.service_container import ServiceContainer
 
 

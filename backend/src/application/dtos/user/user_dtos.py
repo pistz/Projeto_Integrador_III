@@ -18,7 +18,6 @@ class CreateUserDTO:
 @dataclass()
 class UpdateUserDTO:
     name: str
-    password: str
     roles: str
 
 
@@ -42,3 +41,13 @@ class UserDTO:
 class UserLoginDTO:
     email: str
     password: str
+
+
+class UserResetPasswordDTO:
+    email: str
+    password: str
+    new_password: str
+
+    def __post_init__(self):
+        if not self.email or not self.new_password or not self.password:
+            raise InvalidData("Todos os campos são obrigatórios.")

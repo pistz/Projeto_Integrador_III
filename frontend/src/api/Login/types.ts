@@ -7,6 +7,12 @@ export interface LoginData {
   password: string;
 }
 
+export interface PasswordResetData {
+  email: string;
+  password: string;
+  new_password: string;
+}
+
 export enum Roles {
   ADMIN = 'admin',
   REGISTER_ONLY = 'register_only',

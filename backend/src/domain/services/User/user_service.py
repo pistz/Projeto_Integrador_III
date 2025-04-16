@@ -54,12 +54,6 @@ class UserService(IUserService):
         user_exists = self.user_repository.get_user_by_id(user_id=user_id)
         if not user_exists:
             raise InvalidUser('Usuário inválido')
-        if user.password:
-            self.__is_valid_password_len(user.password)
-            hashed_password = self.__hash_password(user.password)
-            user.password = hashed_password
-        if not user.name:
-            user.name = user_exists.name
         self.user_repository.update_user(user_id=user_id, user=user)
         return HttpResponse(
             status_code=StatusCode.OK.value,

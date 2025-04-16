@@ -1,6 +1,10 @@
 from abc import ABC, abstractmethod
 
-from src.application.dtos.user.user_dtos import CreateUserDTO, UpdateUserDTO
+from src.application.dtos.user.user_dtos import (
+    CreateUserDTO,
+    UpdateUserDTO,
+    UserResetPasswordDTO,
+)
 from src.model.entities.user import User
 
 
@@ -24,6 +28,10 @@ class IUserRepository(ABC):
 
     @abstractmethod
     def update_user(self, user_id: int, user: UpdateUserDTO) -> None:
+        pass
+
+    @abstractmethod
+    def reset_user_password(self, user_reset: UserResetPasswordDTO) -> None:
         pass
 
     @abstractmethod
