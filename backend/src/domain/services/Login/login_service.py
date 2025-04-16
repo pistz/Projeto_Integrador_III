@@ -11,6 +11,11 @@ from src.application.exceptions.invalid_user import InvalidUser
 from src.application.exceptions.password_not_valid import PasswordNotValid
 from src.application.exceptions.token_error import TokenError
 from src.application.exceptions.unauthorized import Unauthorized
+from src.application.utils.password_validator import (
+    dehash_password,
+    hash_password,
+    is_valid_password_len,
+)
 from src.domain.services.Login.login_service_interface import ILoginService
 from src.infra.repositories.User.user_repository_interface import IUserRepository
 from src.model.configs.env import load_secret_key
@@ -27,7 +32,7 @@ class LoginService(ILoginService):
         user = self.user_repository.get_user_by_email(email)
         if not user:
             raise InvalidUser("Email ou password incorretos")
-        if not self.__dehash_password(password, user.password):
+        if not dehash_password(password, user.password):
             raise InvalidUser("Email ou password incorretos")
         token = self.__generate_token(user)
         return HttpResponse(
@@ -39,10 +44,10 @@ class LoginService(ILoginService):
         if not email_user:
             raise InvalidUser("Usuário não encontrado.")
 
-        if not self.__dehash_password(user_reset.password, email_user.password):
+        if not dehash_password(user_reset.password, email_user.password):
             raise InvalidUser("Dados incorretos.")
-        self.__is_valid_password_len(user_reset.new_password)
-        hashed_password = self.__hash_password(user_reset.new_password)
+        is_valid_password_len(user_reset.new_password)
+        hashed_password = hash_password(user_reset.new_password)
         user_reset.new_password = hashed_password
         self.user_repository.reset_user_password(user_reset=user_reset)
         return HttpResponse(
@@ -86,13 +91,3 @@ class LoginService(ILoginService):
             algorithm="HS256",
         )
         return token
-
-    def __dehash_password(self, password: str, user_password: str) -> bool:
-        return bcrypt.checkpw(password.encode('utf-8'), user_password.encode('utf-8'))
-
-    def __is_valid_password_len(self, password: str) -> None:
-        if len(password) < 4 or len(password) > 8:
-            raise PasswordNotValid('Password deve ter entre 4 e 8 caracteres')
-
-    def __hash_password(self, password: str) -> str:
-        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')

@@ -9,6 +9,10 @@ from src.application.exceptions.email_not_valid import EmailNotValid
 from src.application.exceptions.invalid_user import InvalidUser
 from src.application.exceptions.not_found import NotFound
 from src.application.exceptions.password_not_valid import PasswordNotValid
+from src.application.utils.password_validator import (
+    hash_password,
+    is_valid_password_len,
+)
 from src.domain.services.User.user_service_interface import IUserService
 from src.infra.repositories.User.user_repository_interface import IUserRepository
 
@@ -22,8 +26,8 @@ class UserService(IUserService):
         user_exists = self.user_repository.get_user_by_email(user.email)
         if user_exists:
             raise EmailNotValid('Usuário já existe')
-        self.__is_valid_password_len(user.password)
-        hashed_password = self.__hash_password(user.password)
+        is_valid_password_len(user.password)
+        hashed_password = hash_password(user.password)
         user.password = hashed_password
         self.user_repository.create_user(user)
         return HttpResponse(
@@ -70,16 +74,9 @@ class UserService(IUserService):
             body={'message': 'Usuário deletado com sucesso'},
         )
 
-    def __hash_password(self, password: str) -> str:
-        return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
     def __is_valid_email(self, email: str) -> None:
         regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
         is_valid = re.search(regex, email)
         if is_valid:
             return
         raise EmailNotValid("Não é um email válido")
-
-    def __is_valid_password_len(self, password: str) -> None:
-        if len(password) < 4 or len(password) > 8:
-            raise PasswordNotValid('Password deve ter entre 4 e 8 caracteres')

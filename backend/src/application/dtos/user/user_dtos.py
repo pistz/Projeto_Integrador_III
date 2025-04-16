@@ -43,11 +43,8 @@ class UserLoginDTO:
     password: str
 
 
+@dataclass
 class UserResetPasswordDTO:
     email: str
     password: str
     new_password: str
-
-    def __post_init__(self):
-        if not self.email or not self.new_password or not self.password:
-            raise InvalidData("Todos os campos são obrigatórios.")

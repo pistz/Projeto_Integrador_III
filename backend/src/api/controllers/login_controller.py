@@ -25,6 +25,6 @@ class LoginController:
         http_request = HttpRequest(request.json)
         update_user_dto = UserResetPasswordDTO(**http_request.body)
         response: HttpResponse = self.__login_service.reset_user_password(
-            user_id, update_user_dto
+            update_user_dto
         )
         return self.__send_response(response)

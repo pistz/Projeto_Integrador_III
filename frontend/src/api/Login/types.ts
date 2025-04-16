@@ -19,7 +19,7 @@ export enum Roles {
   REPORT_ONLY = 'report_only',
 }
 
-enum RolesPt {
+export enum RolesPt {
   ADMIN = 'Administrador',
   REGISTER_ONLY = 'Cadastros',
   REPORT_ONLY = 'Relatórios',

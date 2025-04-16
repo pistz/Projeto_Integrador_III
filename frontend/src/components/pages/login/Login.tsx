@@ -93,10 +93,7 @@ export const LoginScreen: React.FC = () => {
           name={['password']}
           rules={[{ required: true, message: 'Senha é um campo obrigatório' }]}
         >
-          <Input
-            style={{ fontWeight: 'bold', width: '15rem' }}
-            type="password"
-          />
+          <Input.Password style={{ fontWeight: 'bold', width: '15rem' }} />
         </Form.Item>
         <Button
           type="primary"
