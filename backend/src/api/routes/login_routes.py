@@ -1,7 +1,8 @@
 from flasgger import swag_from
 from flask import Blueprint
 
-from src.api.auth.authenticator import authenticator, jwt_required
+from src.api.auth.authenticator import jwt_required
+from src.api.auth.roles_required import roles_required
 from src.api.controllers.login_controller import LoginController
 from src.api.swagger.login_docs import login_doc
 from src.application.enums.user_roles import UserRoles
@@ -19,7 +20,7 @@ def login():
 
 @login_route_bp.route('/login/reset-password', methods=['PUT'])
 @jwt_required
-@authenticator(
+@roles_required(
     UserRoles.ADMIN.value, UserRoles.REGISTER_ONLY.value, UserRoles.REPORT_ONLY.value
 )
 def reset_user_password():

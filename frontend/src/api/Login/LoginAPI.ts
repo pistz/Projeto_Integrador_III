@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authHeader } from '../../config/token';
 import { loginRoute } from '../endpoints';
 import { Response } from '../types';
 import { LoginData, PasswordResetData, Token } from './types';
@@ -10,7 +11,11 @@ export class LoginAPI {
   };
 
   static resetPassword = async (data: PasswordResetData): Promise<Response> => {
-    const response = await axios.put<Response>(loginRoute.resetPassword, data);
+    const response = await axios.put<Response>(
+      loginRoute.resetPassword,
+      data,
+      authHeader(),
+    );
     return response.data;
   };
 }
