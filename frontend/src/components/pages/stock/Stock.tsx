@@ -136,6 +136,7 @@ export const Stock: React.FC = () => {
             key={`${option.title}-${index}`}
             title={option.title}
             actions={option.actions}
+            background="#022752"
           />
         ))}
       </CardsContainer>
