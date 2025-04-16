@@ -10,7 +10,7 @@ export const CardsContainer = styled.div<CardsContainerProps>`
   gap: 2rem;
   align-items: start;
   margin: 0 auto;
-  min-height: ${({ $minHeight }) => $minHeight || '70vh'};
+  min-height: ${({ $minHeight }) => $minHeight || '64.2vh'};
 
   @media (max-width: 768px) {
     align-items: first baseline;
