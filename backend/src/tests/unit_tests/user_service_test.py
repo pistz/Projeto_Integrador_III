@@ -56,21 +56,6 @@ def test_create_user_short_password():
         service.create_user(dto)
 
 
-@pytest.mark.skip
-def test_get_user_by_email_success():
-    repo = get_mock_user_repository()
-    service = UserService(repo)
-
-    response = service.get_user_by_email("john@example.com")
-
-    assert response.status_code == StatusCode.OK.value
-    assert isinstance(response.body, UserDTO)
-    assert response.body.email == "john@example.com"
-    assert response.body.name == "John Doe"
-    assert response.body.id == 1
-    repo.get_user_by_email.assert_called_once_with("john@example.com")
-
-
 def test_update_user_success():
     repo = get_mock_user_repository()
     service = UserService(repo)
